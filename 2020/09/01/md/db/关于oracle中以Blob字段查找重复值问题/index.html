@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <meta name="robots" content="index, follow">
+  <!-- title -->
+  
+    
+  <title>关于oracle中以Blob字段查找重复值问题 - 子规入梧桐</title>
+    
+  
+  
+  <!-- open graph -->
+  <meta name="description" content="问题产生最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是Group by方法。 库表结构（简单的还原一下库表）create table cs( id int PRIMARY KEY not null, name NVARCHAR2(50) not null, jl blob not null ); select * fr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于oracle中以Blob字段查找重复值问题">
+<meta property="og:url" content="http://example.com/2020/09/01/md/db/%E5%85%B3%E4%BA%8Eoracle%E4%B8%AD%E4%BB%A5Blob%E5%AD%97%E6%AE%B5%E6%9F%A5%E6%89%BE%E9%87%8D%E5%A4%8D%E5%80%BC%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="子规入梧桐">
+<meta property="og:description" content="问题产生最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是Group by方法。 库表结构（简单的还原一下库表）create table cs( id int PRIMARY KEY not null, name NVARCHAR2(50) not null, jl blob not null ); select * fr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/f3627e8bb0dc4f0b8e589df10f6fe863.png">
+<meta property="og:image" content="http://example.com/img/584082192807448bb4db57a334ebb740.png">
+<meta property="og:image" content="http://example.com/img/6576c5fe4a184619b7fe4897d6ea30af.png">
+<meta property="og:image" content="http://example.com/img/35a289c650094738966c332480bc7da5.png">
+<meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-04-24T02:13:40.069Z">
+<meta property="article:author" content="z1gui">
+<meta property="article:tag" content="oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/f3627e8bb0dc4f0b8e589df10f6fe863.png">
+  <!-- canonical -->
+  
+  <link rel="canonical" href="http://example.com/2020/09/01/md/db/关于oracle中以Blob字段查找重复值问题/">
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+  <!-- CSS -->
+  
+<link rel="stylesheet" href="/css/reset.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/markdown.css">
+
+  
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">子规入梧桐</a>
+    <!-- <div class="logo"><a href="/" title="Len"><img src="/img/logo.svg" alt="Len" aria-label="logo" height="20"></a></div> -->
+        <ul class="nav">
+            
+            <li><a href="/">主页</a></li>
+            
+            <li><a href="/archives">归档</a></li>
+            
+            <li><a href="/about/">关于</a></li>
+            
+            <li><a href="/novel/">《亦幻》</a></li>
+            
+        </ul>
+
+
+    </a>
+</div>
+
+                
+                <div class="post-main">
+    
+        <div class="post-main-title">
+            关于oracle中以Blob字段查找重复值问题
+        </div>
+        <div class="post-meta">
+            2020-09-01 ｜ 
+            
+                <a href="/tags/oracle/"># oracle</a>
+            
+        </div>
+        <!-- 圆角分类 -->
+        <!-- <div class="tags"> -->
+            <!--  -->
+                <!-- <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a> -->
+            <!--  -->
+        <!-- </div> -->
+        <div class="post-md">
+            <h2 id="问题产生"><a href="#问题产生" class="headerlink" title="问题产生"></a>问题产生</h2><p>最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是Group by方法。</p>
+<h2 id="库表结构（简单的还原一下库表）"><a href="#库表结构（简单的还原一下库表）" class="headerlink" title="库表结构（简单的还原一下库表）"></a>库表结构（简单的还原一下库表）</h2><pre><code class="language-sql">create table cs(
+id int PRIMARY KEY not null,
+name NVARCHAR2(50) not null,
+jl blob not null
+);
+select * from cs;
+insert into cs  select 1,&#39;Tom&#39;,to_blob(&#39;123412f&#39;) from dual;
+insert into cs  select 2,&#39;King&#39;,to_blob(&#39;123412f&#39;) from dual;
+insert into cs  select 3,&#39;Leo&#39;,to_blob(&#39;124123F21F&#39;) from dual;
+</code></pre>
+<p><img src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.png" alt="库表结构"></p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="1-通过Group-by-方式进行查重（操作失败）"><a href="#1-通过Group-by-方式进行查重（操作失败）" class="headerlink" title="1.通过Group by 方式进行查重（操作失败）"></a>1.通过Group by 方式进行查重（操作失败）</h3><p>遇到这个问题，我熟啊！写group by语句就行了呗，然后就写了这样的语句</p>
+<pre><code class="language-sql">select  jl,count(1) from cs group by jl having count(1)&gt;1;
+</code></pre>
+<p>当我美滋滋开始执行的时候，却出现的问题<br><img src="/img/584082192807448bb4db57a334ebb740.png" alt="问题1"><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行group by的，那我把这个字段用to_char()转换一下试试看</p>
+<pre><code class="language-sql">select jl,count(1) from cs group by to_char(jl) having count(1)&gt;1;
+</code></pre>
+<p><img src="/img/6576c5fe4a184619b7fe4897d6ea30af.png" alt="问题2"><br>显然，group by 也不能后跟to_char()函数。那我只能是自己写语句吧。</p>
+<h3 id="2-自己写语句查重"><a href="#2-自己写语句查重" class="headerlink" title="2.自己写语句查重"></a>2.自己写语句查重</h3><p>如果不能用group by 进行查重的话，只能是自己写查重语句，然后就写了如下语句</p>
+<pre><code class="language-sql">select * from cs t1 where exists (select 1 from cs t2 where to_char(t2.jl) = to_char(t1.jl) and t2.id !=t1.id);
+</code></pre>
+<p>需要注意的是blob类型字段是不能直接&#x3D;，需要to_char()转换，这个语句就执行成功了。结果如下，问题解决。<br><img src="/img/35a289c650094738966c332480bc7da5.png" alt="结果1"></p>
+
+        </div>
+    
+<!-- tags -->
+
+    <div class="post-meta">
+        分类：
+        
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> / 数据库</a>
+        
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © <script>document.write(new Date().getFullYear())</script> <a target="_blank" rel="noopener" href="https://github.com/z1gui">z1gui</a></span>
+    <span>Licensed under<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"> CC-BY-NC-SA 4.0</a></span>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
