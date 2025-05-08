@@ -88,8 +88,9 @@
                 <!-- <a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a> -->
             <!--  -->
         <!-- </div> -->
-        <div class="post-md">
-            <h1 id="一、对象创建过程"><a href="#一、对象创建过程" class="headerlink" title="一、对象创建过程"></a>一、对象创建过程</h1><h2 id="a-内存分配"><a href="#a-内存分配" class="headerlink" title="a. 内存分配"></a>a. 内存分配</h2><ul>
+        <div class="post-content-wrapper">
+            <div class="post-md">
+                <h1 id="一、对象创建过程"><a href="#一、对象创建过程" class="headerlink" title="一、对象创建过程"></a>一、对象创建过程</h1><h2 id="a-内存分配"><a href="#a-内存分配" class="headerlink" title="a. 内存分配"></a>a. 内存分配</h2><ul>
 <li>当我们创建一个对象时（无论是通过构造函数还是字面量方式），JavaScript 引擎会在内存堆（Heap）中为这个对象分配空间。堆是一个用于存储复杂数据结构（如对象和数组）的区域。</li>
 </ul>
 <pre><code class="language-javascript">// 创建对象并分配内存
@@ -154,15 +155,41 @@ obj1 = null; // 现在只有obj2指向原对象
 </ul>
 <p>总之，在 JavaScript 中，对象从创建到销毁的过程涉及内存管理、作用域规则以及垃圾回收策略等多个方面，理解这些概念对于编写高效且无内存泄漏的 JavaScript 代码至关重要。</p>
 
+            </div>
+            <div class="post-toc">
+                <div class="toc-title">目录</div>
+                <div class="toc-content"></div>
+            </div>
         </div>
     
-<!-- tags -->
 
-    <div class="post-meta">
-        分类：
-        
-            <a href="/categories/%E5%89%8D%E7%AB%AF/"> / 前端</a>
-        
+<!-- 只在文章页面显示分类和导航 -->
+
+    <!-- tags -->
+    
+        <div class="post-meta">
+            分类：
+            
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/"> / 前端</a>
+
+            
+        </div>
+    
+
+    <!-- 添加上一篇和下一篇导航 -->
+    <div class="post-navigation">
+        <div class="post-nav-prev">
+            
+                <span class="nav-label">上一篇</span>
+                <a href="/2025/04/24/life/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89%E4%B8%80%E4%B8%AA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%EF%BC%9F/" class="nav-title">为什么一定要有一个个人网站？</a>
+            
+        </div>
+        <div class="post-nav-next">
+            
+                <span class="nav-label">下一篇</span>
+                <a href="/2024/12/11/java/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3%EF%BC%8CKafka%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86%EF%BC%81/" class="nav-title">Kafka深入浅出</a>
+            
+        </div>
     </div>
 
 </div>
@@ -182,7 +209,212 @@ obj1 = null; // 现在只有obj2指向原对象
 <script>
     hljs.initHighlightingOnLoad();
     hljs.initLineNumbersOnLoad();
+
+    // 处理标题前#号的点击事件
+    function setupHeadingAnchors() {
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        // 生成唯一 id（与 TOC 保持一致）
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+            // 添加点击事件
+            heading.addEventListener('click', function(e) {
+                if (e.target === heading || e.target === heading.querySelector('::before')) {
+                    e.preventDefault();
+                    // 复制链接到剪贴板
+                    const url = window.location.href.split('#')[0] + '#' + uniqueId;
+                    navigator.clipboard.writeText(url).then(() => {
+                        // 显示复制成功提示
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'copy-tooltip';
+                        tooltip.textContent = '链接已复制，分享点击可直接到达该标题处！';
+                        document.body.appendChild(tooltip);
+                        setTimeout(() => {
+                            tooltip.remove();
+                        }, 2000);
+                    });
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${uniqueId}`);
+                }
+            });
+        });
+    }
+
+    // 生成目录
+    function generateTOC() {
+        const tocContent = document.querySelector('.toc-content');
+        if (!tocContent) return;
+
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        
+        if (headings.length === 0) {
+            const postToc = document.querySelector('.post-toc');
+            if (postToc) {
+                postToc.style.display = 'none';
+            }
+            return;
+        }
+
+        // 清空现有内容
+        tocContent.innerHTML = '';
+
+        const tocList = document.createElement('ul');
+        tocList.className = 'toc-list';
+        let currentLevel = 0;
+        let currentList = tocList;
+
+        // 生成唯一 id
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+        });
+
+        headings.forEach((heading, index) => {
+            const level = parseInt(heading.tagName[1]);
+            const id = heading.id; // 使用唯一 id
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.textContent = heading.textContent;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetHeading = document.getElementById(id);
+                if (targetHeading) {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${id}`);
+                }
+            });
+
+            listItem.appendChild(link);
+
+            if (level > currentLevel) {
+                const newList = document.createElement('ul');
+                newList.className = 'toc-sublist';
+                if (currentList.lastChild) {
+                    currentList.lastChild.appendChild(newList);
+                } else {
+                    currentList.appendChild(newList);
+                }
+                currentList = newList;
+            } else if (level < currentLevel) {
+                const diff = currentLevel - level;
+                for (let i = 0; i < diff && currentList.parentNode && currentList.parentNode.parentNode; i++) {
+                    currentList = currentList.parentNode.parentNode;
+                }
+            }
+
+            if (currentList) {
+                currentList.appendChild(listItem);
+            }
+            currentLevel = level;
+        });
+
+        if (tocList) {
+            tocContent.appendChild(tocList);
+        }
+
+        // 初始化时检查 URL hash 并滚动到对应位置
+        if (window.location.hash) {
+            const targetId = window.location.hash.slice(1);
+            const targetHeading = document.getElementById(targetId);
+            if (targetHeading) {
+                setTimeout(() => {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+    }
+
+    // 确保在DOM完全加载后执行
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            generateTOC();
+            setupHeadingAnchors();
+        } catch (error) {
+            console.error('Error initializing TOC:', error);
+        }
+    });
 </script>
+
+<style>
+.heading-anchor {
+    position: absolute;
+    left: 0;
+    color: var(--font-color-3);
+    opacity: 0;
+    transition: opacity 0.3s, color 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.heading-anchor:hover {
+    color: var(--font-color-0);
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor {
+    opacity: 1;
+}
+
+.copy-tooltip {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--font-color-1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+</style>
 
             </div>
         </div>

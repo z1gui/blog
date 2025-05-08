@@ -12,19 +12,19 @@
   
   
   <!-- open graph -->
-  <meta name="description" content="问题产生最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是Group by方法。 库表结构（简单的还原一下库表）create table cs( id int PRIMARY KEY not null, name NVARCHAR2(50) not null, jl blob not null ); select * fr">
+  <meta name="description" content="问题产生最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是 Group by 方法。 库表结构（简单的还原一下库表）create table cs( id int PRIMARY KEY not null, name NVARCHAR2(50) not null, jl blob not null ); select *">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于oracle中以Blob字段查找重复值问题">
 <meta property="og:url" content="https://www.lazydaily.cn/2020/09/01/db/%E5%85%B3%E4%BA%8Eoracle%E4%B8%AD%E4%BB%A5Blob%E5%AD%97%E6%AE%B5%E6%9F%A5%E6%89%BE%E9%87%8D%E5%A4%8D%E5%80%BC%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="子规入梧桐">
-<meta property="og:description" content="问题产生最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是Group by方法。 库表结构（简单的还原一下库表）create table cs( id int PRIMARY KEY not null, name NVARCHAR2(50) not null, jl blob not null ); select * fr">
+<meta property="og:description" content="问题产生最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是 Group by 方法。 库表结构（简单的还原一下库表）create table cs( id int PRIMARY KEY not null, name NVARCHAR2(50) not null, jl blob not null ); select *">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.lazydaily.cn/img/f3627e8bb0dc4f0b8e589df10f6fe863.png">
 <meta property="og:image" content="https://www.lazydaily.cn/img/584082192807448bb4db57a334ebb740.png">
 <meta property="og:image" content="https://www.lazydaily.cn/img/6576c5fe4a184619b7fe4897d6ea30af.png">
 <meta property="og:image" content="https://www.lazydaily.cn/img/35a289c650094738966c332480bc7da5.png">
 <meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-24T06:41:16.115Z">
+<meta property="article:modified_time" content="2025-04-26T09:22:36.823Z">
 <meta property="article:author" content="z1gui">
 <meta property="article:tag" content="oracle">
 <meta property="article:tag" content="开发问题">
@@ -96,8 +96,9 @@
                 <!-- <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a> -->
             <!--  -->
         <!-- </div> -->
-        <div class="post-md">
-            <h2 id="问题产生"><a href="#问题产生" class="headerlink" title="问题产生"></a>问题产生</h2><p>最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是Group by方法。</p>
+        <div class="post-content-wrapper">
+            <div class="post-md">
+                <h2 id="问题产生"><a href="#问题产生" class="headerlink" title="问题产生"></a>问题产生</h2><p>最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是 <code>Group by</code> 方法。</p>
 <h2 id="库表结构（简单的还原一下库表）"><a href="#库表结构（简单的还原一下库表）" class="headerlink" title="库表结构（简单的还原一下库表）"></a>库表结构（简单的还原一下库表）</h2><pre><code class="language-sql">create table cs(
 id int PRIMARY KEY not null,
 name NVARCHAR2(50) not null,
@@ -109,27 +110,50 @@ insert into cs  select 2,&#39;King&#39;,to_blob(&#39;123412f&#39;) from dual;
 insert into cs  select 3,&#39;Leo&#39;,to_blob(&#39;124123F21F&#39;) from dual;
 </code></pre>
 <p><img src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.png" alt="库表结构"></p>
-<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="1-通过Group-by-方式进行查重（操作失败）"><a href="#1-通过Group-by-方式进行查重（操作失败）" class="headerlink" title="1.通过Group by 方式进行查重（操作失败）"></a>1.通过Group by 方式进行查重（操作失败）</h3><p>遇到这个问题，我熟啊！写group by语句就行了呗，然后就写了这样的语句</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h4 id="1-通过Group-by-方式进行查重（操作失败）"><a href="#1-通过Group-by-方式进行查重（操作失败）" class="headerlink" title="1.通过Group by 方式进行查重（操作失败）"></a>1.通过Group by 方式进行查重（操作失败）</h4><p>遇到这个问题，我熟啊！写 <code>group by</code> 语句就行了呗，然后就写了这样的语句</p>
 <pre><code class="language-sql">select  jl,count(1) from cs group by jl having count(1)&gt;1;
 </code></pre>
-<p>当我美滋滋开始执行的时候，却出现的问题<br><img src="/img/584082192807448bb4db57a334ebb740.png" alt="问题1"><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行group by的，那我把这个字段用to_char()转换一下试试看</p>
+<p>当我美滋滋开始执行的时候，却出现的问题<br><img src="/img/584082192807448bb4db57a334ebb740.png" alt="问题1"><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行 <code>group by</code> 的，那我把这个字段用 <code>to_char()</code> 转换一下试试看</p>
 <pre><code class="language-sql">select jl,count(1) from cs group by to_char(jl) having count(1)&gt;1;
 </code></pre>
-<p><img src="/img/6576c5fe4a184619b7fe4897d6ea30af.png" alt="问题2"><br>显然，group by 也不能后跟to_char()函数。那我只能是自己写语句吧。</p>
-<h3 id="2-自己写语句查重"><a href="#2-自己写语句查重" class="headerlink" title="2.自己写语句查重"></a>2.自己写语句查重</h3><p>如果不能用group by 进行查重的话，只能是自己写查重语句，然后就写了如下语句</p>
+<p><img src="/img/6576c5fe4a184619b7fe4897d6ea30af.png" alt="问题2"><br>显然，<code>group by</code> 也不能后跟 <code>to_char()</code> 函数。那我只能是自己写语句吧。</p>
+<h4 id="2-自己写语句查重"><a href="#2-自己写语句查重" class="headerlink" title="2.自己写语句查重"></a>2.自己写语句查重</h4><p>如果不能用group by 进行查重的话，只能是自己写查重语句，然后就写了如下语句</p>
 <pre><code class="language-sql">select * from cs t1 where exists (select 1 from cs t2 where to_char(t2.jl) = to_char(t1.jl) and t2.id !=t1.id);
 </code></pre>
-<p>需要注意的是blob类型字段是不能直接&#x3D;，需要to_char()转换，这个语句就执行成功了。结果如下，问题解决。<br><img src="/img/35a289c650094738966c332480bc7da5.png" alt="结果1"></p>
+<p>需要注意的是blob类型字段是不能直接&#x3D;，需要 <code>to_char()</code> 转换，这个语句就执行成功了。结果如下，问题解决。<br><img src="/img/35a289c650094738966c332480bc7da5.png" alt="结果1"></p>
 
+            </div>
+            <div class="post-toc">
+                <div class="toc-title">目录</div>
+                <div class="toc-content"></div>
+            </div>
         </div>
     
-<!-- tags -->
 
-    <div class="post-meta">
-        分类：
-        
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> / 数据库</a>
-        
+<!-- 只在文章页面显示分类和导航 -->
+
+    <!-- tags -->
+    
+        <div class="post-meta">
+            分类：
+            
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> / 数据库</a>
+
+            
+        </div>
+    
+
+    <!-- 添加上一篇和下一篇导航 -->
+    <div class="post-navigation">
+        <div class="post-nav-prev">
+            
+                <span class="nav-label">上一篇</span>
+                <a href="/2024/03/21/java/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%80%BB%E6%98%AF%E4%B9%B1%E7%A0%81%EF%BC%9F%E6%9D%A5%E7%9C%8B%E7%9C%8B%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%90%A7/" class="nav-title">为什么总是乱码？来看看编码格式吧</a>
+            
+        </div>
+        <div class="post-nav-next">
+            
+        </div>
     </div>
 
 </div>
@@ -149,7 +173,212 @@ insert into cs  select 3,&#39;Leo&#39;,to_blob(&#39;124123F21F&#39;) from dual;
 <script>
     hljs.initHighlightingOnLoad();
     hljs.initLineNumbersOnLoad();
+
+    // 处理标题前#号的点击事件
+    function setupHeadingAnchors() {
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        // 生成唯一 id（与 TOC 保持一致）
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+            // 添加点击事件
+            heading.addEventListener('click', function(e) {
+                if (e.target === heading || e.target === heading.querySelector('::before')) {
+                    e.preventDefault();
+                    // 复制链接到剪贴板
+                    const url = window.location.href.split('#')[0] + '#' + uniqueId;
+                    navigator.clipboard.writeText(url).then(() => {
+                        // 显示复制成功提示
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'copy-tooltip';
+                        tooltip.textContent = '链接已复制，分享点击可直接到达该标题处！';
+                        document.body.appendChild(tooltip);
+                        setTimeout(() => {
+                            tooltip.remove();
+                        }, 2000);
+                    });
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${uniqueId}`);
+                }
+            });
+        });
+    }
+
+    // 生成目录
+    function generateTOC() {
+        const tocContent = document.querySelector('.toc-content');
+        if (!tocContent) return;
+
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        
+        if (headings.length === 0) {
+            const postToc = document.querySelector('.post-toc');
+            if (postToc) {
+                postToc.style.display = 'none';
+            }
+            return;
+        }
+
+        // 清空现有内容
+        tocContent.innerHTML = '';
+
+        const tocList = document.createElement('ul');
+        tocList.className = 'toc-list';
+        let currentLevel = 0;
+        let currentList = tocList;
+
+        // 生成唯一 id
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+        });
+
+        headings.forEach((heading, index) => {
+            const level = parseInt(heading.tagName[1]);
+            const id = heading.id; // 使用唯一 id
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.textContent = heading.textContent;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetHeading = document.getElementById(id);
+                if (targetHeading) {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${id}`);
+                }
+            });
+
+            listItem.appendChild(link);
+
+            if (level > currentLevel) {
+                const newList = document.createElement('ul');
+                newList.className = 'toc-sublist';
+                if (currentList.lastChild) {
+                    currentList.lastChild.appendChild(newList);
+                } else {
+                    currentList.appendChild(newList);
+                }
+                currentList = newList;
+            } else if (level < currentLevel) {
+                const diff = currentLevel - level;
+                for (let i = 0; i < diff && currentList.parentNode && currentList.parentNode.parentNode; i++) {
+                    currentList = currentList.parentNode.parentNode;
+                }
+            }
+
+            if (currentList) {
+                currentList.appendChild(listItem);
+            }
+            currentLevel = level;
+        });
+
+        if (tocList) {
+            tocContent.appendChild(tocList);
+        }
+
+        // 初始化时检查 URL hash 并滚动到对应位置
+        if (window.location.hash) {
+            const targetId = window.location.hash.slice(1);
+            const targetHeading = document.getElementById(targetId);
+            if (targetHeading) {
+                setTimeout(() => {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+    }
+
+    // 确保在DOM完全加载后执行
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            generateTOC();
+            setupHeadingAnchors();
+        } catch (error) {
+            console.error('Error initializing TOC:', error);
+        }
+    });
 </script>
+
+<style>
+.heading-anchor {
+    position: absolute;
+    left: 0;
+    color: var(--font-color-3);
+    opacity: 0;
+    transition: opacity 0.3s, color 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.heading-anchor:hover {
+    color: var(--font-color-0);
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor {
+    opacity: 1;
+}
+
+.copy-tooltip {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--font-color-1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+</style>
 
             </div>
         </div>

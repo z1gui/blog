@@ -104,8 +104,9 @@
                 <!-- <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a> -->
             <!--  -->
         <!-- </div> -->
-        <div class="post-md">
-            <p>Kafka 服务器端的代码是由 Scala 代码编写，支持面向对象编程和函数式数据，编译过后也是普通的 .class 文件。其的作用：提供统一的、高吞吐量、低延迟的平台来处理实时数据</p>
+        <div class="post-content-wrapper">
+            <div class="post-md">
+                <p>Kafka 服务器端的代码是由 Scala 代码编写，支持面向对象编程和函数式数据，编译过后也是普通的 .class 文件。其的作用：提供统一的、高吞吐量、低延迟的平台来处理实时数据</p>
 <h1 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h1><h2 id="「Kafka-是什么？主要应用场景什么？」"><a href="#「Kafka-是什么？主要应用场景什么？」" class="headerlink" title="「Kafka 是什么？主要应用场景什么？」"></a>「Kafka 是什么？主要应用场景什么？」</h2><p>Kafka 是一个分布式流式处理平台。</p>
 <p><img src="/img/6aaf06740442599b6c52bb586545dfb8_MD5.png" alt="6aaf06740442599b6c52bb586545dfb8_MD5.png"></p>
 <p><strong>1 . 主题</strong>：发布订阅的对象是主题（Topic），可以为每个业务、每个应用甚至每类数据都创建专属的主题</p>
@@ -731,15 +732,41 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
 <p> <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/zfHoSsuSpXWOaxQrm7uvkA">Kafka核心知识总结！</a></p>
 </blockquote>
 
+            </div>
+            <div class="post-toc">
+                <div class="toc-title">目录</div>
+                <div class="toc-content"></div>
+            </div>
         </div>
     
-<!-- tags -->
 
-    <div class="post-meta">
-        分类：
-        
-            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"> / 中间件</a>
-        
+<!-- 只在文章页面显示分类和导航 -->
+
+    <!-- tags -->
+    
+        <div class="post-meta">
+            分类：
+            
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"> / 中间件</a>
+
+            
+        </div>
+    
+
+    <!-- 添加上一篇和下一篇导航 -->
+    <div class="post-navigation">
+        <div class="post-nav-prev">
+            
+                <span class="nav-label">上一篇</span>
+                <a href="/2025/03/01/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B/" class="nav-title">JavaScript 创建执行释放过程</a>
+            
+        </div>
+        <div class="post-nav-next">
+            
+                <span class="nav-label">下一篇</span>
+                <a href="/2024/12/01/java/%E8%81%8A%E8%81%8AJavaIO%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" class="nav-title">聊聊Java IO的那些事</a>
+            
+        </div>
     </div>
 
 </div>
@@ -759,7 +786,212 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
 <script>
     hljs.initHighlightingOnLoad();
     hljs.initLineNumbersOnLoad();
+
+    // 处理标题前#号的点击事件
+    function setupHeadingAnchors() {
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        // 生成唯一 id（与 TOC 保持一致）
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+            // 添加点击事件
+            heading.addEventListener('click', function(e) {
+                if (e.target === heading || e.target === heading.querySelector('::before')) {
+                    e.preventDefault();
+                    // 复制链接到剪贴板
+                    const url = window.location.href.split('#')[0] + '#' + uniqueId;
+                    navigator.clipboard.writeText(url).then(() => {
+                        // 显示复制成功提示
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'copy-tooltip';
+                        tooltip.textContent = '链接已复制，分享点击可直接到达该标题处！';
+                        document.body.appendChild(tooltip);
+                        setTimeout(() => {
+                            tooltip.remove();
+                        }, 2000);
+                    });
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${uniqueId}`);
+                }
+            });
+        });
+    }
+
+    // 生成目录
+    function generateTOC() {
+        const tocContent = document.querySelector('.toc-content');
+        if (!tocContent) return;
+
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        
+        if (headings.length === 0) {
+            const postToc = document.querySelector('.post-toc');
+            if (postToc) {
+                postToc.style.display = 'none';
+            }
+            return;
+        }
+
+        // 清空现有内容
+        tocContent.innerHTML = '';
+
+        const tocList = document.createElement('ul');
+        tocList.className = 'toc-list';
+        let currentLevel = 0;
+        let currentList = tocList;
+
+        // 生成唯一 id
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+        });
+
+        headings.forEach((heading, index) => {
+            const level = parseInt(heading.tagName[1]);
+            const id = heading.id; // 使用唯一 id
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.textContent = heading.textContent;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetHeading = document.getElementById(id);
+                if (targetHeading) {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${id}`);
+                }
+            });
+
+            listItem.appendChild(link);
+
+            if (level > currentLevel) {
+                const newList = document.createElement('ul');
+                newList.className = 'toc-sublist';
+                if (currentList.lastChild) {
+                    currentList.lastChild.appendChild(newList);
+                } else {
+                    currentList.appendChild(newList);
+                }
+                currentList = newList;
+            } else if (level < currentLevel) {
+                const diff = currentLevel - level;
+                for (let i = 0; i < diff && currentList.parentNode && currentList.parentNode.parentNode; i++) {
+                    currentList = currentList.parentNode.parentNode;
+                }
+            }
+
+            if (currentList) {
+                currentList.appendChild(listItem);
+            }
+            currentLevel = level;
+        });
+
+        if (tocList) {
+            tocContent.appendChild(tocList);
+        }
+
+        // 初始化时检查 URL hash 并滚动到对应位置
+        if (window.location.hash) {
+            const targetId = window.location.hash.slice(1);
+            const targetHeading = document.getElementById(targetId);
+            if (targetHeading) {
+                setTimeout(() => {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+    }
+
+    // 确保在DOM完全加载后执行
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            generateTOC();
+            setupHeadingAnchors();
+        } catch (error) {
+            console.error('Error initializing TOC:', error);
+        }
+    });
 </script>
+
+<style>
+.heading-anchor {
+    position: absolute;
+    left: 0;
+    color: var(--font-color-3);
+    opacity: 0;
+    transition: opacity 0.3s, color 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.heading-anchor:hover {
+    color: var(--font-color-0);
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor {
+    opacity: 1;
+}
+
+.copy-tooltip {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--font-color-1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+</style>
 
             </div>
         </div>

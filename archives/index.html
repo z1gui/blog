@@ -62,76 +62,183 @@
 </div>
 
                 
-                <div class="archive-list">
-    <ul class="archive">
+                <div class="archive-container">
+    <div class="category-filter">
+        <button class="category-btn active" data-category="all">全部</button>
         
-        <li>
-            <span class="archive-date">2025.04.24</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2025/04/24/life/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89%E4%B8%80%E4%B8%AA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%EF%BC%9F/">为什么一定要有一个个人网站？</a>
-                <!-- <a class="read-more" href="/2025/04/24/life/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89%E4%B8%80%E4%B8%AA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%EF%BC%9F/"> ... </a> -->
+            <button class="category-btn" data-category="中间件">中间件</button>
+        
+            <button class="category-btn" data-category="前端">前端</button>
+        
+            <button class="category-btn" data-category="后端">后端</button>
+        
+            <button class="category-btn" data-category="数据库">数据库</button>
+        
+            <button class="category-btn" data-category="生活">生活</button>
+        
+    </div>
+    <div class="archive-content">
+        <div class="empty-state" style="display: none;">
+            <p>该分类下文章正在创作中，请过段时间再来看看~</p>
+        </div>
+        
+            <div class="archive-year" data-year="2025">
+                <h2 class="year-title">2025</h2>
+                <div class="year-posts">
+                    
+                        <article class="archive-item" data-categories="生活" data-year="2025">
+                            <time class="archive-date">04-24</time>
+                            <a href="/2025/04/24/life/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89%E4%B8%80%E4%B8%AA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%EF%BC%9F/" class="archive-title">为什么一定要有一个个人网站？</a>
+                        </article>
+                    
+                        <article class="archive-item" data-categories="前端" data-year="2025">
+                            <time class="archive-date">03-01</time>
+                            <a href="/2025/03/01/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B/" class="archive-title">JavaScript 创建执行释放过程</a>
+                        </article>
+                    
+                </div>
             </div>
-        </li>
         
-        <li>
-            <span class="archive-date">2025.03.01</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2025/03/01/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B/">JavaScript 创建执行释放过程</a>
-                <!-- <a class="read-more" href="/2025/03/01/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B/"> ... </a> -->
+            <div class="archive-year" data-year="2024">
+                <h2 class="year-title">2024</h2>
+                <div class="year-posts">
+                    
+                        <article class="archive-item" data-categories="中间件" data-year="2024">
+                            <time class="archive-date">12-11</time>
+                            <a href="/2024/12/11/java/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3%EF%BC%8CKafka%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86%EF%BC%81/" class="archive-title">Kafka深入浅出</a>
+                        </article>
+                    
+                        <article class="archive-item" data-categories="后端" data-year="2024">
+                            <time class="archive-date">12-01</time>
+                            <a href="/2024/12/01/java/%E8%81%8A%E8%81%8AJavaIO%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" class="archive-title">聊聊Java IO的那些事</a>
+                        </article>
+                    
+                        <article class="archive-item" data-categories="后端" data-year="2024">
+                            <time class="archive-date">09-01</time>
+                            <a href="/2024/09/01/java/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%BB%A5%E5%8F%8A%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B/" class="archive-title">类加载器以及双亲委派模型</a>
+                        </article>
+                    
+                        <article class="archive-item" data-categories="前端" data-year="2024">
+                            <time class="archive-date">07-23</time>
+                            <a href="/2024/07/23/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E4%B8%ADconst%EF%BC%8Cvar%EF%BC%8Clet%E7%9A%84%E5%8C%BA%E5%88%AB/" class="archive-title">javascript中 const，var，let的区别</a>
+                        </article>
+                    
+                        <article class="archive-item" data-categories="后端" data-year="2024">
+                            <time class="archive-date">03-21</time>
+                            <a href="/2024/03/21/java/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%80%BB%E6%98%AF%E4%B9%B1%E7%A0%81%EF%BC%9F%E6%9D%A5%E7%9C%8B%E7%9C%8B%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%90%A7/" class="archive-title">为什么总是乱码？来看看编码格式吧</a>
+                        </article>
+                    
+                </div>
             </div>
-        </li>
         
-        <li>
-            <span class="archive-date">2024.12.11</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2024/12/11/java/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3%EF%BC%8CKafka%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86%EF%BC%81/">Kafka深入浅出</a>
-                <!-- <a class="read-more" href="/2024/12/11/java/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3%EF%BC%8CKafka%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86%EF%BC%81/"> ... </a> -->
+            <div class="archive-year" data-year="2020">
+                <h2 class="year-title">2020</h2>
+                <div class="year-posts">
+                    
+                        <article class="archive-item" data-categories="数据库" data-year="2020">
+                            <time class="archive-date">09-01</time>
+                            <a href="/2020/09/01/db/%E5%85%B3%E4%BA%8Eoracle%E4%B8%AD%E4%BB%A5Blob%E5%AD%97%E6%AE%B5%E6%9F%A5%E6%89%BE%E9%87%8D%E5%A4%8D%E5%80%BC%E9%97%AE%E9%A2%98/" class="archive-title">关于oracle中以Blob字段查找重复值问题</a>
+                        </article>
+                    
+                </div>
             </div>
-        </li>
         
-        <li>
-            <span class="archive-date">2024.12.01</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2024/12/01/java/%E8%81%8A%E8%81%8AJavaIO%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/">聊聊Java IO的那些事</a>
-                <!-- <a class="read-more" href="/2024/12/01/java/%E8%81%8A%E8%81%8AJavaIO%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/"> ... </a> -->
-            </div>
-        </li>
-        
-        <li>
-            <span class="archive-date">2024.09.01</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2024/09/01/java/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%BB%A5%E5%8F%8A%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B/">类加载器以及双亲委派模型</a>
-                <!-- <a class="read-more" href="/2024/09/01/java/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%BB%A5%E5%8F%8A%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B/"> ... </a> -->
-            </div>
-        </li>
-        
-        <li>
-            <span class="archive-date">2024.07.23</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2024/07/23/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E4%B8%ADconst%EF%BC%8Cvar%EF%BC%8Clet%E7%9A%84%E5%8C%BA%E5%88%AB/">javascript中 const，var，let的区别</a>
-                <!-- <a class="read-more" href="/2024/07/23/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E4%B8%ADconst%EF%BC%8Cvar%EF%BC%8Clet%E7%9A%84%E5%8C%BA%E5%88%AB/"> ... </a> -->
-            </div>
-        </li>
-        
-        <li>
-            <span class="archive-date">2024.03.21</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2024/03/21/java/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%80%BB%E6%98%AF%E4%B9%B1%E7%A0%81%EF%BC%9F%E6%9D%A5%E7%9C%8B%E7%9C%8B%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%90%A7/">详解各类的编码格式</a>
-                <!-- <a class="read-more" href="/2024/03/21/java/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%80%BB%E6%98%AF%E4%B9%B1%E7%A0%81%EF%BC%9F%E6%9D%A5%E7%9C%8B%E7%9C%8B%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%90%A7/"> ... </a> -->
-            </div>
-        </li>
-        
-        <li>
-            <span class="archive-date">2020.09.01</span>
-            <div class="archive-main">
-                <a class="archive-title" href="/2020/09/01/db/%E5%85%B3%E4%BA%8Eoracle%E4%B8%AD%E4%BB%A5Blob%E5%AD%97%E6%AE%B5%E6%9F%A5%E6%89%BE%E9%87%8D%E5%A4%8D%E5%80%BC%E9%97%AE%E9%A2%98/">关于oracle中以Blob字段查找重复值问题</a>
-                <!-- <a class="read-more" href="/2020/09/01/db/%E5%85%B3%E4%BA%8Eoracle%E4%B8%AD%E4%BB%A5Blob%E5%AD%97%E6%AE%B5%E6%9F%A5%E6%89%BE%E9%87%8D%E5%A4%8D%E5%80%BC%E9%97%AE%E9%A2%98/"> ... </a> -->
-            </div>
-        </li>
-        
-    </ul>
+    </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const archiveItems = document.querySelectorAll('.archive-item');
+    const emptyState = document.querySelector('.empty-state');
+    const archiveContent = document.querySelector('.archive-content');
+
+    function updateDisplay() {
+        const selectedCategory = document.querySelector('.category-btn.active').dataset.category;
+        let hasVisibleItems = false;
+
+        // 根据选择的分类显示文章
+        if (selectedCategory === 'all') {
+            // 显示所有文章
+            archiveItems.forEach(item => {
+                item.style.display = 'flex';
+                hasVisibleItems = true;
+            });
+        } else {
+            // 先隐藏所有文章
+            archiveItems.forEach(item => {
+                item.style.display = 'none';
+            });
+
+            // 显示选中分类的文章
+            archiveItems.forEach(item => {
+                const categories = item.dataset.categories.split(' ');
+                if (categories.includes(selectedCategory)) {
+                    item.style.display = 'flex';
+                    hasVisibleItems = true;
+                }
+            });
+        }
+
+        // 更新年份标题的显示
+        const years = document.querySelectorAll('.archive-year');
+        years.forEach(year => {
+            const yearValue = year.dataset.year;
+            const yearPosts = document.querySelectorAll(`.archive-item[data-year="${yearValue}"]`);
+            const hasVisiblePosts = Array.from(yearPosts).some(post => post.style.display === 'flex');
+            
+            // 如果该年份下没有可见的文章，隐藏整个年份区块
+            year.style.display = hasVisiblePosts ? 'block' : 'none';
+        });
+
+        // 显示或隐藏空状态提示
+        if (!hasVisibleItems && selectedCategory !== 'all') {
+            emptyState.style.display = 'block';
+            archiveContent.style.display = 'none';
+        } else {
+            emptyState.style.display = 'none';
+            archiveContent.style.display = 'block';
+        }
+    }
+
+    // 为每个分类按钮添加点击事件
+    categoryBtns.forEach(function(btn) {
+        btn.onclick = function() {
+            // 移除所有按钮的active类
+            categoryBtns.forEach(function(b) {
+                b.classList.remove('active');
+            });
+            // 为当前点击的按钮添加active类
+            this.classList.add('active');
+            // 更新显示
+            updateDisplay();
+        };
+    });
+
+    // 检查URL中是否包含分类参数
+    function checkUrlForCategory() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        if (category) {
+            const decodedCategory = decodeURIComponent(category);
+            const targetBtn = Array.from(categoryBtns).find(btn => btn.dataset.category === decodedCategory);
+            if (targetBtn) {
+                // 移除所有按钮的active类
+                categoryBtns.forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                // 激活目标按钮
+                targetBtn.classList.add('active');
+                // 更新显示
+                updateDisplay();
+            }
+        }
+    }
+
+    // 初始化显示
+    checkUrlForCategory();
+});
+</script>
                 <div class="footer">
     <span>Copyright © <script>document.write(new Date().getFullYear())</script> <a target="_blank" rel="noopener" href="https://github.com/z1gui">z1gui</a></span>
     <span>Licensed under<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"> CC-BY-NC-SA 4.0</a></span>
@@ -148,7 +255,212 @@
 <script>
     hljs.initHighlightingOnLoad();
     hljs.initLineNumbersOnLoad();
+
+    // 处理标题前#号的点击事件
+    function setupHeadingAnchors() {
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        // 生成唯一 id（与 TOC 保持一致）
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+            // 添加点击事件
+            heading.addEventListener('click', function(e) {
+                if (e.target === heading || e.target === heading.querySelector('::before')) {
+                    e.preventDefault();
+                    // 复制链接到剪贴板
+                    const url = window.location.href.split('#')[0] + '#' + uniqueId;
+                    navigator.clipboard.writeText(url).then(() => {
+                        // 显示复制成功提示
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'copy-tooltip';
+                        tooltip.textContent = '链接已复制，分享点击可直接到达该标题处！';
+                        document.body.appendChild(tooltip);
+                        setTimeout(() => {
+                            tooltip.remove();
+                        }, 2000);
+                    });
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${uniqueId}`);
+                }
+            });
+        });
+    }
+
+    // 生成目录
+    function generateTOC() {
+        const tocContent = document.querySelector('.toc-content');
+        if (!tocContent) return;
+
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        
+        if (headings.length === 0) {
+            const postToc = document.querySelector('.post-toc');
+            if (postToc) {
+                postToc.style.display = 'none';
+            }
+            return;
+        }
+
+        // 清空现有内容
+        tocContent.innerHTML = '';
+
+        const tocList = document.createElement('ul');
+        tocList.className = 'toc-list';
+        let currentLevel = 0;
+        let currentList = tocList;
+
+        // 生成唯一 id
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+        });
+
+        headings.forEach((heading, index) => {
+            const level = parseInt(heading.tagName[1]);
+            const id = heading.id; // 使用唯一 id
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.textContent = heading.textContent;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetHeading = document.getElementById(id);
+                if (targetHeading) {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${id}`);
+                }
+            });
+
+            listItem.appendChild(link);
+
+            if (level > currentLevel) {
+                const newList = document.createElement('ul');
+                newList.className = 'toc-sublist';
+                if (currentList.lastChild) {
+                    currentList.lastChild.appendChild(newList);
+                } else {
+                    currentList.appendChild(newList);
+                }
+                currentList = newList;
+            } else if (level < currentLevel) {
+                const diff = currentLevel - level;
+                for (let i = 0; i < diff && currentList.parentNode && currentList.parentNode.parentNode; i++) {
+                    currentList = currentList.parentNode.parentNode;
+                }
+            }
+
+            if (currentList) {
+                currentList.appendChild(listItem);
+            }
+            currentLevel = level;
+        });
+
+        if (tocList) {
+            tocContent.appendChild(tocList);
+        }
+
+        // 初始化时检查 URL hash 并滚动到对应位置
+        if (window.location.hash) {
+            const targetId = window.location.hash.slice(1);
+            const targetHeading = document.getElementById(targetId);
+            if (targetHeading) {
+                setTimeout(() => {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+    }
+
+    // 确保在DOM完全加载后执行
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            generateTOC();
+            setupHeadingAnchors();
+        } catch (error) {
+            console.error('Error initializing TOC:', error);
+        }
+    });
 </script>
+
+<style>
+.heading-anchor {
+    position: absolute;
+    left: 0;
+    color: var(--font-color-3);
+    opacity: 0;
+    transition: opacity 0.3s, color 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.heading-anchor:hover {
+    color: var(--font-color-0);
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor {
+    opacity: 1;
+}
+
+.copy-tooltip {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--font-color-1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+</style>
 
             </div>
         </div>

@@ -21,7 +21,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.lazydaily.cn/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.jpeg">
 <meta property="article:published_time" content="2024-07-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-24T06:41:52.054Z">
+<meta property="article:modified_time" content="2025-04-26T09:31:41.480Z">
 <meta property="article:author" content="z1gui">
 <meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
@@ -90,9 +90,10 @@
                 <!-- <a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a> -->
             <!--  -->
         <!-- </div> -->
-        <div class="post-md">
-            <p>var、const、let 同样都是声明变量的关键词。</p>
-<h1 id="一、var-和-let-区别"><a href="#一、var-和-let-区别" class="headerlink" title="一、var 和 let 区别"></a>一、var 和 let 区别</h1><h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>var 的作用域只能是全局或者是整个函数块，而 let 的作用域既可以是全局变量或者是整个函数，还可以是 if, while, switch 限定的代码块。</p>
+        <div class="post-content-wrapper">
+            <div class="post-md">
+                <p>var、const、let 同样都是声明变量的关键词。</p>
+<h2 id="一、var-和-let-区别"><a href="#一、var-和-let-区别" class="headerlink" title="一、var 和 let 区别"></a>一、var 和 let 区别</h2><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>var 的作用域只能是全局或者是整个函数块，而 let 的作用域既可以是全局变量或者是整个函数，还可以是 if, while, switch 限定的代码块。</p>
 <pre><code class="language-javascript">function varTest() &#123;
 	
 	var a = 1;  
@@ -115,7 +116,7 @@
  letTest();
 </code></pre>
 <p>let 声明的变量，可以比 var 声明的变量的作用有更小的限定范围，更加灵活。</p>
-<h2 id="重复声明"><a href="#重复声明" class="headerlink" title="重复声明"></a>重复声明</h2><p>在同一个作用域中，var 允许重复声明，但是 let 不允许重复声明。</p>
+<h3 id="重复声明"><a href="#重复声明" class="headerlink" title="重复声明"></a>重复声明</h3><p>在同一个作用域中，var 允许重复声明，但是 let 不允许重复声明。</p>
 <pre><code class="language-javascript">var a = 1;
 var a = 2;
 console.log(a) // 2
@@ -141,7 +142,7 @@ switch(index) &#123;
 		break;
 &#125;
 </code></pre>
-<h2 id="绑定全局变量"><a href="#绑定全局变量" class="headerlink" title="绑定全局变量"></a>绑定全局变量</h2><p>var 在全局环境声明变量，会在全局对象里新建一个属性，而 let 在全局环境声明变量，则不会在全局对象里新建一个属性。</p>
+<h3 id="绑定全局变量"><a href="#绑定全局变量" class="headerlink" title="绑定全局变量"></a>绑定全局变量</h3><p>var 在全局环境声明变量，会在全局对象里新建一个属性，而 let 在全局环境声明变量，则不会在全局对象里新建一个属性。</p>
 <pre><code class="language-javascript">var foo = &#39;global&#39;
 let bar = &#39;global&#39;
 console.log(this.foo) // global
@@ -149,8 +150,8 @@ console.log(this.bar) // undefined
 </code></pre>
 <p><img src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.jpeg" alt="[d81d47f1a51cc2ecfe16e8966e7949b8_MD5.jpeg]"></p>
 <p>由上图可知，let 在全局环境声明变量 bar 保存在[[Scopes]][0]: Script 这个变量对象的属性中，而 [[Scopes]][1]: Global 就是我们常说的全局对象。</p>
-<h2 id="变量提升和暂存死区"><a href="#变量提升和暂存死区" class="headerlink" title="变量提升和暂存死区"></a>变量提升和暂存死区</h2><p>了解变量提升，就需要了解到上线文和变量对象。详见<a href="/md/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B.md">详解：javascript 创建执行释放过程</a></p>
-<h3 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h3><p>所有使用 var 声明的变量都会在执行上下文的创建阶段时作为变量对象的属性被创建并初始化，这样才能保证在执行阶段能通过标识符在变量对象里找到对应变量进行赋值操作等。即 var 在声明变量构建变量的时：</p>
+<h3 id="变量提升和暂存死区"><a href="#变量提升和暂存死区" class="headerlink" title="变量提升和暂存死区"></a>变量提升和暂存死区</h3><p>了解变量提升，就需要了解到上线文和变量对象。详见<a href="/md/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B.md">详解：javascript 创建执行释放过程</a></p>
+<h4 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h4><p>所有使用 var 声明的变量都会在执行上下文的创建阶段时作为变量对象的属性被创建并初始化，这样才能保证在执行阶段能通过标识符在变量对象里找到对应变量进行赋值操作等。即 var 在声明变量构建变量的时：</p>
 <ol>
 <li>由名称和 undefined（形参）组成一个变量对象的属性创建（创建并初始化）</li>
 <li>如果变量名称和之前的形参或者函数相同，则变量声明不会干扰已经存在的这类属性。</li>
@@ -160,7 +161,7 @@ var a = 1;
 console.log(a) // 1
 </code></pre>
 <p>为什么 var 变量可以在声明之前使用，因为使用是在执行阶段，而在此之前的创建阶段就已经将声明的变量添加到了变量对象中，所以执行阶段通过标识符可以在变量对象中查找到，也就不会报错。</p>
-<h3 id="暂存死区"><a href="#暂存死区" class="headerlink" title="暂存死区"></a>暂存死区</h3><p>其实 let 也存在与 var 类似的“变量提升”过程，但与 var 不同的是其在执行上下文的创建阶段，只会创建变量而不会被初始化（undefined），并且 ES6 规定了其初始化过程是在执行上下文的执行阶段（即直到它们的定义被执行时才初始化），使用未被初始化的变量将会报错。</p>
+<h4 id="暂存死区"><a href="#暂存死区" class="headerlink" title="暂存死区"></a>暂存死区</h4><p>其实 let 也存在与 var 类似的“变量提升”过程，但与 var 不同的是其在执行上下文的创建阶段，只会创建变量而不会被初始化（undefined），并且 ES6 规定了其初始化过程是在执行上下文的执行阶段（即直到它们的定义被执行时才初始化），使用未被初始化的变量将会报错。</p>
 <blockquote>
 <p>let and const declarations define variables that are scoped to the running execution context’s LexicalEnvironment. The variables are created when their containing Lexical Environment is instantiated but may not be accessed in any way until the variable’s LexicalBinding is evaluated. A variable defined by a LexicalBinding with an Initializer is assigned the value of its Initializer’s AssignmentExpression when the LexicalBinding is evaluated, not when the variable is created. If a LexicalBinding in a let declaration does not have an Initializer the variable is assigned the value <strong>undefined</strong> when the LexicalBinding is evaluated.</p>
 </blockquote>
@@ -176,7 +177,7 @@ var foo = 33;
 		let foo = (foo + 55); // ReferenceError: foo is not defined
 	&#125;
 </code></pre>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ol>
 <li>var 声明的变量在执行上下文创建阶段就会被「创建」和「初始化」，因此对于执行阶段来说，可以在声明之前使用。</li>
 <li>let 声明的变量在执行上下文创建阶段只会被「创建」而不会被「初始化」，因此对于执行阶段来说，如果在其定义执行前使用，相当于使用了未被初始化的变量，会报错。</li>
 </ol>
@@ -202,15 +203,41 @@ console.log(obj) // &#123; value: 2 &#125;obj = &#123;&#125;
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/556482226?utm_id=0">深入理解 JS：var、let、const 的异同</a></p>
 </blockquote>
 
+            </div>
+            <div class="post-toc">
+                <div class="toc-title">目录</div>
+                <div class="toc-content"></div>
+            </div>
         </div>
     
-<!-- tags -->
 
-    <div class="post-meta">
-        分类：
-        
-            <a href="/categories/%E5%89%8D%E7%AB%AF/"> / 前端</a>
-        
+<!-- 只在文章页面显示分类和导航 -->
+
+    <!-- tags -->
+    
+        <div class="post-meta">
+            分类：
+            
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/"> / 前端</a>
+
+            
+        </div>
+    
+
+    <!-- 添加上一篇和下一篇导航 -->
+    <div class="post-navigation">
+        <div class="post-nav-prev">
+            
+                <span class="nav-label">上一篇</span>
+                <a href="/2024/09/01/java/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%BB%A5%E5%8F%8A%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B/" class="nav-title">类加载器以及双亲委派模型</a>
+            
+        </div>
+        <div class="post-nav-next">
+            
+                <span class="nav-label">下一篇</span>
+                <a href="/2024/03/21/java/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%80%BB%E6%98%AF%E4%B9%B1%E7%A0%81%EF%BC%9F%E6%9D%A5%E7%9C%8B%E7%9C%8B%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%90%A7/" class="nav-title">为什么总是乱码？来看看编码格式吧</a>
+            
+        </div>
     </div>
 
 </div>
@@ -230,7 +257,212 @@ console.log(obj) // &#123; value: 2 &#125;obj = &#123;&#125;
 <script>
     hljs.initHighlightingOnLoad();
     hljs.initLineNumbersOnLoad();
+
+    // 处理标题前#号的点击事件
+    function setupHeadingAnchors() {
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        // 生成唯一 id（与 TOC 保持一致）
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+            // 添加点击事件
+            heading.addEventListener('click', function(e) {
+                if (e.target === heading || e.target === heading.querySelector('::before')) {
+                    e.preventDefault();
+                    // 复制链接到剪贴板
+                    const url = window.location.href.split('#')[0] + '#' + uniqueId;
+                    navigator.clipboard.writeText(url).then(() => {
+                        // 显示复制成功提示
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'copy-tooltip';
+                        tooltip.textContent = '链接已复制，分享点击可直接到达该标题处！';
+                        document.body.appendChild(tooltip);
+                        setTimeout(() => {
+                            tooltip.remove();
+                        }, 2000);
+                    });
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${uniqueId}`);
+                }
+            });
+        });
+    }
+
+    // 生成目录
+    function generateTOC() {
+        const tocContent = document.querySelector('.toc-content');
+        if (!tocContent) return;
+
+        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+        
+        if (headings.length === 0) {
+            const postToc = document.querySelector('.post-toc');
+            if (postToc) {
+                postToc.style.display = 'none';
+            }
+            return;
+        }
+
+        // 清空现有内容
+        tocContent.innerHTML = '';
+
+        const tocList = document.createElement('ul');
+        tocList.className = 'toc-list';
+        let currentLevel = 0;
+        let currentList = tocList;
+
+        // 生成唯一 id
+        const idMap = {};
+        headings.forEach((heading) => {
+            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            if (!baseId) baseId = 'heading';
+            let uniqueId = baseId;
+            if (idMap[baseId] !== undefined) {
+                idMap[baseId] += 1;
+                uniqueId = `${baseId}-${idMap[baseId]}`;
+            } else {
+                idMap[baseId] = 0;
+            }
+            heading.id = uniqueId;
+        });
+
+        headings.forEach((heading, index) => {
+            const level = parseInt(heading.tagName[1]);
+            const id = heading.id; // 使用唯一 id
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.textContent = heading.textContent;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetHeading = document.getElementById(id);
+                if (targetHeading) {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // 更新 URL 的 hash
+                    history.pushState(null, null, `#${id}`);
+                }
+            });
+
+            listItem.appendChild(link);
+
+            if (level > currentLevel) {
+                const newList = document.createElement('ul');
+                newList.className = 'toc-sublist';
+                if (currentList.lastChild) {
+                    currentList.lastChild.appendChild(newList);
+                } else {
+                    currentList.appendChild(newList);
+                }
+                currentList = newList;
+            } else if (level < currentLevel) {
+                const diff = currentLevel - level;
+                for (let i = 0; i < diff && currentList.parentNode && currentList.parentNode.parentNode; i++) {
+                    currentList = currentList.parentNode.parentNode;
+                }
+            }
+
+            if (currentList) {
+                currentList.appendChild(listItem);
+            }
+            currentLevel = level;
+        });
+
+        if (tocList) {
+            tocContent.appendChild(tocList);
+        }
+
+        // 初始化时检查 URL hash 并滚动到对应位置
+        if (window.location.hash) {
+            const targetId = window.location.hash.slice(1);
+            const targetHeading = document.getElementById(targetId);
+            if (targetHeading) {
+                setTimeout(() => {
+                    const headerOffset = 100;
+                    const elementPosition = targetHeading.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+    }
+
+    // 确保在DOM完全加载后执行
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            generateTOC();
+            setupHeadingAnchors();
+        } catch (error) {
+            console.error('Error initializing TOC:', error);
+        }
+    });
 </script>
+
+<style>
+.heading-anchor {
+    position: absolute;
+    left: 0;
+    color: var(--font-color-3);
+    opacity: 0;
+    transition: opacity 0.3s, color 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.heading-anchor:hover {
+    color: var(--font-color-0);
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor {
+    opacity: 1;
+}
+
+.copy-tooltip {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--font-color-1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+</style>
 
             </div>
         </div>

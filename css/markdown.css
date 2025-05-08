@@ -16,7 +16,51 @@
 {
     color: var(--font-color-1);
     margin: 12px 0;
+    position: relative;
 }
+
+.post-md h1::before,
+.post-md h2::before,
+.post-md h3::before,
+.post-md h4::before,
+.post-md h5::before,
+.post-md h6::before {
+    content: "#";
+    color: var(--font-color-3);
+    margin-right: 0.5em;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.post-md h2::before {
+    content: "##";
+}
+
+.post-md h3::before {
+    content: "###";
+}
+
+.post-md h4::before {
+    content: "####";
+}
+
+.post-md h5::before {
+    content: "#####";
+}
+
+.post-md h6::before {
+    content: "######";
+}
+
+.post-md h1:hover::before,
+.post-md h2:hover::before,
+.post-md h3:hover::before,
+.post-md h4:hover::before,
+.post-md h5:hover::before,
+.post-md h6:hover::before {
+    color: var(--font-color-0);
+}
+
 .post-md h1
 {
     font-size: 2rem;
