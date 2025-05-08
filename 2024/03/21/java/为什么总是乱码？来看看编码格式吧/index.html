@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
+<!DOCTYPE html><html><head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <meta name="robots" content="index, follow">
   <!-- title -->
   
@@ -46,6 +44,26 @@
   
 <link rel="stylesheet" href="/css/fonts.css">
 
+  
+  <!-- 图片懒加载 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      lazyImages.forEach(img => imageObserver.observe(img));
+    });
+  </script>
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
 </head>
 
@@ -55,7 +73,7 @@
                 
                     <div class="post-header">
     <!-- <a class="logo" href="/">子规入梧桐</a> -->
-    <div class="logo"><a href="/" title="z1gui"><img src="/img/favicon.png" alt="z1gui" aria-label="logo" height="80"></a></div>
+    <div class="logo"><a href="/" title="z1gui"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="z1gui" aria-label="logo" height="80" data-src="/img/favicon.png" loading="lazy"></a></div>
 
         <ul class="nav">
             
@@ -70,7 +88,7 @@
         </ul>
 
 
-    </a>
+    
 </div>
 
                 
@@ -95,10 +113,10 @@
             <div class="post-md">
                 <h2 id="一、-ASCII-码"><a href="#一、-ASCII-码" class="headerlink" title="一、 #ASCII 码"></a>一、 #ASCII 码</h2><p>计算机内所有的信息都是二进制位。一个字节包含 8 个二进制位，可以表示 256 个状态，每个状态表示一个符号。</p>
 <p>ASCII 码一共规定了128个字符的编码，比如空格 SPACE 是32（二进制00100000），大写的字母 A 是65（二进制01000001）。这128个符号（包括32个不能打印出来的控制符号）。ASCII 码只占用了一个字节的后面7位，最前面的一位统一规定为0。</p>
-<p><img src="/img/546b99e807733344235b0b668c3c9e7e_MD5.jpeg" alt="ASCII码"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ASCII码" data-src="/img/546b99e807733344235b0b668c3c9e7e_MD5.jpeg" loading="lazy"></p>
 <h2 id="二、非-ASCII-编码"><a href="#二、非-ASCII-编码" class="headerlink" title="二、非 ASCII 编码"></a>二、非 ASCII 编码</h2><p>英语用128个符号编码就够了，但是用来表示其他语言，128个符号是不够的。比如，在法语中，字母上方有注音符号，它就无法用 ASCII 码表示。于是，一些欧洲国家就决定，利用字节中闲置的最高位编入新的符号。比如，法语中的é的编码为130（二进制10000010）。这样一来，这些欧洲国家使用的编码体系，可以表示最多256个符号。</p>
 <p>所有这些编码方式中，0-127表示的符号是一样的，不一样的只是128-255的这一段，不同的国家相同的 ASCII 码表示的可能是不同的符号。</p>
-<p>至于亚洲国家的文字，使用的符号就更多了，汉字就多达10万左右。一个字节只能表示256种符号，肯定是不够的，就必须使用多个字节表达一个符号。比如，简体中文常见的编码方式是 GB2312 ，使用两个字节表示一个汉字，所以理论上最多可以表示 256 x 256 &#x3D; 65536 个符号。</p>
+<p>至于亚洲国家的文字，使用的符号就更多了，汉字就多达10万左右。一个字节只能表示256种符号，肯定是不够的，就必须使用多个字节表达一个符号。比如，简体中文常见的编码方式是 GB2312 ，使用两个字节表示一个汉字，所以理论上最多可以表示 256 x 256 = 65536 个符号。</p>
 <h2 id="三、-Unicode-字符集"><a href="#三、-Unicode-字符集" class="headerlink" title="三、 #Unicode 字符集"></a>三、 #Unicode 字符集</h2><p>将世界上多有文字都进行编码，就形成了 Unicode。Unicode 的规模可以容纳100多万个符号，每个符号的编码都不一样。比如，U+0639表示阿拉伯字母 Ain，U+0041表示英语的大写字母 A，U+4E25表示汉字严。</p>
 <p>但是，Unicode 只是字符集，它之规定了符号的二进制代码，却不规定编码方式。比如：汉字严的 Unicode 是十六进制数4E25，转换成二进制数足足有15位（100111000100101），也就是说，这个符号的表示至少需要2个字节（16 位二进制数）。如果将 0 补全之后存储，计算机读取的时候，他不清楚到底是（01001110）+（00100101）两个 ASCII 码，还是 （100111000100101）单个 Unicode 值。那么就出现了其他的编码方式。</p>
 <h2 id="四、-UTF-8-编码方式"><a href="#四、-UTF-8-编码方式" class="headerlink" title="四、 #UTF-8 编码方式"></a>四、 #UTF-8 编码方式</h2><p>UTF-8 就是在互联网上使用最广的一种 Unicode 的实现方式。其他实现方式还包括 UTF-16（字符用两个字节或四个字节表示）和 UTF-32（字符用四个字节表示），不过在互联网上基本不用。</p>
@@ -110,7 +128,7 @@
 <li><p>2）对于 n 字节的符号（n &gt; 1）：第一个字节的前 n 位都设为 1，第 n + 1 位设为 0，后面字节的前两位一律设为 10。剩下的没有提及的二进制位，全部为这个符号的 Unicode 码。</p>
 </li>
 </ul>
-<p><img src="/img/c17560b740940d095c678b2769092f11_MD5.jpeg" alt="Unicode编码和UTF-8编码方式"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Unicode编码和UTF-8编码方式" data-src="/img/c17560b740940d095c678b2769092f11_MD5.jpeg" loading="lazy"></p>
 <p><strong>如果一个字节的第一位是0，则这个字节单独就是一个字符；如果第一位是1，则连续有多少个1，就表示当前字符占用多少个字节。</strong></p>
 <p>下面，还是以汉字严为例，演示如何实现 UTF-8 编码。</p>
 <p>严的 Unicode 是4E25（100111000100101），根据上表，可以发现4E25处在第三行的范围内（0000 0800 - 0000 FFFF），因此严的 UTF-8 编码需要三个字节，即格式是1110xxxx 10xxxxxx 10xxxxxx。然后，从严的最后一个二进制位开始，依次从后向前填入格式中的 x，多出的位补0。这样就得到了，严的 UTF-8 编码是11100100 10111000 10100101，转换成十六进制就是 E4B8A5。</p>
@@ -423,5 +441,5 @@ h6:hover .heading-anchor {
 
             </div>
         </div>
-    </body>
-</html>
+    
+</body></html>

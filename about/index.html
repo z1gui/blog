@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
+<!DOCTYPE html><html><head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <meta name="robots" content="index, follow">
   <!-- title -->
   
@@ -44,6 +42,26 @@
   
 <link rel="stylesheet" href="/css/fonts.css">
 
+  
+  <!-- 图片懒加载 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      lazyImages.forEach(img => imageObserver.observe(img));
+    });
+  </script>
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
 </head>
 
@@ -53,7 +71,7 @@
                 
                     <div class="post-header">
     <!-- <a class="logo" href="/">子规入梧桐</a> -->
-    <div class="logo"><a href="/" title="z1gui"><img src="/img/favicon.png" alt="z1gui" aria-label="logo" height="80"></a></div>
+    <div class="logo"><a href="/" title="z1gui"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="z1gui" aria-label="logo" height="80" data-src="/img/favicon.png" loading="lazy"></a></div>
 
         <ul class="nav">
             
@@ -68,14 +86,14 @@
         </ul>
 
 
-    </a>
+    
 </div>
 
                 
                 <div class="post-main">
     
         <div class="post-md">
-            <center><img src="img/icon1.png" alt="logo" style="zoom:70%;border:0px"  /></center>
+            <center><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="logo" style="zoom:70%;border:0px" data-src="img/icon1.png" loading="lazy"></center>
 
 
 
@@ -86,7 +104,7 @@
 <p><strong>子规入梧桐，对杯惊暮钟。挥手笑别过，泪眼影三重。</strong><br>                                                                                                                                         <strong>——《相别》</strong></p>
 </blockquote>
 <p>2014年高中毕业之际所作，之后一直就用 <strong>「子规入梧桐」</strong> 在为自己博客命名。在这里，你也可以叫我<strong>子规</strong>。建立这个网站的原因是我喜欢写作和思考，希望把我的思考和经验分享给需要帮助的人。</p>
-<p>您可以免费阅读本站所有内容，如果本站文章对你有帮助，欢迎留言赞赏！当然，最简单的方式是发送一封感谢信到我的 Email <a href="mailto:&#108;&#101;&#x6f;&#110;&#54;&#108;&#105;&#110;&#x65;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#109;">「leon6line@gmail.com」</a>。</p>
+<p>您可以免费阅读本站所有内容，如果本站文章对你有帮助，欢迎留言赞赏！当然，最简单的方式是发送一封感谢信到我的 Email <a href="mailto:leon6line@gmail.com">「leon6line@gmail.com」</a>。</p>
 <h3 id="功能内容"><a href="#功能内容" class="headerlink" title="功能内容"></a>功能内容</h3><ul>
 <li><input checked="" disabled="" type="checkbox"> Rss 订阅（欢迎订阅！！！）</li>
 <li><input checked="" disabled="" type="checkbox"> 分类、标签功能及搜索跳转</li>
@@ -334,5 +352,5 @@ h6:hover .heading-anchor {
 
             </div>
         </div>
-    </body>
-</html>
+    
+</body></html>

@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
+<!DOCTYPE html><html><head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <meta name="robots" content="index, follow">
   <!-- title -->
   
@@ -49,6 +47,26 @@
   
 <link rel="stylesheet" href="/css/fonts.css">
 
+  
+  <!-- 图片懒加载 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      lazyImages.forEach(img => imageObserver.observe(img));
+    });
+  </script>
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
 </head>
 
@@ -58,7 +76,7 @@
                 
                     <div class="post-header">
     <!-- <a class="logo" href="/">子规入梧桐</a> -->
-    <div class="logo"><a href="/" title="z1gui"><img src="/img/favicon.png" alt="z1gui" aria-label="logo" height="80"></a></div>
+    <div class="logo"><a href="/" title="z1gui"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="z1gui" aria-label="logo" height="80" data-src="/img/favicon.png" loading="lazy"></a></div>
 
         <ul class="nav">
             
@@ -73,7 +91,7 @@
         </ul>
 
 
-    </a>
+    
 </div>
 
                 
@@ -105,22 +123,22 @@ name NVARCHAR2(50) not null,
 jl blob not null
 );
 select * from cs;
-insert into cs  select 1,&#39;Tom&#39;,to_blob(&#39;123412f&#39;) from dual;
-insert into cs  select 2,&#39;King&#39;,to_blob(&#39;123412f&#39;) from dual;
-insert into cs  select 3,&#39;Leo&#39;,to_blob(&#39;124123F21F&#39;) from dual;
+insert into cs  select 1,'Tom',to_blob('123412f') from dual;
+insert into cs  select 2,'King',to_blob('123412f') from dual;
+insert into cs  select 3,'Leo',to_blob('124123F21F') from dual;
 </code></pre>
-<p><img src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.png" alt="库表结构"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="库表结构" data-src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.png" loading="lazy"></p>
 <h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h4 id="1-通过Group-by-方式进行查重（操作失败）"><a href="#1-通过Group-by-方式进行查重（操作失败）" class="headerlink" title="1.通过Group by 方式进行查重（操作失败）"></a>1.通过Group by 方式进行查重（操作失败）</h4><p>遇到这个问题，我熟啊！写 <code>group by</code> 语句就行了呗，然后就写了这样的语句</p>
 <pre><code class="language-sql">select  jl,count(1) from cs group by jl having count(1)&gt;1;
 </code></pre>
-<p>当我美滋滋开始执行的时候，却出现的问题<br><img src="/img/584082192807448bb4db57a334ebb740.png" alt="问题1"><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行 <code>group by</code> 的，那我把这个字段用 <code>to_char()</code> 转换一下试试看</p>
+<p>当我美滋滋开始执行的时候，却出现的问题<br><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题1" data-src="/img/584082192807448bb4db57a334ebb740.png" loading="lazy"><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行 <code>group by</code> 的，那我把这个字段用 <code>to_char()</code> 转换一下试试看</p>
 <pre><code class="language-sql">select jl,count(1) from cs group by to_char(jl) having count(1)&gt;1;
 </code></pre>
-<p><img src="/img/6576c5fe4a184619b7fe4897d6ea30af.png" alt="问题2"><br>显然，<code>group by</code> 也不能后跟 <code>to_char()</code> 函数。那我只能是自己写语句吧。</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题2" data-src="/img/6576c5fe4a184619b7fe4897d6ea30af.png" loading="lazy"><br>显然，<code>group by</code> 也不能后跟 <code>to_char()</code> 函数。那我只能是自己写语句吧。</p>
 <h4 id="2-自己写语句查重"><a href="#2-自己写语句查重" class="headerlink" title="2.自己写语句查重"></a>2.自己写语句查重</h4><p>如果不能用group by 进行查重的话，只能是自己写查重语句，然后就写了如下语句</p>
 <pre><code class="language-sql">select * from cs t1 where exists (select 1 from cs t2 where to_char(t2.jl) = to_char(t1.jl) and t2.id !=t1.id);
 </code></pre>
-<p>需要注意的是blob类型字段是不能直接&#x3D;，需要 <code>to_char()</code> 转换，这个语句就执行成功了。结果如下，问题解决。<br><img src="/img/35a289c650094738966c332480bc7da5.png" alt="结果1"></p>
+<p>需要注意的是blob类型字段是不能直接=，需要 <code>to_char()</code> 转换，这个语句就执行成功了。结果如下，问题解决。<br><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="结果1" data-src="/img/35a289c650094738966c332480bc7da5.png" loading="lazy"></p>
 
             </div>
             <div class="post-toc">
@@ -382,5 +400,5 @@ h6:hover .heading-anchor {
 
             </div>
         </div>
-    </body>
-</html>
+    
+</body></html>

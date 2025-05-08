@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
+<!DOCTYPE html><html><head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <meta name="robots" content="index, follow">
   <!-- title -->
   
@@ -62,6 +60,26 @@
   
 <link rel="stylesheet" href="/css/fonts.css">
 
+  
+  <!-- 图片懒加载 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      lazyImages.forEach(img => imageObserver.observe(img));
+    });
+  </script>
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
 </head>
 
@@ -71,7 +89,7 @@
                 
                     <div class="post-header">
     <!-- <a class="logo" href="/">子规入梧桐</a> -->
-    <div class="logo"><a href="/" title="z1gui"><img src="/img/favicon.png" alt="z1gui" aria-label="logo" height="80"></a></div>
+    <div class="logo"><a href="/" title="z1gui"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="z1gui" aria-label="logo" height="80" data-src="/img/favicon.png" loading="lazy"></a></div>
 
         <ul class="nav">
             
@@ -86,7 +104,7 @@
         </ul>
 
 
-    </a>
+    
 </div>
 
                 
@@ -153,13 +171,13 @@
 <p>这两个概念是 <code>程序级别</code> 的。主要描述是程序请求操作系统 IO 操作之后，如果 IO 资源没有准备好，那么程序如何处理问题：前者等待，后者继续执行（并且使用线程一直轮询，直到有 IO 资源准备好）</p>
 <p><code>同步 IO </code> 和 <code>非同步IO</code></p>
 <p>这两个概念是<code>操作系统级别</code>的。主要描述的是操作系统在收到程序请求 IO 操作后，如果 IO 资源没有准备好，该如何相应程序的问题：前者不响应，后者返回一个标记，当 IO 资源准备好之后，在用事件机制返回给程序。</p>
-<h1 id="一、BIO（Blocking-I-O）"><a href="#一、BIO（Blocking-I-O）" class="headerlink" title="一、BIO（Blocking I&#x2F;O）"></a>一、BIO（Blocking I&#x2F;O）</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>Java BIO：同步并阻塞（传统阻塞性），应用程序中进程在发起 IO 调用后至内核执行 IO 操作返回结果之前，若发起系统调用的线程一直处于等待状态，则此次 IO 操作为阻塞 IO。阻塞 IO 简称 BIO，Blocking IO。</p>
+<h1 id="一、BIO（Blocking-I-O）"><a href="#一、BIO（Blocking-I-O）" class="headerlink" title="一、BIO（Blocking I/O）"></a>一、BIO（Blocking I/O）</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>Java BIO：同步并阻塞（传统阻塞性），应用程序中进程在发起 IO 调用后至内核执行 IO 操作返回结果之前，若发起系统调用的线程一直处于等待状态，则此次 IO 操作为阻塞 IO。阻塞 IO 简称 BIO，Blocking IO。</p>
 <p>以前大多数网络通信方式都是阻塞模式，即：</p>
 <ul>
 <li>客户端向服务器端发送请求后，客户端会一直等待（不会再做其他事情），直到服务器端返回结果或者网络出现问题。</li>
 <li>服务端同样的，当在处理某个客户端 A 发来的请求是，另一个客户端 B 发来的请求会等待，直到服务器端的这个处理线程完成上个处理。</li>
 </ul>
-<p> <img src="/img/acea8af4268c8d552741ccebcb2d34ec_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/acea8af4268c8d552741ccebcb2d34ec_MD5.png" loading="lazy"></p>
 <h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><ol>
 <li>服务器启动一个 ServerSocket。</li>
 <li>客户端启动 Socket 对服务器进行通信，默认情况下服务器端需要对每个客户建立一个线程与之通讯。</li>
@@ -174,9 +192,9 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BIOServer &#123;
+public class BIOServer {
     
-    public static void main(String[] args) throws Exception &#123;
+    public static void main(String[] args) throws Exception {
         //线程池机制
         //思路
         //1. 创建一个线程池
@@ -184,57 +202,57 @@ public class BIOServer &#123;
         ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();
         //创建ServerSocket
         ServerSocket serverSocket = new ServerSocket(6666);
-        System.out.println(&quot;服务器启动了&quot;);
-        while (true) &#123;
-            System.out.println(&quot;线程信息id = &quot; + Thread.currentThread().getId() + &quot;名字 = &quot; + Thread.currentThread().getName());
+        System.out.println("服务器启动了");
+        while (true) {
+            System.out.println("线程信息id = " + Thread.currentThread().getId() + "名字 = " + Thread.currentThread().getName());
             //监听，等待客户端连接
-            System.out.println(&quot;等待连接....&quot;);
+            System.out.println("等待连接....");
             //会阻塞在accept()
             final Socket socket = serverSocket.accept();
-            System.out.println(&quot;连接到一个客户端&quot;);
+            System.out.println("连接到一个客户端");
             //就创建一个线程，与之通讯(单独写一个方法)
-            newCachedThreadPool.execute(new Runnable() &#123;
-                public void run() &#123;//我们重写
+            newCachedThreadPool.execute(new Runnable() {
+                public void run() {//我们重写
                     //可以和客户端通讯
                     handler(socket);
-                &#125;
-            &#125;);
-        &#125; 
-    &#125;
+                }
+            });
+        } 
+    }
     
     //编写一个handler方法，和客户端通讯
-    public static void handler(Socket socket) &#123;
-        try &#123;
-            System.out.println(&quot;线程信息id = &quot; + Thread.currentThread().getId() + &quot;名字 = &quot; + Thread.currentThread().getName());
+    public static void handler(Socket socket) {
+        try {
+            System.out.println("线程信息id = " + Thread.currentThread().getId() + "名字 = " + Thread.currentThread().getName());
             byte[] bytes = new byte[1024];
             //通过socket获取输入流
             InputStream inputStream = socket.getInputStream();
             //循环的读取客户端发送的数据
-            while (true) &#123;
-                System.out.println(&quot;线程信息id = &quot; + Thread.currentThread().getId() + &quot;名字 = &quot; + Thread.currentThread().getName());
-                System.out.println(&quot;read....&quot;);
+            while (true) {
+                System.out.println("线程信息id = " + Thread.currentThread().getId() + "名字 = " + Thread.currentThread().getName());
+                System.out.println("read....");
                 int read = inputStream.read(bytes);
-                if (read != -1) &#123;
+                if (read != -1) {
                     System.out.println(new String(bytes, 0, read));//输出客户端发送的数据
-                &#125; else &#123;
+                } else {
                     break;
-                &#125;
-            &#125;
-        &#125; catch (Exception e) &#123;
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        &#125; finally &#123;
-            System.out.println(&quot;关闭和client的连接&quot;);
-            try &#123;
+        } finally {
+            System.out.println("关闭和client的连接");
+            try {
                 socket.close();
-            &#125; catch (Exception e) &#123;
+            } catch (Exception e) {
                 e.printStackTrace();
-            &#125;
-        &#125;
-    &#125;
-&#125;
+            }
+        }
+    }
+}
 </code></pre>
 <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>传统的 IO 模型，其主要是一个 Server 对接 N 个客户端，在客户端连接之后，为每个客户端分配一个子线程。如图所示：</p>
-<p> <img src="/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.png" loading="lazy"></p>
 <p>从图中可以看出，传统 IO 的特点在于：</p>
 <ul>
 <li>每个客户端连接到达时，服务端会分配一个线程给该客户端，该线程处理包括读取数据，解码，业务计算，编码，以及发送数据整个过程</li>
@@ -251,7 +269,7 @@ public class BIOServer &#123;
 <li>当服务器收到客户端 X 的请求后，（读取到所有的请求数据后）将这个请求送入到一个独立线程进行处理，然后主线程继续接收客户端 Y 的请求。</li>
 <li>客户端侧，也可以用一个子线程和服务器端进行通信。这样客户端主线程的其他工作不受影响，当服务器有响应信息时候再有这个子线程通过 <code>监听模式/观察模式</code>（等其他设计模式）通知主线程。</li>
 </ul>
-<p> <img src="/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.png" loading="lazy"></p>
 <p>但是多线程解决这个问题有局限性：</p>
 <ul>
 <li>操作系统通知accept() 的方式还是单个，即：服务器收到数据报文之后的“业务处理过程”可以多线程，但是报文的接收还是需要一个个来</li>
@@ -263,13 +281,13 @@ public class BIOServer &#123;
 <p>为啥 <code>serverSocket. accept()</code> 会出现阻塞？</p>
 </blockquote>
 <p>是因为 Java 通过 JNI 调用的系统层面的 <code>accept0()</code> 方法，<code>accept0()</code> 规定如果发现套间字从指定的端口来，就会等待。其实就是内部实现是操作系统级别的同步 IO。</p>
-<h1 id="二、NIO（non-Blocking-I-O）"><a href="#二、NIO（non-Blocking-I-O）" class="headerlink" title="二、NIO（non-Blocking I&#x2F;O）"></a>二、NIO（non-Blocking I&#x2F;O）</h1><p>了解 NIO 之前我们先来看看标准 I&#x2F;O（Standard I&#x2F;O）。</p>
-<p>Standard I&#x2F;O 是对字节的读写，在进行 I&#x2F;O 之前，首先创建一个流对象，流对象的读写操作都是按字节，一个字节一个字节的读或者写。而 NIO 把 I&#x2F;O 抽象成块，类似磁盘的读写，每次 I&#x2F;O 操作的单位都是一个块，块被读入内存之后就是一个 <code> byte[]</code>，NIO 一次可以读或者写多个字节。</p>
+<h1 id="二、NIO（non-Blocking-I-O）"><a href="#二、NIO（non-Blocking-I-O）" class="headerlink" title="二、NIO（non-Blocking I/O）"></a>二、NIO（non-Blocking I/O）</h1><p>了解 NIO 之前我们先来看看标准 I/O（Standard I/O）。</p>
+<p>Standard I/O 是对字节的读写，在进行 I/O 之前，首先创建一个流对象，流对象的读写操作都是按字节，一个字节一个字节的读或者写。而 NIO 把 I/O 抽象成块，类似磁盘的读写，每次 I/O 操作的单位都是一个块，块被读入内存之后就是一个 <code> byte[]</code>，NIO 一次可以读或者写多个字节。</p>
 <h2 id="流和块"><a href="#流和块" class="headerlink" title="流和块"></a>流和块</h2><p>IO 和 NIO 最重要的区别就是对数据的打包和传输的方式，IO 是以流的方式处理数据，而 NIO 以块的方式处理数据。</p>
 <p>面向流的 IO 一次性处理一个字节数据：一个输入流产生一个字节数据，一个输出流消费一个字节数据。为流式数据创建过滤器非常容易，链接几个过滤器，以便每个过滤器只负责复杂处理机制的一部分。不利的一面是，面向流的 IO 通常处理非常慢。</p>
-<p>面向块的 I&#x2F;O 一次性处理一个数据块：按块处理数据比按流处理数据要快的多，但是面向块的 I&#x2F;O 确实一些面向流的 I&#x2F;O 所具有的优雅和简单。</p>
-<p>I&#x2F;O 包和 NIO 已经很好的集成了，<code>java.io.*</code> 中已经以 NIO 重新实现了，可以利用一些 NIO 的特性。例如：在 <code>java.io.*</code> 中某些类包含以块的形式读写数据的操作，这使得及时在面向流的系统中，处理数据也会更快。</p>
-<h2 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h2><p>Java NIO：同步非阻塞，服务器实现模式为一个线程处理多个请求（连接），即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮训到连接有 I&#x2F;O 请求就进行处理。</p>
+<p>面向块的 I/O 一次性处理一个数据块：按块处理数据比按流处理数据要快的多，但是面向块的 I/O 确实一些面向流的 I/O 所具有的优雅和简单。</p>
+<p>I/O 包和 NIO 已经很好的集成了，<code>java.io.*</code> 中已经以 NIO 重新实现了，可以利用一些 NIO 的特性。例如：在 <code>java.io.*</code> 中某些类包含以块的形式读写数据的操作，这使得及时在面向流的系统中，处理数据也会更快。</p>
+<h2 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h2><p>Java NIO：同步非阻塞，服务器实现模式为一个线程处理多个请求（连接），即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮训到连接有 I/O 请求就进行处理。</p>
 <p><strong>核心概念：</strong></p>
 <ol>
 <li><strong>三大核心：</strong> Channel（通道）、Buffer（缓冲区）、Selector（选择器）。</li>
@@ -293,16 +311,16 @@ public class BIOServer &#123;
 </ol>
 <h2 id="1-缓冲区（Buffer）"><a href="#1-缓冲区（Buffer）" class="headerlink" title="1. 缓冲区（Buffer）"></a>1. 缓冲区（Buffer）</h2><h3 id="Buffer-类及其子类"><a href="#Buffer-类及其子类" class="headerlink" title="Buffer 类及其子类"></a>Buffer 类及其子类</h3><p><code>ByteBuffer</code> 字节数据；<code>ShortBuffer</code> 字符串数据；<code>CharBuffer</code> 字符数据；<code>IntBuffer</code> 整数；<code>LongBuffer</code> 长整数；<code>DoubleBuffer</code> 小数；<code>FloatBuffer</code> 小数</p>
 <h3 id="Buffer-属性和方法"><a href="#Buffer-属性和方法" class="headerlink" title="Buffer 属性和方法"></a>Buffer 属性和方法</h3><p>Buffer 类提供了 4 个属性来提供数据元素信息：<code>capacity（容量）</code>：缓存区的最大容量，<code>Limit（终点）</code>：缓存区最大可操作位置，<code>Position（位置）</code> ：缓存区当前在操作的位置，<code>Mark（标记）</code>：标记位置</p>
-<pre><code class="language-java">public abstract class Buffer&#123;
+<pre><code class="language-java">public abstract class Buffer{
 	public final int capacity();
 	public final int position();
 	public final Buffer position(int newPosition);
 	public final int limit();
 	public final Buffer limit(int newLimit);
 	
-&#125;
+}
 //其中比较常用的就是ByteBuffer（二进制数据），该类主要有以下方法
-public abstract class ByteBuffer()&#123;
+public abstract class ByteBuffer(){
 	public static ByteBuffer allocateDirect(int capacity);//直接创建缓冲区
 	public static ByteBuffer allocate(int capacity);//设置缓冲区的初始容量
 	public static ByteBuffer wrap(byte[] array);//把一个数组放入到缓冲区使用
@@ -313,21 +331,21 @@ public abstract class ByteBuffer()&#123;
 	public abstract byte get(int index);//从绝对位置获取
 	public abstract ByteBuffer put(byte b);//当前位置上put，put之后，position会+1
 	public abstract ByteBuffer put(int index,byte b);//从绝对位置put	
-&#125;
+}
 </code></pre>
 <p>状态变量的改变过程举例:</p>
-<p>① 新建一个大小为 8 个字节的缓冲区，此时 position 为 0，而 limit &#x3D; capacity &#x3D; 8。capacity 变量不会改变，下面的讨论会忽略它。</p>
-<p> <img src="/img/a8f0d4502adb087892e11866bdac7d57_MD5.png" alt="[]"></p>
+<p>① 新建一个大小为 8 个字节的缓冲区，此时 position 为 0，而 limit = capacity = 8。capacity 变量不会改变，下面的讨论会忽略它。</p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/a8f0d4502adb087892e11866bdac7d57_MD5.png" loading="lazy"></p>
 <p>② 从输入通道中读取 5 个字节数据写入缓冲区中，此时 position 移动设置为 5，limit 保持不变。</p>
-<p> <img src="/img/5ee1af7a6012fd34b62704d5b2867320_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/5ee1af7a6012fd34b62704d5b2867320_MD5.png" loading="lazy"></p>
 <p>③ 在将缓冲区的数据写到输出通道之前，需要先调用 flip() 方法，这个方法将 limit 设置为当前 position，并将 position 设置为 0。</p>
-<p> <img src="/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.png" loading="lazy"></p>
 <p>④ 从缓冲区中取 4 个字节到输出缓冲中，此时 position 设为 4。</p>
-<p> <img src="/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.png" loading="lazy"></p>
 <p>⑤ 最后需要调用 clear() 方法来清空缓冲区，此时 position 和 limit 都被设置为最初位置。</p>
-<p> <img src="/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.png" loading="lazy"></p>
 <h3 id="文件-NIO-实例"><a href="#文件-NIO-实例" class="headerlink" title="文件 NIO 实例"></a>文件 NIO 实例</h3><p>以下展示了使用 NIO 快速复制文件的实例：</p>
-<pre><code class="language-java">public static void fastCopy(String src, String dist) throws IOException &#123;
+<pre><code class="language-java">public static void fastCopy(String src, String dist) throws IOException {
 
     /* 获得源文件的输入字节流 */
     FileInputStream fin = new FileInputStream(src);
@@ -344,15 +362,15 @@ public abstract class ByteBuffer()&#123;
     /* 为缓冲区分配 1024 个字节 */
     ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 
-    while (true) &#123;
+    while (true) {
 
         /* 从输入通道中读取数据到缓冲区中 */
         int r = fcin.read(buffer);
 
         /* read() 返回 -1 表示 EOF */
-        if (r == -1) &#123;
+        if (r == -1) {
             break;
-        &#125;
+        }
 
         /* 切换读写 */
         buffer.flip();
@@ -362,8 +380,8 @@ public abstract class ByteBuffer()&#123;
         
         /* 清空缓冲区 */
         buffer.clear();
-    &#125;
-&#125;
+    }
+}
 </code></pre>
 <h2 id="2-通道（Channel）"><a href="#2-通道（Channel）" class="headerlink" title="2. 通道（Channel）"></a>2. 通道（Channel）</h2><p>通道类似流，但是有如下区别：</p>
 <ul>
@@ -371,7 +389,7 @@ public abstract class ByteBuffer()&#123;
 <li>通道可以实现异步读写数据</li>
 <li>通道可以从缓冲区读数据，也可以写数据到缓冲区</li>
 </ul>
-<h3 id="通道分类"><a href="#通道分类" class="headerlink" title="通道分类"></a>通道分类</h3><p>Channel 在 NIO 中是一个接口 <code>public interface Channle extends Closeable&#123;&#125;</code>。其中，常用的 Channel 类有：</p>
+<h3 id="通道分类"><a href="#通道分类" class="headerlink" title="通道分类"></a>通道分类</h3><p>Channel 在 NIO 中是一个接口 <code>public interface Channle extends Closeable{}</code>。其中，常用的 Channel 类有：</p>
 <ol>
 <li><code>FileChannel</code>：用于文件的数据读写；</li>
 <li><code>DatagramChannel</code>：用于 UDP 的数据读写；</li>
@@ -379,7 +397,7 @@ public abstract class ByteBuffer()&#123;
 <li><code>SocketChannel</code>：TCP Socket 套接字的监听通道，用于 TCP 的数据读写</li>
 <li>其他的通道包括：</li>
 </ol>
-<p> <img src="/img/94530647a3be7da4d2de055fff8bacaf_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/94530647a3be7da4d2de055fff8bacaf_MD5.png" loading="lazy"></p>
 <h3 id="FileChannel-类"><a href="#FileChannel-类" class="headerlink" title="FileChannel 类"></a>FileChannel 类</h3><p>对本地文件进行 IO 操作，常用方法及实例应用：</p>
 <pre><code class="language-java">//从通道读取数据并放到缓冲区内
 public int read(ByteBuffer content);
@@ -396,11 +414,11 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class NIOFileChannel&#123;
-	public static void main(String[] args) throws Exception&#123;
-		String str = &quot;hello,world&quot;;
+public class NIOFileChannel{
+	public static void main(String[] args) throws Exception{
+		String str = "hello,world";
 		//创一个输出流 -&gt; channel
-		FileOutputStream stream = new FileOutputStream(&quot;d:\\file.txt&quot;);
+		FileOutputStream stream = new FileOutputStream("d:\\file.txt");
 		//通过 stream 获取对应的 FileChannel
 		//这个 fileChannel 真实类型是 FileChannelImpl
 		FileChannel fileChannel = stream.getChannel();
@@ -415,9 +433,9 @@ public class NIOFileChannel&#123;
 		//将 byteBuffer 写入到 fileChannel
 		fileChannel.write(byteBuffer);
 		fileOutputStream.close();
-	&#125;
+	}
 
-&#125;
+}
 </code></pre>
 <p>2 . 读取文件数据并展示，使用之前 <code>ByteBuffer</code> 和 <code>FileChannel</code> 类</p>
 <pre><code class="language-java">//读取本地文件
@@ -425,10 +443,10 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class NIOFileChannel&#123;
-	public static void main(String[] args) throws Exception&#123;
+public class NIOFileChannel{
+	public static void main(String[] args) throws Exception{
 		//创一个输出流 -&gt; channel
-		File file = new File(&quot;d:\\file.txt&quot;);
+		File file = new File("d:\\file.txt");
 		FileOutputStream stream = new FileOutputStream(file);
 		//通过 stream 获取对应的 FileChannel
 		//这个 fileChannel 真实类型是 FileChannelImpl
@@ -442,9 +460,9 @@ public class NIOFileChannel&#123;
 		//将 byteBuffer的字节转化成String
 		System.out.println(new String(byteBuffer.array()));
 		fileOutputStream.close();
-	&#125;
+	}
 
-&#125;
+}
 </code></pre>
 <p>3 . 使用一个 <code>Buffer</code> 完成文件的读取、写入</p>
 <pre><code class="language-java">import java.io.FileInputStream;
@@ -452,58 +470,58 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class NIOFileChannel03 &#123;
+public class NIOFileChannel03 {
 
-    public static void main(String[] args) throws Exception &#123;
+    public static void main(String[] args) throws Exception {
 
-        FileInputStream fileInputStream = new FileInputStream(&quot;1.txt&quot;);
+        FileInputStream fileInputStream = new FileInputStream("1.txt");
         FileChannel fileChannel01 = fileInputStream.getChannel();
-        FileOutputStream fileOutputStream = new FileOutputStream(&quot;2.txt&quot;);
+        FileOutputStream fileOutputStream = new FileOutputStream("2.txt");
         FileChannel fileChannel02 = fileOutputStream.getChannel();
 
         ByteBuffer byteBuffer = ByteBuffer.allocate(512);
         
-        while (true) &#123; //循环读取
+        while (true) { //循环读取
 
             //这里有一个重要的操作，一定不要忘了
             /*
-            public final Buffer clear() &#123;
+            public final Buffer clear() {
                 position = 0;
                 limit = capacity;
                 mark = -1;
                 return this;
-            &#125;
+            }
             */
             byteBuffer.clear(); //清空 buffer
             int read = fileChannel01.read(byteBuffer);
-            System.out.println(&quot;read = &quot; + read);
-            if (read == -1) &#123; //表示读完
+            System.out.println("read = " + read);
+            if (read == -1) { //表示读完
                 break;
-            &#125;
+            }
 
             //将 buffer 中的数据写入到 fileChannel02--2.txt
             byteBuffer.flip();
             fileChannel02.write(byteBuffer);
-        &#125;
+        }
 
         //关闭相关的流
         fileInputStream.close();
         fileOutputStream.close();
-    &#125;
-&#125;
+    }
+}
 </code></pre>
 <p>4 . 拷贝文件transferFrom 方法</p>
 <pre><code class="language-java">import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
-public class NIOFileChannel04 &#123;
+public class NIOFileChannel04 {
 
-    public static void main(String[] args) throws Exception &#123;
+    public static void main(String[] args) throws Exception {
 
         //创建相关流
-        FileInputStream fileInputStream = new FileInputStream(&quot;d:\\a.jpg&quot;);
-        FileOutputStream fileOutputStream = new FileOutputStream(&quot;d:\\a2.jpg&quot;);
+        FileInputStream fileInputStream = new FileInputStream("d:\\a.jpg");
+        FileOutputStream fileOutputStream = new FileOutputStream("d:\\a2.jpg");
         
         //获取各个流对应的 FileChannel
         FileChannel sourceCh = fileInputStream.getChannel();
@@ -517,15 +535,15 @@ public class NIOFileChannel04 &#123;
         destCh.close();
         fileInputStream.close();
         fileOutputStream.close();
-    &#125;
-&#125;
+    }
+}
 </code></pre>
 <h3 id="Buffer-和-Channel-注意事项"><a href="#Buffer-和-Channel-注意事项" class="headerlink" title="Buffer 和 Channel 注意事项"></a>Buffer 和 Channel 注意事项</h3><p><strong>1. ByteBuffer 支持类型化的 put 和 get，put 放什么，get 取出什么，不然出现 BufferUnderflowException 异常</strong></p>
 <pre><code class="language-java">import java.nio.ByteBuffer;
 
-public class NIOByteBufferPutGet &#123;
+public class NIOByteBufferPutGet {
 
-    public static void main(String[] args) &#123;
+    public static void main(String[] args) {
         
         //创建一个 Buffer
         ByteBuffer buffer = ByteBuffer.allocate(64);
@@ -533,7 +551,7 @@ public class NIOByteBufferPutGet &#123;
         //类型化方式放入数据
         buffer.putInt(100);
         buffer.putLong(9);
-        buffer.putChar(&#39;尚&#39;);
+        buffer.putChar('尚');
         buffer.putShort((short) 4);
 
         //取出
@@ -545,23 +563,23 @@ public class NIOByteBufferPutGet &#123;
         System.out.println(buffer.getLong());
         System.out.println(buffer.getChar());
         System.out.println(buffer.getShort());
-    &#125;
-&#125;
+    }
+}
 </code></pre>
 <p><strong>2. 普通 Buffer 转成只读 Buffer</strong></p>
 <pre><code class="language-java">
 import java.nio.ByteBuffer;
 
-public class ReadOnlyBuffer &#123;
+public class ReadOnlyBuffer {
 
-    public static void main(String[] args) &#123;
+    public static void main(String[] args) {
 
         //创建一个 buffer
         ByteBuffer buffer = ByteBuffer.allocate(64);
 
-        for (int i = 0; i &lt; 64; i++) &#123;
+        for (int i = 0; i &lt; 64; i++) {
             buffer.put((byte) i);
-        &#125;
+        }
 
         //读取
         buffer.flip();
@@ -571,13 +589,13 @@ public class ReadOnlyBuffer &#123;
         System.out.println(readOnlyBuffer.getClass());
 
         //读取
-        while (readOnlyBuffer.hasRemaining()) &#123;
+        while (readOnlyBuffer.hasRemaining()) {
             System.out.println(readOnlyBuffer.get());
-        &#125;
+        }
 
         readOnlyBuffer.put((byte) 100); //ReadOnlyBufferException
-    &#125;
-&#125;
+    }
+}
 </code></pre>
 <p><strong>3. NIO 中 MappedByteBuffer，可以让文件直接在堆外内存修改</strong></p>
 <pre><code class="language-java">
@@ -588,11 +606,11 @@ import java.nio.channels.FileChannel;
 /**
  * 说明 1.MappedByteBuffer 可让文件直接在内存（堆外内存）修改,操作系统不需要拷贝一次
  */
-public class MappedByteBufferTest &#123;
+public class MappedByteBufferTest {
 
-    public static void main(String[] args) throws Exception &#123;
+    public static void main(String[] args) throws Exception {
 
-        RandomAccessFile randomAccessFile = new RandomAccessFile(&quot;1.txt&quot;, &quot;rw&quot;);
+        RandomAccessFile randomAccessFile = new RandomAccessFile("1.txt", "rw");
         //获取对应的通道
         FileChannel channel = randomAccessFile.getChannel();
 
@@ -605,14 +623,14 @@ public class MappedByteBufferTest &#123;
          */
         MappedByteBuffer mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 5);
 
-        mappedByteBuffer.put(0, (byte) &#39;H&#39;);
-        mappedByteBuffer.put(3, (byte) &#39;9&#39;);
-        mappedByteBuffer.put(5, (byte) &#39;Y&#39;);//IndexOutOfBoundsException
+        mappedByteBuffer.put(0, (byte) 'H');
+        mappedByteBuffer.put(3, (byte) '9');
+        mappedByteBuffer.put(5, (byte) 'Y');//IndexOutOfBoundsException
 
         randomAccessFile.close();
-        System.out.println(&quot;修改成功~~&quot;);
-    &#125;
-&#125;
+        System.out.println("修改成功~~");
+    }
+}
 </code></pre>
 <ol start="4">
 <li><strong>NIO 还支持通过多个 Buffer（即 Buffer数组）完成读写操作，即 Scattering 和 Gathering</strong></li>
@@ -627,9 +645,9 @@ import java.util.Arrays;
  * Scattering：将数据写入到 buffer 时，可以采用 buffer 数组，依次写入 [分散]
  * Gathering：从 buffer 读取数据时，可以采用 buffer 数组，依次读
  */
-public class ScatteringAndGatheringTest &#123;
+public class ScatteringAndGatheringTest {
 
-    public static void main(String[] args) throws Exception &#123;
+    public static void main(String[] args) throws Exception {
         
         //使用 ServerSocketChannel 和 SocketChannel 网络
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
@@ -649,40 +667,40 @@ public class ScatteringAndGatheringTest &#123;
         int messageLength = 8; //假定从客户端接收 8 个字节
 
         //循环的读取
-        while (true) &#123;
+        while (true) {
             int byteRead = 0;
 
-            while (byteRead &lt; messageLength) &#123;
+            while (byteRead &lt; messageLength) {
                 long l = socketChannel.read(byteBuffers);
                 byteRead += l; //累计读取的字节数
-                System.out.println(&quot;byteRead = &quot; + byteRead);
+                System.out.println("byteRead = " + byteRead);
                 //使用流打印,看看当前的这个 buffer 的 position 和 limit
-                Arrays.asList(byteBuffers).stream().map(buffer -&gt; &quot;position = &quot; + buffer.position() + &quot;, limit = &quot; + buffer.limit()).forEach(System.out::println);
-            &#125;
+                Arrays.asList(byteBuffers).stream().map(buffer -&gt; "position = " + buffer.position() + ", limit = " + buffer.limit()).forEach(System.out::println);
+            }
 
             //将所有的 buffer 进行 flip
             Arrays.asList(byteBuffers).forEach(buffer -&gt; buffer.flip());
             //将数据读出显示到客户端
             long byteWirte = 0;
-            while (byteWirte &lt; messageLength) &#123;
+            while (byteWirte &lt; messageLength) {
                 long l = socketChannel.write(byteBuffers);//
                 byteWirte += l;
-            &#125;
+            }
             
             //将所有的buffer进行clear
-            Arrays.asList(byteBuffers).forEach(buffer -&gt; &#123;
+            Arrays.asList(byteBuffers).forEach(buffer -&gt; {
                 buffer.clear();
-            &#125;);
+            });
             
-            System.out.println(&quot;byteRead = &quot; + byteRead + &quot;, byteWrite = &quot; + byteWirte + &quot;, messagelength = &quot; + messageLength);
-        &#125;
-    &#125;
-&#125;
+            System.out.println("byteRead = " + byteRead + ", byteWrite = " + byteWirte + ", messagelength = " + messageLength);
+        }
+    }
+}
 </code></pre>
 <h2 id="3-Selector（选择器）"><a href="#3-Selector（选择器）" class="headerlink" title="3. Selector（选择器）"></a>3. Selector（选择器）</h2><h3 id="基本概念-2"><a href="#基本概念-2" class="headerlink" title="基本概念"></a>基本概念</h3><p>NIO 常常被叫做非阻塞 IO，主要是因为 NIO 在网络通信中的非阻塞特性被广泛使用。NIO 实现了 IO 多路复用中的 Reator 模型，一个线程 Thread 使用一个选择器 Selector 通过轮询的方式去监听多个 Channel 上的事件，从而让一个线程能够处理多个事件。</p>
 <p>通过配置监听的通道 Channel 为非阻塞，那么当 Channel 上的 IO 事件还未到达时，就不会进入到阻塞状态一直等待，而是鸡血轮询其他 Channel，找到 IO 事件已经到达的 Channel 执行。</p>
 <p>以为创建和切换线程的开销很大，因此使用一个线程处理多个事件显然比一个线程处理一个事件具有更好的性能。</p>
-<p> <img src="/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.png" loading="lazy"></p>
 <ol>
 <li>Java 中的 NIO 可以用一个线程，处理多个客户端连接，就会使用到 Selector（选择器）</li>
 <li>多个 Channel 以事件的方式注册到 Selector</li>
@@ -690,10 +708,10 @@ public class ScatteringAndGatheringTest &#123;
 <li>避免了<code>多线程之间的上下文切换导致的开销</code></li>
 </ol>
 <pre><code class="language-java">//Selector 类是一个抽象类，常用方法和说明如下：
-public abstract class Selector implements Closeable&#123;
+public abstract class Selector implements Closeable{
 	public static Selector open();//监控所有注册的通道，当其中有IO操作可以进行时，将SelectionKey加入到内部的集合中并返回，参数用来设置超时时间
 	public Set&lt;SelectionKey&gt; selectedKey();//从内部集合中得到所有的SelectionKey	
-&#125;
+}
 </code></pre>
 <h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
 <li><strong>创建选择器</strong></li>
@@ -729,94 +747,94 @@ public static final int OP_ACCEPT = 1 &lt;&lt; 4;
 </ol>
 <pre><code class="language-java">Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
 Iterator&lt;SelectionKey&gt; keyIterator = keys.iterator();
-while(keyIterator.hasNext())&#123;
+while(keyIterator.hasNext()){
 	SelectionKey keyu = keyIterator.next();
-	if(key.isAcceptabnle())&#123;
+	if(key.isAcceptabnle()){
 	// ...
-	&#125;else if(key.isReadable())&#123;
+	}else if(key.isReadable()){
 	// ...
-	&#125;
+	}
 	keyIterator.remove();
-&#125;
+}
 </code></pre>
 <ol start="5">
 <li><strong>时间循环</strong></li>
 </ol>
 <p>因为一次 select() 调动不能处理完所有的事件，并且服务器端有可能需要一直监听事件，因此服务器端处理时间的代码一般会放在一个死循环内。</p>
-<pre><code class="language-java">while (true) &#123; 
+<pre><code class="language-java">while (true) { 
 	int num = selector.select(); 
 	Set&lt;SelectionKey&gt; keys = selector.selectedKeys(); 
 	Iterator&lt;SelectionKey&gt; keyIterator = keys.iterator(); 
-	while (keyIterator.hasNext()) &#123; 
+	while (keyIterator.hasNext()) { 
 		SelectionKey key = keyIterator.next(); 
-		if (key.isAcceptable()) &#123; 
+		if (key.isAcceptable()) { 
 		  // ... 
-		&#125; else if (key.isReadable()) &#123;
+		} else if (key.isReadable()) {
 		  // ... 
-		&#125; 
+		} 
 		keyIterator.remove(); 
-	&#125;
-&#125;
+	}
+}
 </code></pre>
-<h3 id="套接字-NIO-实例"><a href="#套接字-NIO-实例" class="headerlink" title="套接字 NIO 实例"></a>套接字 NIO 实例</h3><pre><code class="language-java">public class NIOServer &#123;
- 	public static void main(String[] args) throws IOException &#123;
+<h3 id="套接字-NIO-实例"><a href="#套接字-NIO-实例" class="headerlink" title="套接字 NIO 实例"></a>套接字 NIO 实例</h3><pre><code class="language-java">public class NIOServer {
+ 	public static void main(String[] args) throws IOException {
 		Selector selector = Selector.open();
 		ServerSocketChannel ssChannel = ServerSocketChannel.open();
 		ssChannel.configureBlocking(false);
 		ssChannel.register(selector, SelectionKey.OP_ACCEPT);
 		ServerSocket serverSocket = ssChannel.socket();
-		InetSocketAddress address = new InetSocketAddress(&quot;127.0.0.1&quot;, 8888);
+		InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8888);
 		serverSocket.bind(address);
-		while(true)&#123;
+		while(true){
 			selector.select();
 			Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
 			Iterator&lt;SelectionKey&gt; keyIterator = keys.iterator();
-			while (keyIterator.hasNext())&#123;
+			while (keyIterator.hasNext()){
 				SelectionKey key = keyIterator.next();
-				if (key.isAcceptable()) &#123;
+				if (key.isAcceptable()) {
 					ServerSocketChannel ssChannel1 = (ServerSocketChannel) key.channel();// 服务器会为每个新连接创建一个 SocketChannel SocketChannel sChannel = ssChannel1.accept();
 					sChannel.configureBlocking(false);// 这个新连接主要用于从客户端读取数据 
 					sChannel.register(selector, SelectionKey.OP_READ);
-				&#125;else if (key.isReadable()) &#123;
+				}else if (key.isReadable()) {
 					SocketChannel sChannel = (SocketChannel) key.channel();
 					System.out.println(readDataFromSocketChannel(sChannel));
 					sChannel.close();
-				&#125;
+				}
  			keyIterator.remove();
-			&#125;
-		&#125;
- 	&#125;
-	private static String readDataFromSocketChannel(SocketChannel sChannel) throws IOException &#123;
+			}
+		}
+ 	}
+	private static String readDataFromSocketChannel(SocketChannel sChannel) throws IOException {
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 		StringBuilder data = new StringBuilder();
-		while(true) &#123;
+		while(true) {
 			buffer.clear();
 			int n = sChannel.read(buffer);
-			if (n == -1) &#123;
+			if (n == -1) {
 				break;
-			&#125;
+			}
 			buffer.flip();
 			int limit = buffer.limit();
 			char[] dst = new char[limit];
-			for (int i = 0;i &lt; limit;i++) &#123;
+			for (int i = 0;i &lt; limit;i++) {
 				dst[i] = (char) buffer.get(i);
-			&#125;
+			}
 			data.append(dst);
 			buffer.clear();
- 		&#125;
+ 		}
  		return data.toString();
- 	&#125;
- &#125;
+ 	}
+ }
 </code></pre>
-<pre><code class="language-java">public class NIOClient &#123;
-	public static void main(String[] args) throws IOException&#123;
-		Socket socket = new Socket(&quot;127.0.0.1&quot;，8888);
+<pre><code class="language-java">public class NIOClient {
+	public static void main(String[] args) throws IOException{
+		Socket socket = new Socket("127.0.0.1"，8888);
 		OutputStream out = socket.getOutputStream();
-		String s = &quot;hello world&quot;;
+		String s = "hello world";
 		out.write(s.getBytes());
 		out.close();
-	&#125;
-&#125;
+	}
+}
 </code></pre>
 <h2 id="典型的多路复用-IO-实现"><a href="#典型的多路复用-IO-实现" class="headerlink" title="典型的多路复用 IO 实现"></a>典型的多路复用 IO 实现</h2><p>目前流程的多路复用 IO 实现主要宝库了四种：select、poll、epoll、kqueue。以下是其特性及区别：</p>
 <table>
@@ -833,7 +851,7 @@ while(keyIterator.hasNext())&#123;
 <td align="center">select</td>
 <td align="center">较高</td>
 <td align="center">Reactor</td>
-<td align="center">Win&#x2F;Linux</td>
+<td align="center">Win/Linux</td>
 <td align="center">支持，Reactor 模式（反应器设计模式）。Linux kernels 2.4 内核版本之前，默认用的是 select ；目前 windows 下对吧同步 IO 的支持，都是 select 模型</td>
 </tr>
 <tr>
@@ -846,7 +864,7 @@ while(keyIterator.hasNext())&#123;
 <tr>
 <td align="center">epoll</td>
 <td align="center">高</td>
-<td align="center">Reactor&#x2F;Proactor</td>
+<td align="center">Reactor/Proactor</td>
 <td align="center">Linux</td>
 <td align="center">Linux kernels 2.6 内核版本之后使用 epoll 进行支持</td>
 </tr>
@@ -858,7 +876,7 @@ while(keyIterator.hasNext())&#123;
 <td align="center">目前 Java 版本不支持</td>
 </tr>
 </tbody></table>
-<h3 id="1-Reactor事件驱动模型"><a href="#1-Reactor事件驱动模型" class="headerlink" title="1. Reactor事件驱动模型"></a>1. Reactor事件驱动模型</h3><p> <img src="/img/10d0080498aba2649f1c04067965b579_MD5.png" alt="[]"></p>
+<h3 id="1-Reactor事件驱动模型"><a href="#1-Reactor事件驱动模型" class="headerlink" title="1. Reactor事件驱动模型"></a>1. Reactor事件驱动模型</h3><p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/10d0080498aba2649f1c04067965b579_MD5.png" loading="lazy"></p>
 <p>从图上可知：一个完整的 Reactor 事件驱动模型是有四个部分组成：客户端 Client，Reactor，Acceptor 和时间处理 Handler。其中 Acceptor 会不间断的接收客户端的连接请求，然后通过 Reactor 分发到不同 Handler 进行处理。改进后的 Reactor 有如下优点：</p>
 <ul>
 <li>虽然同是由一个线程接收连接请求进行网络读写，但是 Reactor 将客户端连接，网络读写，业务处理三大部分拆分，从而极大提高工作效率。</li>
@@ -870,7 +888,7 @@ while(keyIterator.hasNext())&#123;
 <li>大量的业务处理</li>
 </ul>
 <p>基于上述瓶颈，可以将业务处理和 IO 读写分离出来：</p>
-<p> <img src="/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.png" loading="lazy"></p>
 <p>如图可以看出，相对基础 Reactor 模型，该模型有如下特点：</p>
 <ul>
 <li>使用一个线程进行客户端连接和网络读写</li>
@@ -881,146 +899,146 @@ while(keyIterator.hasNext())&#123;
 <li>网络读写是一个比较消耗 CPU 的操作，在高并发的情况下，将有大量的客户端需要网络读写，此时一个线程处理不了这么多的请求。</li>
 </ul>
 <h3 id="3-Reactor——并发读写"><a href="#3-Reactor——并发读写" class="headerlink" title="3. Reactor——并发读写"></a>3. Reactor——并发读写</h3><p>由于高并发的网络读写是系统一个瓶颈，所以针对这种情况，改进了模型，如图所示：</p>
-<p> <img src="/img/870a39b7312d1d18324d3aefa613ab37_MD5.png" alt="[]"><br>由图可以看出，在原有 Reactor 模型上，同时将 Reactor 拆分成 mainReactor 和 subReactor 。其中 mainReactor 主要负责客户端的请求连接，subReactor 通过一个线程池进行支撑，主要负责网络读写，因为线程池的原因，可以进行多线程并发读写，大大提升了网络读写的效率。业务处理也是通过线程池进行。通过这种方式，可以进行百万级别的连接。</p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/870a39b7312d1d18324d3aefa613ab37_MD5.png" loading="lazy"><br>由图可以看出，在原有 Reactor 模型上，同时将 Reactor 拆分成 mainReactor 和 subReactor 。其中 mainReactor 主要负责客户端的请求连接，subReactor 通过一个线程池进行支撑，主要负责网络读写，因为线程池的原因，可以进行多线程并发读写，大大提升了网络读写的效率。业务处理也是通过线程池进行。通过这种方式，可以进行百万级别的连接。</p>
 <h3 id="4-Reactor-模型示例"><a href="#4-Reactor-模型示例" class="headerlink" title="4. Reactor 模型示例"></a>4. Reactor 模型示例</h3><p>对于上述的 Reactor 模型，主要有三个核心需要实现：Acceptor，Reactor 和 Handler。具体实现代码如下：</p>
-<pre><code class="language-java">public class Reactor implements Runnable&#123;
+<pre><code class="language-java">public class Reactor implements Runnable{
 	private final Selector selector;
 	private final ServerSocketChannel serverSocket;
 
-	public Reactor(int port) throws IOException&#123;
+	public Reactor(int port) throws IOException{
 		serverSocket = ServerSocketChannel.open();//创建服务端的ServerSocketChannel
 		serverSocket.configureBlocking(false);//设置为非阻塞模式
 		selector = Selector.open();//创建一个selector选择器
 		SelectionKey key = serverSocket.register(selector,SelectionKey.OP_ACCEPT);
 		serverSocket.bind(new InetSocketAddress(port));//绑定服务端端口
 		key.attach(new Acceptor(serverSocket));//为服务端Channel绑定一个Acceptor
-	&#125;
+	}
 	@Override
-	public void run()&#123;
-		try&#123;
-			while(！Thread.interrupted())&#123;
+	public void run(){
+		try{
+			while(！Thread.interrupted()){
 				selector.select();//服务端使用一个线程不停接收连接请求
 				Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
 				Iterator&lt;SelectionKey&gt; itetrator = keys.iterator();
-				while(iterator.hasNext())&#123;
+				while(iterator.hasNext()){
 					dispatch(iterator.next());
 					iterator.remove();
-					&#125;
+					}
 				selector.selectNow();
-				&#125;
-		&#125;catch(IOException e)&#123;
+				}
+		}catch(IOException e){
 			e.printStackTrace();
-		&#125;
-	&#125;
+		}
+	}
 
-	private void dispatch(SelectionKey key) throws IOException&#123;
+	private void dispatch(SelectionKey key) throws IOException{
 		//这里的attachment也即前面的为服务端Channel绑定的Acceptor，调用其run()方法进行分发
 		Runnable attachment = (Runable)key.attachment();
 		attachment.run();
-	&#125;
+	}
 
-&#125;
+}
 </code></pre>
 <p>这里Reactor首先开启了一个ServerSocketChannel，然后将其绑定到指定的端口，并且注册到了一个多路复用器上。接着在一个线程中，其会在多路复用器上等待客户端连接。当有客户端连接到达后，Reactor就会将其派发给一个Acceptor，由该Acceptor专门进行客户端连接的获取。下面我们继续看一下Acceptor的代码：</p>
-<pre><code class="language-java">public class Acceptor implements Runnable&#123;
+<pre><code class="language-java">public class Acceptor implements Runnable{
 	private final ExecuteorService executor = Exxcutors.newFixedThreadPool(20);
 
 	private final ServerSocketChannel serverSocket;
 
-	public Acceptor(ServerSocketChannel serverSocket)&#123;
+	public Acceptor(ServerSocketChannel serverSocket){
 		this.serverSocket = serverSocket;
-		&#125;
+		}
 
 	@Override
-	public void run()&#123;
-		try&#123;
+	public void run(){
+		try{
 			SocketChannel channel = serverSocket.accept();
-			if(null != channel)&#123;
+			if(null != channel){
 				executor.execute(new Handler(channel));
-			&#125;
-		&#125;catch(IOException e)&#123;
+			}
+		}catch(IOException e){
 			e.printStackTrace();
-		&#125;
-	&#125;
-&#125;
+		}
+	}
+}
 </code></pre>
 <p>这里可以看到，在Acceptor获取到客户端连接之后，其就将其交由线程池进行网络读写了，而这里的主线程只是不断监听客户端连接事件。下面我们看看Handler的具体逻辑：</p>
-<pre><code class="language-java">public class Handler implements Runnable&#123;
+<pre><code class="language-java">public class Handler implements Runnable{
 	private volatile static Selector selector;
 	private final SocketChannel channel;
 	private SelectionKey key;
 	private volatile ByteBuffer input = ByteBuffer.allocate(1024);
 	private volatile ByteBuffer output = ByteBuffer.allocate(1024);
 
-	public Handle(SocketChannel channel) throws IOException&#123;
+	public Handle(SocketChannel channel) throws IOException{
 		this.channel = channel;
 		channel.configureBlocking(false);//设置客户端连接为非阻塞模式
 		selector = Selector.open();//为客户端创建一个选择器
 		key = channel.register(selector,SelectionKey.OP_READ);//注册客户端Channel的读事件	
-	&#125;
+	}
 
 	@Override
-	public void run()&#123;
-		try&#123;
-			while(selector.isOpen() &amp;&amp; channel.isOpen())&#123;
+	public void run(){
+		try{
+			while(selector.isOpen() &amp;&amp; channel.isOpen()){
 			 	Set&lt;SelectionKey&gt; keys = select();//等待客户端事件发生
 			 	Iterator&lt;SelectionKey&gt; iterator = keys.iterator();
-				while(iterator.hasNext())&#123;
+				while(iterator.hasNext()){
 					SelectionKey key = iterator.next();
 					iterator.remove();
 
 					//如果当前是读事件，则读取数据
-					if(key.isReadable())&#123;
+					if(key.isReadable()){
 						read(key);
-					&#125;else if(key.isWritable())&#123;
+					}else if(key.isWritable()){
 						write(key)
-					&#125;
-				&#125;
-			&#125;	
-		&#125;catch(IOException e)&#123;
+					}
+				}
+			}	
+		}catch(IOException e){
 		e.printStackTrace();
-		&#125;
-	&#125;
+		}
+	}
 	//读取客户端发送的数据
 
-	private void read(SelectionKey key) throws IOException&#123;
+	private void read(SelectionKey key) throws IOException{
 		channel.read(input);
-		if(input.position() == 0)&#123;
+		if(input.position() == 0){
 			return ;
-		&#125;
+		}
 		input.flip();
 		process();//对读数据进行业务处理
 		input.clear();
 		key.interstOps(SelectionKey.OP_WRITE);//读取完成后监听写入事件
-	&#125;
-	private void write(SelectionKey key) throws IOException&#123;
+	}
+	private void write(SelectionKey key) throws IOException{
 		output.flip();
-		if(channel.isOpen())&#123;
+		if(channel.isOpen()){
 			channel.write(output);//当有写入事件时，将业务处理的结果写入到客户端Channel中
 			key.channel();
 			channel.close();
 			output.clear();
-		&#125;
-	&#125;
+		}
+	}
 	//进行业务处理，并且获取处理结果。本质上，基于Reactor模型，如果这里成为处理瓶颈，则将处理过程放入到线程池里面即可，并且使用一个Future获取处理结果，最后写入到客户端Channel中
-	private void process()&#123;
+	private void process(){
 		byte[] bytes = new byte[input.remaining()];
 		input.get(bytes);
 		String message = new String(bytes,CharsetUtil.UTF_8);
-		System.out.println(&quot;receive message from client: \n&quot; +message);
-		output.put(&quot;hello client&quot;.getBytes());
-	&#125;
-&#125;
+		System.out.println("receive message from client: \n" +message);
+		output.put("hello client".getBytes());
+	}
+}
 </code></pre>
 <p>在 Handler 中，主要进行的就是每个客户端 Channel 创建一个 Selector，并且监听该 Channel 的网络读写事件。当有事件到达时，进行数据的读写，而业务操作交友具体的业务线程池处理。</p>
-<h1 id="三、AIO（-Asynchronous-I-O）"><a href="#三、AIO（-Asynchronous-I-O）" class="headerlink" title="三、AIO（ Asynchronous I&#x2F;O）"></a>三、AIO（ Asynchronous I&#x2F;O）</h1><ol>
-<li>JDK7 引入了 Asynchronous I&#x2F;O，即 AIO。在进行 I&#x2F;O 编程中，常用到两种模式：Reactor 和 Proactor。Java 的 NIO 就是 Reactor，当有事件触发时，服务器端得到通知，进行相应的处理</li>
+<h1 id="三、AIO（-Asynchronous-I-O）"><a href="#三、AIO（-Asynchronous-I-O）" class="headerlink" title="三、AIO（ Asynchronous I/O）"></a>三、AIO（ Asynchronous I/O）</h1><ol>
+<li>JDK7 引入了 Asynchronous I/O，即 AIO。在进行 I/O 编程中，常用到两种模式：Reactor 和 Proactor。Java 的 NIO 就是 Reactor，当有事件触发时，服务器端得到通知，进行相应的处理</li>
 <li>AIO 即 NIO2.0，叫做异步不阻塞的 IO。AIO 引入异步通道的概念，采用了 Proactor 模式，简化了程序编写，有效的请求才启动线程，它的特点是先由操作系统完成后才通知服务端程序启动线程去处理，一般适用于连接数较多且连接时间较长的应用</li>
 </ol>
 <h3 id="异步-IO"><a href="#异步-IO" class="headerlink" title="异步 IO"></a>异步 IO</h3><p>之前主要介绍了阻塞式同步 IO，非阻塞式同步 IO，多路复用 IO 这三种 IO 模型。而异步 IO 是采用“订阅-通知”模式，即应用程序向操作系统注册 IO 监听，然后继续做自己的事情。当操作系统发生 IO 事件，并且准备好数据后，主动通知应用程序，触发相应的函数：</p>
-<p> <img src="/img/3a01157436842562f7f21f8b4c4549d4_MD5.png" alt="[]"></p>
-<p>和同步 IO 一样，异步 IO 也是由操作系统进行支持的。Windows 系统提供了一种异步 IO 技术：IOCP（I&#x2F;O Completion Port，I&#x2F;O 完成端口）；<br>Linux 下由于没有这种异步 IO 技术，所以使用的是 epoll（上文介绍过的一种多路复用 IO 技术的实现）对异步 IO 进行模拟。</p>
-<h3 id="Java-AIO-框架解析"><a href="#Java-AIO-框架解析" class="headerlink" title="Java AIO 框架解析"></a>Java AIO 框架解析</h3><p> <img src="/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.png" alt="[]"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/3a01157436842562f7f21f8b4c4549d4_MD5.png" loading="lazy"></p>
+<p>和同步 IO 一样，异步 IO 也是由操作系统进行支持的。Windows 系统提供了一种异步 IO 技术：IOCP（I/O Completion Port，I/O 完成端口）；<br>Linux 下由于没有这种异步 IO 技术，所以使用的是 epoll（上文介绍过的一种多路复用 IO 技术的实现）对异步 IO 进行模拟。</p>
+<h3 id="Java-AIO-框架解析"><a href="#Java-AIO-框架解析" class="headerlink" title="Java AIO 框架解析"></a>Java AIO 框架解析</h3><p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[]" data-src="/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.png" loading="lazy"></p>
 <p>以上结构主要是说明 JAVA AIO 中类设计和操作系统的相关性。</p>
 <blockquote>
 <p>上述所有代码仓库地址：<a target="_blank" rel="noopener" href="https://github.com/z1gui/netty_io">https://github.com/z1gui/netty_io</a></p>
@@ -1294,5 +1312,5 @@ h6:hover .heading-anchor {
 
             </div>
         </div>
-    </body>
-</html>
+    
+</body></html>
