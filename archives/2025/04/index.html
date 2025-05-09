@@ -81,18 +81,18 @@
 
                 
                 <div class="archive-container">
-    <div class="category-filter">
+    <div class="category-filter" style="display: none;">
         <button class="category-btn active" data-category="all">全部</button>
         
-            <button class="category-btn" data-category="中间件">中间件</button>
+            <button class="category-btn" data-category="中间件">中间件 (1)</button>
         
-            <button class="category-btn" data-category="前端">前端</button>
+            <button class="category-btn" data-category="前端">前端 (2)</button>
         
-            <button class="category-btn" data-category="后端">后端</button>
+            <button class="category-btn" data-category="后端">后端 (3)</button>
         
-            <button class="category-btn" data-category="数据库">数据库</button>
+            <button class="category-btn" data-category="数据库">数据库 (1)</button>
         
-            <button class="category-btn" data-category="生活">生活</button>
+            <button class="category-btn" data-category="生活">生活 (1)</button>
         
     </div>
     <div class="archive-content">
@@ -105,8 +105,15 @@
                 <div class="year-posts">
                     
                         <article class="archive-item" data-categories="生活" data-year="2025">
-                            <time class="archive-date">04-24</time>
                             <a href="/2025/04/24/life/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89%E4%B8%80%E4%B8%AA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%EF%BC%9F/" class="archive-title">为什么一定要有一个个人网站？</a>
+                            <div class="archive-meta">
+                                <time class="archive-date">2025-04-24</time>
+                                <div class="archive-tags">
+                                    
+                                        <a href="/tags/%E9%9A%8F%E7%AC%94/"># 随笔</a>
+                                    
+                                </div>
+                            </div>
                         </article>
                     
                 </div>
@@ -117,10 +124,29 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const categoryFilter = document.querySelector('.category-filter');
     const categoryBtns = document.querySelectorAll('.category-btn');
     const archiveItems = document.querySelectorAll('.archive-item');
     const emptyState = document.querySelector('.empty-state');
     const archiveContent = document.querySelector('.archive-content');
+
+    // 检查是否应该显示分类列表
+    function checkShouldShowCategoryFilter() {
+        const referrer = document.referrer;
+        const currentHost = window.location.host;
+        const currentPath = window.location.pathname;
+        
+        // 如果当前页面URL包含tags或categories，不显示分类列表
+        if (currentPath.includes('/tags/') || currentPath.includes('/categories/')) {
+            return false;
+        }
+        
+        // 如果是从其他页面进入，显示分类列表
+        if (referrer && referrer.includes(currentHost)) {
+            return true;
+        }
+        return false;
+    }
 
     function updateDisplay() {
         const selectedCategory = document.querySelector('.category-btn.active').dataset.category;
@@ -192,6 +218,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const decodedCategory = decodeURIComponent(category);
             const targetBtn = Array.from(categoryBtns).find(btn => btn.dataset.category === decodedCategory);
             if (targetBtn) {
+                // 显示分类列表
+                categoryFilter.style.display = 'flex';
                 // 移除所有按钮的active类
                 categoryBtns.forEach(function(b) {
                     b.classList.remove('active');
@@ -205,6 +233,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 初始化显示
+    if (checkShouldShowCategoryFilter()) {
+        categoryFilter.style.display = 'flex';
+    }
     checkUrlForCategory();
 });
 </script>

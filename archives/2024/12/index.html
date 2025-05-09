@@ -81,18 +81,18 @@
 
                 
                 <div class="archive-container">
-    <div class="category-filter">
+    <div class="category-filter" style="display: none;">
         <button class="category-btn active" data-category="all">全部</button>
         
-            <button class="category-btn" data-category="中间件">中间件</button>
+            <button class="category-btn" data-category="中间件">中间件 (1)</button>
         
-            <button class="category-btn" data-category="前端">前端</button>
+            <button class="category-btn" data-category="前端">前端 (2)</button>
         
-            <button class="category-btn" data-category="后端">后端</button>
+            <button class="category-btn" data-category="后端">后端 (3)</button>
         
-            <button class="category-btn" data-category="数据库">数据库</button>
+            <button class="category-btn" data-category="数据库">数据库 (1)</button>
         
-            <button class="category-btn" data-category="生活">生活</button>
+            <button class="category-btn" data-category="生活">生活 (1)</button>
         
     </div>
     <div class="archive-content">
@@ -105,13 +105,33 @@
                 <div class="year-posts">
                     
                         <article class="archive-item" data-categories="中间件" data-year="2024">
-                            <time class="archive-date">12-11</time>
                             <a href="/2024/12/11/java/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3%EF%BC%8CKafka%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86%EF%BC%81/" class="archive-title">Kafka深入浅出</a>
+                            <div class="archive-meta">
+                                <time class="archive-date">2024-12-11</time>
+                                <div class="archive-tags">
+                                    
+                                        <a href="/tags/Kafka/"># Kafka</a>
+                                    
+                                </div>
+                            </div>
                         </article>
                     
                         <article class="archive-item" data-categories="后端" data-year="2024">
-                            <time class="archive-date">12-01</time>
                             <a href="/2024/12/01/java/%E8%81%8A%E8%81%8AJavaIO%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" class="archive-title">聊聊Java IO的那些事</a>
+                            <div class="archive-meta">
+                                <time class="archive-date">2024-12-01</time>
+                                <div class="archive-tags">
+                                    
+                                        <a href="/tags/java/"># java</a>
+                                    
+                                        <a href="/tags/IO/"># IO</a>
+                                    
+                                        <a href="/tags/NIO/"># NIO</a>
+                                    
+                                        <a href="/tags/BIO/"># BIO</a>
+                                    
+                                </div>
+                            </div>
                         </article>
                     
                 </div>
@@ -122,10 +142,29 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const categoryFilter = document.querySelector('.category-filter');
     const categoryBtns = document.querySelectorAll('.category-btn');
     const archiveItems = document.querySelectorAll('.archive-item');
     const emptyState = document.querySelector('.empty-state');
     const archiveContent = document.querySelector('.archive-content');
+
+    // 检查是否应该显示分类列表
+    function checkShouldShowCategoryFilter() {
+        const referrer = document.referrer;
+        const currentHost = window.location.host;
+        const currentPath = window.location.pathname;
+        
+        // 如果当前页面URL包含tags或categories，不显示分类列表
+        if (currentPath.includes('/tags/') || currentPath.includes('/categories/')) {
+            return false;
+        }
+        
+        // 如果是从其他页面进入，显示分类列表
+        if (referrer && referrer.includes(currentHost)) {
+            return true;
+        }
+        return false;
+    }
 
     function updateDisplay() {
         const selectedCategory = document.querySelector('.category-btn.active').dataset.category;
@@ -197,6 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const decodedCategory = decodeURIComponent(category);
             const targetBtn = Array.from(categoryBtns).find(btn => btn.dataset.category === decodedCategory);
             if (targetBtn) {
+                // 显示分类列表
+                categoryFilter.style.display = 'flex';
                 // 移除所有按钮的active类
                 categoryBtns.forEach(function(b) {
                     b.classList.remove('active');
@@ -210,6 +251,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 初始化显示
+    if (checkShouldShowCategoryFilter()) {
+        categoryFilter.style.display = 'flex';
+    }
     checkUrlForCategory();
 });
 </script>

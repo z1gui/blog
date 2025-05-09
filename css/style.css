@@ -654,10 +654,10 @@ a
 
 .category-btn {
     padding: 8px 16px;
-    border: 2px solid var(--font-color-0);
+    border: none;
     border-radius: 20px;
-    background: transparent;
-    color: var(--font-color-0);
+    background: #f5f5f5;
+    color: #333;
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.3s ease;
@@ -679,8 +679,8 @@ a
 }
 
 .year-title {
-    font-size: 2.5rem;
-    color: #666;
+    font-size: 2rem;
+    color: #ccc;
     margin-bottom: 1rem;
     font-weight: 700;
     position: absolute;
@@ -695,25 +695,48 @@ a
 
 .archive-item {
     display: flex;
-    align-items: baseline;
-    margin-bottom: 1rem;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
     padding: 0.5rem 0;
     border-bottom: 1px solid #eee;
     transition: all 0.3s ease;
 }
 
-.archive-date {
-    color: #999;
-    font-size: 0.9rem;
-    margin-right: 1rem;
-    min-width: 60px;
-}
-
 .archive-title {
     color: #333;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
     transition: color 0.3s ease;
+}
+
+.archive-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.archive-date {
+    color: #999;
+}
+
+.archive-tags {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.archive-tags a {
+    color: #999;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.archive-tags a:hover {
+    color: var(--font-color-0);
 }
 
 .archive-title:hover {
