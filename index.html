@@ -90,7 +90,8 @@
 但随着时间推移，我开始发现，CSDN上的文章， Although it is very goo
             <a class="read-more" href="/2025/04/24/life/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89%E4%B8%80%E4%B8%AA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%EF%BC%9F/"> ... </a>
         </div>
-        <div class="post-date">2025.04.24</div>
+        <div class="post-date">2025-04-24</div>
+        
     </div>
     
     <div class="post">
@@ -103,7 +104,8 @@
 var perso
             <a class="read-more" href="/2025/03/01/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B/"> ... </a>
         </div>
-        <div class="post-date">2025.03.01</div>
+        <div class="post-date">2025-03-01</div>
+        
     </div>
     
     <div class="post">
@@ -113,7 +115,8 @@ var perso
 一、基本概念「Kafka 是什么？主要应用场景什么？」Kafka 是一个分布
             <a class="read-more" href="/2024/12/11/java/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3%EF%BC%8CKafka%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86%EF%BC%81/"> ... </a>
         </div>
-        <div class="post-date">2024.12.11</div>
+        <div class="post-date">2024-12-11</div>
+        
     </div>
     
     <div class="post">
@@ -157,7 +160,8 @@ IO模型
 这两个概念是 程序级别 的。主要描述是程序请
             <a class="read-more" href="/2024/12/01/java/%E8%81%8A%E8%81%8AJavaIO%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/"> ... </a>
         </div>
-        <div class="post-date">2024.12.01</div>
+        <div class="post-date">2024-12-01</div>
+        
     </div>
     
     <div class="post">
@@ -169,7 +173,8 @@ IO模型
 启动类加载器：Bootstrap Class Loader ，是C++写的
             <a class="read-more" href="/2024/09/01/java/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%BB%A5%E5%8F%8A%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B/"> ... </a>
         </div>
-        <div class="post-date">2024.09.01</div>
+        <div class="post-date">2024-09-01</div>
+        
     </div>
     
     <div class="post">
@@ -180,7 +185,8 @@ IO模型
 functi
             <a class="read-more" href="/2024/07/23/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E4%B8%ADconst%EF%BC%8Cvar%EF%BC%8Clet%E7%9A%84%E5%8C%BA%E5%88%AB/"> ... </a>
         </div>
-        <div class="post-date">2024.07.23</div>
+        <div class="post-date">2024-07-23</div>
+        
     </div>
     
     <div class="post">
@@ -190,7 +196,8 @@ functi
 ASCII 码一共规定了128个字符的编码，比如空格 SPACE 是32（二进制00100000），大写的字母 A 是65（二
             <a class="read-more" href="/2024/03/21/java/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%80%BB%E6%98%AF%E4%B9%B1%E7%A0%81%EF%BC%9F%E6%9D%A5%E7%9C%8B%E7%9C%8B%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%90%A7/"> ... </a>
         </div>
-        <div class="post-date">2024.03.21</div>
+        <div class="post-date">2024-03-21</div>
+        
     </div>
     
     <div class="post">
@@ -201,7 +208,8 @@ ASCII 码一共规定了128个字符的编码，比如空格 SPACE 是32（二�
 id int PRIMARY KE
             <a class="read-more" href="/2020/09/01/db/%E5%85%B3%E4%BA%8Eoracle%E4%B8%AD%E4%BB%A5Blob%E5%AD%97%E6%AE%B5%E6%9F%A5%E6%89%BE%E9%87%8D%E5%A4%8D%E5%80%BC%E9%97%AE%E9%A2%98/"> ... </a>
         </div>
-        <div class="post-date">2020.09.01</div>
+        <div class="post-date">2020-09-01</div>
+        
     </div>
     
 </div>
@@ -288,7 +296,12 @@ id int PRIMARY KE
         // 生成唯一 id
         const idMap = {};
         headings.forEach((heading) => {
-            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            // 修改ID生成逻辑，确保ID以字母开头
+            let baseId = heading.textContent.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')  // 将非字母数字字符替换为连字符
+                .replace(/^[0-9]+/, 'h-$&')   // 如果以数字开头，添加'h-'前缀
+                .replace(/(^-+|-+$)/g, '');   // 移除首尾的连字符
+            
             if (!baseId) baseId = 'heading';
             let uniqueId = baseId;
             if (idMap[baseId] !== undefined) {
@@ -302,27 +315,39 @@ id int PRIMARY KE
 
         headings.forEach((heading, index) => {
             const level = parseInt(heading.tagName[1]);
-            const id = heading.id; // 使用唯一 id
+            const id = heading.id;
 
             const listItem = document.createElement('li');
             const link = document.createElement('a');
             link.href = `#${id}`;
             link.textContent = heading.textContent;
+            
+            // 修改点击事件处理
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetHeading = document.getElementById(id);
                 if (targetHeading) {
+                    // 计算目标位置
                     const headerOffset = 100;
                     const elementPosition = targetHeading.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
+                    // 平滑滚动到目标位置
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
 
-                    // 更新 URL 的 hash
+                    // 更新 URL hash
                     history.pushState(null, null, `#${id}`);
+
+                    // 更新活动状态
+                    tocLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    activeLink = link;
+                    
+                    // 更新目录位置
+                    setTimeout(updateTOCPosition, 100);
                 }
             });
 
@@ -367,9 +392,122 @@ id int PRIMARY KE
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
+                    
+                    // 设置对应的目录项为活动状态
+                    const targetLink = tocContent.querySelector(`a[href="#${targetId}"]`);
+                    if (targetLink) {
+                        tocLinks.forEach(l => l.classList.remove('active'));
+                        targetLink.classList.add('active');
+                        activeLink = targetLink;
+                        updateTOCPosition();
+                    }
                 }, 100);
             }
         }
+
+        // 添加目录滚动监听
+        const tocLinks = document.querySelectorAll('.toc-content a');
+        const postToc = document.querySelector('.post-toc');
+        let activeLink = null;
+        let ticking = false;
+
+        function updateTOCPosition() {
+            if (!postToc || !tocContent || !activeLink) return;
+
+            const tocContentRect = tocContent.getBoundingClientRect();
+            const activeLinkRect = activeLink.getBoundingClientRect();
+            
+            // 计算目录内容区域的中心位置
+            const tocContentCenter = tocContentRect.top + tocContentRect.height / 2;
+            
+            // 计算活动链接的中心位置
+            const linkCenter = activeLinkRect.top + activeLinkRect.height / 2;
+            
+            // 计算需要滚动的距离，使活动链接居中
+            const scrollDistance = linkCenter - tocContentCenter;
+            
+            // 计算新的滚动位置
+            const newScrollTop = tocContent.scrollTop + scrollDistance;
+            
+            // 确保滚动位置在有效范围内
+            const maxScroll = tocContent.scrollHeight - tocContent.clientHeight;
+            const boundedScrollTop = Math.max(0, Math.min(newScrollTop, maxScroll));
+            
+            // 平滑滚动到新位置
+            tocContent.scrollTo({
+                top: boundedScrollTop,
+                behavior: 'smooth'
+            });
+        }
+
+        function setActiveLink() {
+            if (ticking) return;
+            ticking = true;
+
+            requestAnimationFrame(() => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const headerOffset = 100;
+                let currentActive = null;
+                let minDistance = Infinity;
+
+                // 找到距离视口顶部最近的标题
+                headings.forEach((heading) => {
+                    const rect = heading.getBoundingClientRect();
+                    const distance = Math.abs(rect.top - headerOffset);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        currentActive = tocLinks[Array.from(headings).indexOf(heading)];
+                    }
+                });
+
+                // 更新活动链接状态
+                if (currentActive !== activeLink) {
+                    tocLinks.forEach(link => {
+                        if (link === currentActive) {
+                            if (!link.classList.contains('active')) {
+                                link.classList.add('active');
+                                activeLink = link;
+                                // 当活动链接改变时，更新目录位置
+                                setTimeout(updateTOCPosition, 0);
+                            }
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+
+                ticking = false;
+            });
+        }
+
+        // 使用节流函数优化滚动事件处理
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+
+        // 监听滚动事件，使用节流函数优化性能
+        window.addEventListener('scroll', throttle(() => {
+            setActiveLink();
+        }, 16)); // 使用约60fps的更新频率
+
+        // 监听窗口大小改变事件
+        window.addEventListener('resize', throttle(() => {
+            setActiveLink();
+            updateTOCPosition();
+        }, 100));
+
+        // 初始化时执行一次
+        setActiveLink();
     }
 
     // 确保在DOM完全加载后执行

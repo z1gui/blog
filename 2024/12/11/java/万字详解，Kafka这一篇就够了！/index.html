@@ -870,7 +870,12 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
         // 生成唯一 id
         const idMap = {};
         headings.forEach((heading) => {
-            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
+            // 修改ID生成逻辑，确保ID以字母开头
+            let baseId = heading.textContent.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')  // 将非字母数字字符替换为连字符
+                .replace(/^[0-9]+/, 'h-$&')   // 如果以数字开头，添加'h-'前缀
+                .replace(/(^-+|-+$)/g, '');   // 移除首尾的连字符
+            
             if (!baseId) baseId = 'heading';
             let uniqueId = baseId;
             if (idMap[baseId] !== undefined) {
@@ -884,27 +889,39 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
 
         headings.forEach((heading, index) => {
             const level = parseInt(heading.tagName[1]);
-            const id = heading.id; // 使用唯一 id
+            const id = heading.id;
 
             const listItem = document.createElement('li');
             const link = document.createElement('a');
             link.href = `#${id}`;
             link.textContent = heading.textContent;
+            
+            // 修改点击事件处理
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetHeading = document.getElementById(id);
                 if (targetHeading) {
+                    // 计算目标位置
                     const headerOffset = 100;
                     const elementPosition = targetHeading.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
+                    // 平滑滚动到目标位置
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
 
-                    // 更新 URL 的 hash
+                    // 更新 URL hash
                     history.pushState(null, null, `#${id}`);
+
+                    // 更新活动状态
+                    tocLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    activeLink = link;
+                    
+                    // 更新目录位置
+                    setTimeout(updateTOCPosition, 100);
                 }
             });
 
@@ -949,9 +966,122 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
+                    
+                    // 设置对应的目录项为活动状态
+                    const targetLink = tocContent.querySelector(`a[href="#${targetId}"]`);
+                    if (targetLink) {
+                        tocLinks.forEach(l => l.classList.remove('active'));
+                        targetLink.classList.add('active');
+                        activeLink = targetLink;
+                        updateTOCPosition();
+                    }
                 }, 100);
             }
         }
+
+        // 添加目录滚动监听
+        const tocLinks = document.querySelectorAll('.toc-content a');
+        const postToc = document.querySelector('.post-toc');
+        let activeLink = null;
+        let ticking = false;
+
+        function updateTOCPosition() {
+            if (!postToc || !tocContent || !activeLink) return;
+
+            const tocContentRect = tocContent.getBoundingClientRect();
+            const activeLinkRect = activeLink.getBoundingClientRect();
+            
+            // 计算目录内容区域的中心位置
+            const tocContentCenter = tocContentRect.top + tocContentRect.height / 2;
+            
+            // 计算活动链接的中心位置
+            const linkCenter = activeLinkRect.top + activeLinkRect.height / 2;
+            
+            // 计算需要滚动的距离，使活动链接居中
+            const scrollDistance = linkCenter - tocContentCenter;
+            
+            // 计算新的滚动位置
+            const newScrollTop = tocContent.scrollTop + scrollDistance;
+            
+            // 确保滚动位置在有效范围内
+            const maxScroll = tocContent.scrollHeight - tocContent.clientHeight;
+            const boundedScrollTop = Math.max(0, Math.min(newScrollTop, maxScroll));
+            
+            // 平滑滚动到新位置
+            tocContent.scrollTo({
+                top: boundedScrollTop,
+                behavior: 'smooth'
+            });
+        }
+
+        function setActiveLink() {
+            if (ticking) return;
+            ticking = true;
+
+            requestAnimationFrame(() => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const headerOffset = 100;
+                let currentActive = null;
+                let minDistance = Infinity;
+
+                // 找到距离视口顶部最近的标题
+                headings.forEach((heading) => {
+                    const rect = heading.getBoundingClientRect();
+                    const distance = Math.abs(rect.top - headerOffset);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        currentActive = tocLinks[Array.from(headings).indexOf(heading)];
+                    }
+                });
+
+                // 更新活动链接状态
+                if (currentActive !== activeLink) {
+                    tocLinks.forEach(link => {
+                        if (link === currentActive) {
+                            if (!link.classList.contains('active')) {
+                                link.classList.add('active');
+                                activeLink = link;
+                                // 当活动链接改变时，更新目录位置
+                                setTimeout(updateTOCPosition, 0);
+                            }
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+
+                ticking = false;
+            });
+        }
+
+        // 使用节流函数优化滚动事件处理
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+
+        // 监听滚动事件，使用节流函数优化性能
+        window.addEventListener('scroll', throttle(() => {
+            setActiveLink();
+        }, 16)); // 使用约60fps的更新频率
+
+        // 监听窗口大小改变事件
+        window.addEventListener('resize', throttle(() => {
+            setActiveLink();
+            updateTOCPosition();
+        }, 100));
+
+        // 初始化时执行一次
+        setActiveLink();
     }
 
     // 确保在DOM完全加载后执行
