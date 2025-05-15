@@ -260,45 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
     hljs.initHighlightingOnLoad();
     hljs.initLineNumbersOnLoad();
 
-    // 处理标题前#号的点击事件
-    function setupHeadingAnchors() {
-        const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
-        // 生成唯一 id（与 TOC 保持一致）
-        const idMap = {};
-        headings.forEach((heading) => {
-            let baseId = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
-            if (!baseId) baseId = 'heading';
-            let uniqueId = baseId;
-            if (idMap[baseId] !== undefined) {
-                idMap[baseId] += 1;
-                uniqueId = `${baseId}-${idMap[baseId]}`;
-            } else {
-                idMap[baseId] = 0;
-            }
-            heading.id = uniqueId;
-            // 添加点击事件
-            heading.addEventListener('click', function(e) {
-                if (e.target === heading || e.target === heading.querySelector('::before')) {
-                    e.preventDefault();
-                    // 复制链接到剪贴板
-                    const url = window.location.href.split('#')[0] + '#' + uniqueId;
-                    navigator.clipboard.writeText(url).then(() => {
-                        // 显示复制成功提示
-                        const tooltip = document.createElement('div');
-                        tooltip.className = 'copy-tooltip';
-                        tooltip.textContent = '链接已复制，分享点击可直接到达该标题处！';
-                        document.body.appendChild(tooltip);
-                        setTimeout(() => {
-                            tooltip.remove();
-                        }, 2000);
-                    });
-                    // 更新 URL 的 hash
-                    history.pushState(null, null, `#${uniqueId}`);
-                }
-            });
-        });
-    }
-
     // 生成目录
     function generateTOC() {
         const tocContent = document.querySelector('.toc-content');
@@ -350,33 +311,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const link = document.createElement('a');
             link.href = `#${id}`;
             link.textContent = heading.textContent;
-            
-            // 修改点击事件处理
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetHeading = document.getElementById(id);
                 if (targetHeading) {
-                    // 计算目标位置
                     const headerOffset = 100;
                     const elementPosition = targetHeading.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                    // 平滑滚动到目标位置
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
 
-                    // 更新 URL hash
+                    // 更新 URL 的 hash
                     history.pushState(null, null, `#${id}`);
-
-                    // 更新活动状态
-                    tocLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    activeLink = link;
-                    
-                    // 更新目录位置
-                    setTimeout(updateTOCPosition, 100);
                 }
             });
 
@@ -421,15 +370,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
-                    
-                    // 设置对应的目录项为活动状态
-                    const targetLink = tocContent.querySelector(`a[href="#${targetId}"]`);
-                    if (targetLink) {
-                        tocLinks.forEach(l => l.classList.remove('active'));
-                        targetLink.classList.add('active');
-                        activeLink = targetLink;
-                        updateTOCPosition();
-                    }
                 }, 100);
             }
         }
@@ -543,7 +483,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('DOMContentLoaded', () => {
         try {
             generateTOC();
-            setupHeadingAnchors();
         } catch (error) {
             console.error('Error initializing TOC:', error);
         }

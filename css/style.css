@@ -190,7 +190,7 @@ a
     left: 0;
     bottom: -2px;
     width: 0;
-    height: 2px;
+    height: 4px;
     background-color: var(--font-color-0);
     transition: width ease-in-out .3s;
 }
@@ -337,7 +337,7 @@ a
     left: 0;
     bottom: -2px;
     width: 0;
-    height: 2px;
+    height: 4px;
     background-color: var(--font-color-0);
     animation: underlineAnimation 0.5s ease-in-out forwards;
     transform-origin: left;

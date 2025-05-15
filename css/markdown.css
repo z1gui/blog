@@ -25,32 +25,13 @@
 .post-md h4::before,
 .post-md h5::before,
 .post-md h6::before {
-    content: "#";
     color: #e9e7e7;
     margin-right: 0.5em;
     transition: color 0.3s;
     cursor: pointer;
 }
 
-.post-md h2::before {
-    content: "##";
-}
 
-.post-md h3::before {
-    content: "###";
-}
-
-.post-md h4::before {
-    content: "####";
-}
-
-.post-md h5::before {
-    content: "#####";
-}
-
-.post-md h6::before {
-    content: "######";
-}
 
 .post-md h1:hover::before,
 .post-md h2:hover::before,
