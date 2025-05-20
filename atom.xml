@@ -6,7 +6,7 @@
   <link href="https://www.lazydaily.cn/atom.xml" rel="self"/>
   
   <link href="https://www.lazydaily.cn/"/>
-  <updated>2025-05-20T01:18:45.021Z</updated>
+  <updated>2025-05-20T01:33:46.149Z</updated>
   <id>https://www.lazydaily.cn/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://www.lazydaily.cn/2025/05/13/tool/%E3%80%8C%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E3%80%8DAI%E8%BE%85%E5%8A%A9%E7%BC%96%E7%A8%8B%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/"/>
     <id>https://www.lazydaily.cn/2025/05/13/tool/%E3%80%8C%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E3%80%8DAI%E8%BE%85%E5%8A%A9%E7%BC%96%E7%A8%8B%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/</id>
     <published>2025-05-12T16:00:00.000Z</published>
-    <updated>2025-05-20T01:18:45.021Z</updated>
+    <updated>2025-05-20T01:33:46.149Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2025 年初，Deepseek 爆火。随之而来，就是各种 AI 相关的技术如同雨后春笋般涌现。其中关于 AI 编程方向，各家大厂各显神通。</p><p>早在 2024 年初，我就开始接触 AI 编程，一开始就使用了 Cursor。当我熟悉了它的操作之后，惊叹于它输出代码的质量。随后，我向身边朋友，同事极力推荐 Cursor。</p><p>本质上，Cursor 是一个集成 AI 能力的 VS Code 编辑器。尽管后来尝试各个大厂的不同的 AI 编程工具，例如：通义灵码，Windsurf，Trae 等，甚至自己搭建平台调用 Deepseek Api 完成编程辅助工作，但坦言来讲，体验都不如 Cursor。</p><h2 id="Cursor-收费模式"><a href="#Cursor-收费模式" class="headerlink" title="Cursor 收费模式"></a>Cursor 收费模式</h2><p>当然，Cursor 并不是免费的。它的收费方式是订阅制，订阅价格在 $20 &#x2F; 月。其中包含 500 次快请求，以及不限次数的慢请求。说实话，每月 140 块钱确实让人望而却步。</p><p>![[img&#x2F;Pasted image 20250514161308.png]]</p><p>Cursor 相对新用户还是有很好的政策。新用户首月 14 天 150 次快请求，次月及以后每月 50 次快请求，用完就不能再使用了。理论上有足够多的账号，也可以白嫖。在没有教育优惠前，我就是用两个账号的试用和免费请求体验了 cursor 的绝大数功能。</p><blockquote><p>个人使用来说，我一般使用 cursor 调整前端样式，或者解决前端报错问题。或者直接需求文档丢给 cursor 让他给我生成前端文件。50 次请求大概能完成 2~3 个复杂功能页面的开发。</p></blockquote><h2 id="Cursor-教育优惠"><a href="#Cursor-教育优惠" class="headerlink" title="Cursor 教育优惠"></a>Cursor 教育优惠</h2><p>2025 年 5 月 8 号上午，cursor 开放教育优惠。凭借学生身份可以申请为期 1 年的 pro 会员。但是因为中国用户申请过多，在当天下午取消 CN 节点。目前可以用国外 edu 邮箱+学生信息验证，推荐咸鱼，一般来说 ￥100~200 不等可以搞定成品号。</p><p>目前，我使用的就是 Cursor 教育优惠。在咸鱼上搜 Cursor 教育优惠，用￥120 购买一个 <a href="http://www.sjsu.edu/">SAN JOSÉ STATE UNIVERSITY</a> 的 edu 邮箱和绑定信息。操作相对简单，只需要绑定登录邮箱，申请 Cursor 教育优惠认证即可（过程中可能需要绑定支付宝 0 元订阅，订阅成功之后可直接取消订阅，不影响当前订阅）。如果后续还有学生认证，可以转发 edu 邮箱到自己常用邮箱，这样就不会错过认证邮件。</p><blockquote><p>2025-5-20：订阅时间从 2025 年 5 月 12 号到 2026 年 5 月 12 号，当前使用无问题，后续有问题补充</p></blockquote><p>![[img&#x2F;Pasted image 20250520090726.png]]</p><p>目前来说，500 次快请求基本满足个人高强度使用的要求。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2025 年初，Deepseek 爆火。随之而来，就是各种 AI 相关的技术如同雨后春笋般涌现。其中关于 AI 编程方向，各家大厂各显神通。</p><p>早在 2024 年初，我就开始接触 AI 编程，一开始就使用了 Cursor。当我熟悉了它的操作之后，惊叹于它输出代码的质量。随后，我向身边朋友，同事极力推荐 Cursor。</p><p>本质上，Cursor 是一个集成 AI 能力的 VS Code 编辑器。尽管后来尝试各个大厂的不同的 AI 编程工具，例如：通义灵码，Windsurf，Trae 等，甚至自己搭建平台调用 Deepseek Api 完成编程辅助工作，但坦言来讲，体验都不如 Cursor。</p><h2 id="Cursor-收费模式"><a href="#Cursor-收费模式" class="headerlink" title="Cursor 收费模式"></a>Cursor 收费模式</h2><p>当然，Cursor 并不是免费的。它的收费方式是订阅制，订阅价格在 $20 &#x2F; 月。其中包含 500 次快请求，以及不限次数的慢请求。说实话，每月 140 块钱确实让人望而却步。</p><p><img src="/img/Pastedimage20250514161308.png" alt="Cursor收费模式"></p><p>Cursor 相对新用户还是有很好的政策。新用户首月 14 天 150 次快请求，次月及以后每月 50 次快请求，用完就不能再使用了。理论上有足够多的账号，也可以白嫖。在没有教育优惠前，我就是用两个账号的试用和免费请求体验了 cursor 的绝大数功能。</p><blockquote><p>个人使用来说，我一般使用 cursor 调整前端样式，或者解决前端报错问题。或者直接需求文档丢给 cursor 让他给我生成前端文件。50 次请求大概能完成 2~3 个复杂功能页面的开发。</p></blockquote><h2 id="Cursor-教育优惠"><a href="#Cursor-教育优惠" class="headerlink" title="Cursor 教育优惠"></a>Cursor 教育优惠</h2><p>2025 年 5 月 8 号上午，cursor 开放教育优惠。凭借学生身份可以申请为期 1 年的 pro 会员。但是因为中国用户申请过多，在当天下午取消 CN 节点。目前可以用国外 edu 邮箱+学生信息验证，推荐咸鱼，一般来说 ￥100~200 不等可以搞定成品号。</p><p>目前，我使用的就是 Cursor 教育优惠。在咸鱼上搜 Cursor 教育优惠，用￥120 购买一个 <a href="http://www.sjsu.edu/">SAN JOSÉ STATE UNIVERSITY</a> 的 edu 邮箱和绑定信息。操作相对简单，只需要绑定登录邮箱，申请 Cursor 教育优惠认证即可（过程中可能需要绑定支付宝 0 元订阅，订阅成功之后可直接取消订阅，不影响当前订阅）。如果后续还有学生认证，可以转发 edu 邮箱到自己常用邮箱，这样就不会错过认证邮件。</p><blockquote><p>2025-5-20：订阅时间从 2025 年 5 月 12 号到 2026 年 5 月 12 号，当前使用无问题，后续有问题补充</p></blockquote><p><img src="/img/Pastedimage20250520090726.png" alt="Pro会员状态"></p><p>目前来说，500 次快请求基本满足个人高强度使用的要求。</p>]]></content>
     
     
       

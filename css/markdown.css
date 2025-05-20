@@ -120,8 +120,8 @@
 {
     border-radius: 4px;
     box-sizing: border-box;
-    padding: 5px 5px;
-    border: 1px solid #ebebeb;
+    border: none;
+    padding: 0;
 }
 .post-md hr
 {
