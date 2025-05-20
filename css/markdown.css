@@ -93,7 +93,8 @@
 }
 .post-md strong
 {
-    font-weight: 700;
+    font-weight: 1000;
+    border-bottom: 3px solid var(--font-color-0);
 }
 .post-md em
 {
