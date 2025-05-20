@@ -139,7 +139,7 @@
 }
 .post-md blockquote
 {
-    border-left: 2px solid var(--line-2);
+    border-left: 2px solid var(--line-0);
     padding-left: 12px;
     word-wrap: break-word;
 }
