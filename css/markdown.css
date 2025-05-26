@@ -191,12 +191,12 @@
     padding: 2px 4px;
     color: #f8f8f2;
     font-size: 1rem;
-    font-family: "JetBrains Mono", monospace;
+    font-family: "JetBrains Mono","Montserrat", monospace;
 }
 
 .post-md pre code
 {
-    font-family: "JetBrains Mono", monospace;
+    font-family: "JetBrains Mono","Montserrat", monospace;
     font-size: 0.9rem;
     font-style: italic;
     line-height: 1.5;
