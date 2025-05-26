@@ -42,8 +42,8 @@
   
   <entry>
     <title>为什么一定要有一个个人网站？</title>
-    <link href="https://www.lazydaily.cn/cmb4tpupx0003hlp8827i2mth/"/>
-    <id>https://www.lazydaily.cn/cmb4tpupx0003hlp8827i2mth/</id>
+    <link href="https://www.lazydaily.cn/cmb4tw0vh0007slp880ji9s2o/"/>
+    <id>https://www.lazydaily.cn/cmb4tw0vh0007slp880ji9s2o/</id>
     <published>2025-04-23T16:00:00.000Z</published>
     <updated>2025-05-26T03:00:41.285Z</updated>
     
@@ -67,10 +67,10 @@
   
   <entry>
     <title>JavaScript 创建执行释放过程</title>
-    <link href="https://www.lazydaily.cn/7613867689968411/"/>
-    <id>https://www.lazydaily.cn/7613867689968411/</id>
+    <link href="https://www.lazydaily.cn/176138676899684/"/>
+    <id>https://www.lazydaily.cn/176138676899684/</id>
     <published>2025-02-28T16:00:00.000Z</published>
-    <updated>2025-05-26T08:26:20.438Z</updated>
+    <updated>2025-05-26T08:31:09.761Z</updated>
     
     <content type="html"><![CDATA[<h1 id="一、对象创建过程"><a href="#一、对象创建过程" class="headerlink" title="一、对象创建过程"></a>一、对象创建过程</h1><h2 id="a-内存分配"><a href="#a-内存分配" class="headerlink" title="a. 内存分配"></a>a. 内存分配</h2><ul><li>当我们创建一个对象时（无论是通过构造函数还是字面量方式），JavaScript 引擎会在内存堆（Heap）中为这个对象分配空间。堆是一个用于存储复杂数据结构（如对象和数组）的区域。</li></ul><pre><code class="language-javascript">// 创建对象并分配内存var person = new Object();person.name = &#39;Alice&#39;;person.age = 30;</code></pre><p>或</p><pre><code class="language-javascript">// 字面量方式创建对象并分配内存var person = &#123;  name: &#39;Alice&#39;,  age: 30&#125;;</code></pre><h2 id="b-构造函数调用"><a href="#b-构造函数调用" class="headerlink" title="b. 构造函数调用"></a>b. 构造函数调用</h2><ul><li>如果使用 <code>new</code> 关键字调用构造函数来创建对象，引擎会先创建一个新的空对象，然后将该对象的原型指向构造函数的 <code>prototype</code> 属性，并将新对象作为上下文（<code>this</code>）执行构造函数内部的代码。</li></ul><pre><code class="language-javascript">function Person(name, age) &#123;  this.name = name;  this.age = age;&#125;var alice = new Person(&#39;Alice&#39;, 30);</code></pre><h1 id="二、执行过程"><a href="#二、执行过程" class="headerlink" title="二、执行过程"></a>二、执行过程</h1><h2 id="a-属性访问与方法调用"><a href="#a-属性访问与方法调用" class="headerlink" title="a. 属性访问与方法调用"></a>a. 属性访问与方法调用</h2><ul><li>在对象创建后，可以通过 <code>.</code> 或 <code>[]</code> 操作符访问和修改其属性。</li><li>可以调用对象的方法进行相关操作。</li></ul><pre><code class="language-javascript">alice.sayHello = function() &#123;  console.log(&#39;Hello, my name is &#39; + this.name);&#125;;alice.sayHello(); // 输出：Hello, my name is Alice</code></pre><h2 id="b-闭包与作用域链"><a href="#b-闭包与作用域链" class="headerlink" title="b. 闭包与作用域链"></a>b. 闭包与作用域链</h2><ul><li>函数内部可以访问外部作用域中的变量，这种特性形成了闭包。当函数被调用时，它会形成自己的执行上下文，其中包含了作用域链，作用域链用于在当前作用域以及所有父级作用域中查找变量。</li></ul><pre><code class="language-javascript">function outerFunction() &#123;  var outerVar = &#39;outer&#39;;  function innerFunction() &#123;    console.log(outerVar); // 能够访问到outerVar，这是因为闭包的作用  &#125;  innerFunction();&#125;outerFunction();</code></pre><h1 id="三、释放过程"><a href="#三、释放过程" class="headerlink" title="三、释放过程"></a>三、释放过程</h1><h2 id="a-垃圾回收机制"><a href="#a-垃圾回收机制" class="headerlink" title="a. 垃圾回收机制"></a>a. 垃圾回收机制</h2><ul><li>JavaScript 采用了自动垃圾回收机制，主要是基于可达性分析算法。简单来说，如果一个对象不再有任何引用指向它，那么这个对象就是不可达的，会被垃圾回收器视为垃圾并最终清理掉其所占用的内存资源。</li></ul><pre><code class="language-javascript">var obj1 = &#123; data: &#39;some value&#39; &#125;;var obj2 = obj1;obj1 = null; // 现在只有obj2指向原对象// 后续如果obj2也被设置为null或者超出作用域，则原对象成为不可达，会被GC回收</code></pre><h2 id="b-循环引用问题"><a href="#b-循环引用问题" class="headerlink" title="b. 循环引用问题"></a>b. 循环引用问题</h2><ul><li>当两个对象互相引用但没有其他引用指向它们时，尽管它们是不可达的，但由于互相引用导致垃圾回收器无法识别。现代浏览器和 Node. js 环境下的 V8 引擎已经实现了循环引用检测功能，但在某些情况下仍需注意避免造成循环引用。</li></ul><p>总之，在 JavaScript 中，对象从创建到销毁的过程涉及内存管理、作用域规则以及垃圾回收策略等多个方面，理解这些概念对于编写高效且无内存泄漏的 JavaScript 代码至关重要。</p>]]></content>
     
