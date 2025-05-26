@@ -191,6 +191,18 @@
     padding: 2px 4px;
     color: #f8f8f2;
     font-size: 1rem;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.post-md pre code
+{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.9rem;
+    font-style: italic;
+    line-height: 1.5;
+    padding: 1em;
+    display: block;
+    overflow-x: auto;
 }
 
 .post-md .hljs-ln-numbers
