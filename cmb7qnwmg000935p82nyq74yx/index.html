@@ -13,7 +13,7 @@
   <meta name="description" content="前言大家好，我是子规，很高兴能够在这里和大家相遇。本篇文章记录该站建立的初衷、建站过程以及在过程中的思考。 为什么建立这个网站在此网站建立之前，我通常在CSDN上写作。 但随着时间推移，我开始发现，CSDN上的文章， Although it is very good, but it is not very good for SEO。尽管我在CSDN上没有很多有质量的输出，但是繁杂的信息流却充斥在我">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为什么一定要有一个个人网站？">
-<meta property="og:url" content="https://www.lazydaily.cn/cmb4tw0vh0007slp880ji9s2o/index.html">
+<meta property="og:url" content="https://www.lazydaily.cn/cmb7qnwmg000935p82nyq74yx/index.html">
 <meta property="og:site_name" content="子规入梧桐">
 <meta property="og:description" content="前言大家好，我是子规，很高兴能够在这里和大家相遇。本篇文章记录该站建立的初衷、建站过程以及在过程中的思考。 为什么建立这个网站在此网站建立之前，我通常在CSDN上写作。 但随着时间推移，我开始发现，CSDN上的文章， Although it is very good, but it is not very good for SEO。尽管我在CSDN上没有很多有质量的输出，但是繁杂的信息流却充斥在我">
 <meta property="og:locale" content="zh_CN">
@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://www.lazydaily.cn/img/Pastedimage20250514170304.png">
   <!-- canonical -->
   
-  <link rel="canonical" href="https://www.lazydaily.cn/cmb4tw0vh0007slp880ji9s2o/">
+  <link rel="canonical" href="https://www.lazydaily.cn/cmb7qnwmg000935p82nyq74yx/">
   
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
@@ -174,6 +174,42 @@
     </div>
 
 </div>
+
+<!-- 图片全屏显示模态框 -->
+<div class="image-modal" id="imageModal">
+    <img id="modalImage" src="" alt="全屏图片">
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const postImages = document.querySelectorAll('.post-md img');
+
+    // 点击图片打开模态框
+    postImages.forEach(img => {
+        img.addEventListener('click', function() {
+            modal.classList.add('active');
+            modalImg.src = this.src;
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        });
+    });
+
+    // 点击模态框关闭
+    modal.addEventListener('click', function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // 恢复背景滚动
+    });
+
+    // 按 ESC 键关闭模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+});
+</script>
                 <div class="footer">
     <span>Copyright © <script>document.write(new Date().getFullYear())</script> <a target="_blank" rel="noopener" href="https://github.com/z1gui">z1gui</a></span>
     <span>Licensed under<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"> CC-BY-NC-SA 4.0</a></span>
