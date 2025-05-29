@@ -804,11 +804,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 点击图片打开模态框
     postImages.forEach(img => {
-        img.addEventListener('click', function() {
-            modal.classList.add('active');
-            modalImg.src = this.src;
-            document.body.style.overflow = 'hidden'; // 防止背景滚动
-        });
+        // 检查图片是否在社交链接中
+        const isSocialIcon = img.closest('.social-links') !== null;
+        if (!isSocialIcon) {
+            img.addEventListener('click', function() {
+                modal.classList.add('active');
+                modalImg.src = this.src;
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
+            });
+        }
     });
 
     // 点击模态框关闭
