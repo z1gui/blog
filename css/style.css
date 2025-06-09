@@ -56,7 +56,7 @@ a
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    align-content: center;
+    align-items: center;
 }
 .logo
 {
@@ -64,8 +64,31 @@ a
     font-weight: 600;
     color: var(--font-color-1);
     margin-bottom: 23px;
-    flex: 0 0 100%;
+    flex: 0 0 auto;
 }
+
+.typewriter-container {
+
+    flex: 0 0 auto;
+}
+
+.typewriter-text {
+
+    color: var(--font-color-3);
+
+}
+
+.cursor {
+    font-size: 1.2rem;
+    color: var(--font-color-0);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 .nav
 {
     margin: 0 0 4px;
@@ -294,6 +317,11 @@ a
     align-content: center;
 }
 .footer span
+{
+    text-align: center;
+    margin-bottom: 8px;
+}
+.footer div
 {
     text-align: center;
     margin-bottom: 8px;
