@@ -415,14 +415,13 @@ a
 {
     color: var(--font-color-1);
     opacity: .7;
-    transition: opacity ease-in-out .5s;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     font-size: 14px;
 }
 .nav li a:hover
 {
     opacity: 1;
-    transition: opacity ease-in-out .5s;
 }
 .nav li a::after
 {
@@ -433,7 +432,7 @@ a
     width: 0;
     height: 2px;
     background-color: var(--font-color-0);
-    transition: width ease-in-out .3s;
+    transition: width .3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .nav li a:hover::after
 {
@@ -446,7 +445,6 @@ a
     opacity: 1;
     font-size: 20px;
     color: var(--font-color-0);
-
     font-weight: 600;
 }
 .nav li a.current::after
