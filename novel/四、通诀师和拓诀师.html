@@ -64,12 +64,23 @@
 </head>
 
     <body>
+        <!-- 主题切换按钮 -->
+        <div class="theme-toggle" id="themeToggle" title="切换主题">
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"></circle>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </div>
+        
         <div class="paper">
             <div class="paper-main">
                 
                     <div class="post-header">
     <!-- <a class="logo" href="/">子规入梧桐</a> -->
-    <div class="logo"><a href="/" title="z1gui"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="z1gui" aria-label="logo" height="80" data-src="/img/favicon.png" loading="lazy"></a></div>
+    <!-- <div class="logo"><a href="/" title="z1gui"><img src="/img/favicon.png" alt="z1gui" aria-label="logo" height="80"></a></div> -->
 
         <ul class="nav">
             
@@ -91,6 +102,9 @@
 
                 
                 <div class="post-main">
+    <!-- 阅读进度条 -->
+    <div class="reading-progress-bar" id="readingProgressBar"></div>
+    
     
         <div class="post-md">
             <p>第四章 通诀师和拓诀师</p>
@@ -128,6 +142,20 @@
     <img id="modalImage" src="" alt="全屏图片">
 </div>
 
+<!-- 返回顶部按钮 -->
+<div class="back-to-top" id="backToTop" title="返回顶部">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4L4 12H9V20H15V12H20L12 4Z" fill="currentColor"></path>
+    </svg>
+</div>
+
+<!-- 显示目录按钮 -->
+<div class="show-toc-btn" id="showTocBtn" title="显示目录" style="display: none;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('imageModal');
@@ -160,6 +188,91 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = '';
         }
     });
+
+    // 阅读进度条功能
+    const progressBar = document.getElementById('readingProgressBar');
+    if (progressBar) {
+        function updateReadingProgress() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            // 限制进度条宽度在0-100%之间
+            const progressWidth = Math.min(Math.max(scrollPercent, 0), 100);
+            progressBar.style.width = progressWidth + '%';
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', updateReadingProgress);
+        
+        // 页面加载时初始化进度条
+        updateReadingProgress();
+    }
+
+    // 返回顶部按钮功能
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+        // 显示/隐藏按钮
+        function toggleBackToTop() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        }
+
+        // 点击返回顶部
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 监听滚动事件
+        window.addEventListener('scroll', toggleBackToTop);
+        
+        // 页面加载时初始化
+        toggleBackToTop();
+    }
+
+    // 目录隐藏/显示功能
+    const postToc = document.getElementById('postToc');
+    const tocToggle = document.getElementById('tocToggle');
+    const showTocBtn = document.getElementById('showTocBtn');
+    
+    if (postToc && tocToggle && showTocBtn) {
+        // 从localStorage获取目录状态
+        const tocHidden = localStorage.getItem('tocHidden') === 'true';
+        if (tocHidden) {
+            postToc.classList.add('hidden');
+            showTocBtn.style.display = 'flex';
+            setTimeout(() => {
+                showTocBtn.classList.add('show');
+            }, 100);
+        }
+        
+        // 隐藏目录
+        tocToggle.addEventListener('click', function() {
+            postToc.classList.add('hidden');
+            showTocBtn.style.display = 'flex';
+            setTimeout(() => {
+                showTocBtn.classList.add('show');
+            }, 300);
+            localStorage.setItem('tocHidden', 'true');
+        });
+        
+        // 显示目录
+        showTocBtn.addEventListener('click', function() {
+            postToc.classList.remove('hidden');
+            showTocBtn.classList.remove('show');
+            setTimeout(() => {
+                showTocBtn.style.display = 'none';
+            }, 300);
+            localStorage.setItem('tocHidden', 'false');
+        });
+    }
 });
 </script>
                 <div class="footer">
@@ -463,5 +576,49 @@ h6:hover .heading-anchor {
 
             </div>
         </div>
+
+        <!-- 主题切换JavaScript -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+            
+            // 从localStorage获取保存的主题
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                html.setAttribute('data-theme', savedTheme);
+            } else {
+                // 检查系统偏好
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    html.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+            
+            // 主题切换功能
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // 添加切换动画
+                html.style.transition = 'all 0.3s ease';
+                setTimeout(() => {
+                    html.style.transition = '';
+                }, 300);
+            });
+            
+            // 监听系统主题变化
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('theme')) {
+                    const newTheme = e.matches ? 'dark' : 'light';
+                    html.setAttribute('data-theme', newTheme);
+                }
+            });
+        });
+        </script>
     
 </body></html>
