@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html><html data-theme="dark"><head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <meta name="robots" content="index, follow">
@@ -37,6 +37,9 @@
 <link rel="stylesheet" href="/css/fonts.css">
 
   
+  <!-- 访问量统计脚本 -->
+  <script src="/js/visit-counter.js"></script>
+  
   <!-- 图片懒加载 -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -60,18 +63,58 @@
 </head>
 
     <body>
-        <!-- 主题切换按钮 -->
-        <div class="theme-toggle" id="themeToggle" title="切换主题">
-            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"></circle>
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-            </svg>
-            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
+        <!-- 固定工具栏 -->
+        <div class="fixed-toolbar">
+            <!-- 主题切换按钮 -->
+            <div class="theme-toggle" id="themeToggle" title="切换主题">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"></circle>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            
+            
+            
+            <!-- 返回顶部按钮 -->
+            <div class="back-to-top" id="backToTop" title="返回顶部">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4L4 12H9V20H15V12H20L12 4Z" fill="currentColor"></path>
+                </svg>
+            </div>
         </div>
         
         <div class="paper">
+            <!-- 左侧个人介绍 -->
+            <div class="profile-sidebar">
+                <div class="profile-card" id="profileCard">
+                    <div class="profile-avatar">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="头像" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiNlZWVlZSIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSI0IiBmaWxsPSIjOTk5OTk5Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzAiIHI9IjQiIGZpbGw9IiM5OTk5OTkiLz4KPHBhdGggZD0iTTMwIDUwQzMwIDUwIDM1IDU1IDQwIDU1QzQ1IDU1IDUwIDUwIDUwIDUwIiBzdHJva2U9IiM5OTk5OTkiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPgo='" data-src="/img/me.jpeg" loading="lazy">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">子规入梧桐</h3>
+                        <div class="profile-mood">
+                            <span class="mood-icon">😊</span>
+                            <span class="mood-text">心情不错</span>
+                        </div>
+                        <p class="profile-description">热爱技术，喜欢分享。专注于Java、JavaScript等技术栈，记录学习心得和生活感悟。</p>
+                        <div class="profile-stats">
+                            <div class="stat-item" id="articleCountItem">
+                                <span class="stat-number" id="articleCount">9</span>
+                                <span class="stat-label">文章</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="visitCount">0</span>
+                                <span class="stat-label">访问</span>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+            
             <div class="paper-main">
                 
                     <div class="header">
@@ -581,22 +624,23 @@ h6:hover .heading-anchor {
 
         <!-- 主题切换JavaScript -->
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
+        // 立即设置默认主题，避免闪烁
+        (function() {
             const html = document.documentElement;
-            
-            // 从localStorage获取保存的主题
             const savedTheme = localStorage.getItem('theme');
+            
             if (savedTheme) {
                 html.setAttribute('data-theme', savedTheme);
             } else {
-                // 检查系统偏好
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (prefersDark) {
-                    html.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
-                }
+                // 默认使用黑暗模式
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
             }
+        })();
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
             
             // 主题切换功能
             themeToggle.addEventListener('click', function() {
@@ -613,14 +657,126 @@ h6:hover .heading-anchor {
                 }, 300);
             });
             
-            // 监听系统主题变化
+            // 监听系统主题变化（仅在用户未手动设置主题时）
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
                 if (!localStorage.getItem('theme')) {
                     const newTheme = e.matches ? 'dark' : 'light';
                     html.setAttribute('data-theme', newTheme);
                 }
             });
+            
+            // 为文章数量添加动画效果和点击事件
+            const articleCountElement = document.getElementById('articleCount');
+            const articleCountItem = document.getElementById('articleCountItem');
+            if (articleCountElement && articleCountItem) {
+                articleCountElement.style.transition = 'transform 0.3s ease';
+                articleCountItem.classList.add('clickable');
+                
+                articleCountItem.addEventListener('mouseenter', function() {
+                    articleCountElement.style.transform = 'scale(1.1)';
+                });
+                articleCountItem.addEventListener('mouseleave', function() {
+                    articleCountElement.style.transform = 'scale(1)';
+                });
+                
+                // 点击文章数量跳转到归档页面
+                articleCountItem.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    
+                    // 添加点击反馈效果
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                        window.location.href = '/archives/';
+                    }, 150);
+                });
+            }
+            
+            // 为个人介绍卡片添加点击事件
+            const profileCard = document.getElementById('profileCard');
+            if (profileCard) {
+                profileCard.classList.add('clickable');
+                
+                // 点击个人介绍卡片跳转到关于页面
+                profileCard.addEventListener('click', function(e) {
+                    // 如果点击的是文章数量，不执行跳转
+                    if (e.target.closest('#articleCountItem')) {
+                        return;
+                    }
+                    
+                    // 添加点击反馈效果
+                    this.style.transform = 'translateY(-2px) scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-2px) scale(1.02)';
+                        window.location.href = '/about/';
+                    }, 150);
+                });
+            }
+            
+            // 工具栏显示逻辑
+            const backToTopBtn = document.getElementById('backToTop');
+            const showTocBtn = document.getElementById('showTocBtn');
+            
+            if (backToTopBtn) {
+                // 显示/隐藏返回顶部按钮
+                function toggleBackToTop() {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollTop > 300) {
+                        backToTopBtn.style.opacity = '1';
+                        backToTopBtn.style.visibility = 'visible';
+                        backToTopBtn.style.transform = 'translateY(0)';
+                    } else {
+                        backToTopBtn.style.opacity = '0';
+                        backToTopBtn.style.visibility = 'hidden';
+                        backToTopBtn.style.transform = 'translateY(20px)';
+                    }
+                }
+                
+                // 点击返回顶部
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                // 监听滚动事件
+                window.addEventListener('scroll', toggleBackToTop);
+                toggleBackToTop();
+            }
+            
+            // 目录切换按钮功能（仅在文章页面）
+            const tocToggleBtn = document.getElementById('tocToggleBtn');
+            if (tocToggleBtn) {
+                const postToc = document.getElementById('postToc');
+                
+                // 从localStorage获取目录状态
+                const tocHidden = localStorage.getItem('tocHidden') === 'true';
+                if (tocHidden && postToc) {
+                    postToc.classList.add('hidden');
+                    tocToggleBtn.classList.add('hidden');
+                }
+                
+                // 点击切换目录显示/隐藏
+                tocToggleBtn.addEventListener('click', function() {
+                    if (postToc) {
+                        const isHidden = postToc.classList.contains('hidden');
+                        if (isHidden) {
+                            postToc.classList.remove('hidden');
+                            this.classList.remove('hidden');
+                            localStorage.setItem('tocHidden', 'false');
+                        } else {
+                            postToc.classList.add('hidden');
+                            this.classList.add('hidden');
+                            localStorage.setItem('tocHidden', 'true');
+                        }
+                    }
+                });
+            }
         });
         </script>
+            }
+        });
+        
     
 </body></html>
