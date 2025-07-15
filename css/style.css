@@ -58,6 +58,7 @@ a
     max-width: 1400px;
     margin: 0 auto;
     padding: 4vw;
+    align-items: flex-start;
 }
 
 /* 左侧个人介绍样式 */
@@ -66,12 +67,13 @@ a
     position: sticky;
     top: 80px;
     height: fit-content;
-    margin-top: 20px;
+    margin-top: 0px;
+    padding-top: 0px;
 }
 
 .profile-card {
     background: var(--bg-color-main);
-    border-radius: 16px;
+    border-radius: 24px;
     padding: 24px;
     box-shadow: 0 2px 8px var(--shadow-color);
     border: 1px solid var(--border-color);
@@ -150,7 +152,7 @@ a
     margin-bottom: 16px;
     padding: 8px 12px;
     background: var(--bg-color-1);
-    border-radius: 20px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
@@ -291,6 +293,7 @@ a
         order: -1;
         top: auto;
         margin-top: 0;
+        padding-top: 0;
     }
     
     .profile-card {
@@ -375,9 +378,7 @@ a
 }
 
 .typewriter-text {
-
-    color: var(--font-color-3);
-
+    color: var(--font-color-1);
 }
 
 .cursor {
@@ -775,25 +776,32 @@ a
     position: relative;
 }
 
+/* 文章内容区统一宽度并居中 */
 .post-md {
-    flex: 1;
-    min-width: 0;
-    max-width: 100%;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
 }
 
-/* 优化文章内容的行宽，提升阅读体验 */
-.post-md p,
-.post-md h1,
-.post-md h2,
-.post-md h3,
-.post-md h4,
-.post-md h5,
-.post-md h6,
-.post-md ul,
-.post-md ol,
-.post-md blockquote {
+/* 图片自适应内容区，不超出 */
+.post-md img {
     max-width: 100%;
-    word-wrap: break-word;
+    height: auto;
+    display: block;
+    margin: 16px auto;
+}
+
+/* 代码块、表格等超出时横向滚动，不撑破内容区 */
+.post-md pre,
+.post-md code,
+.post-md table {
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+    word-break: break-all;
 }
 
 .post-toc {
