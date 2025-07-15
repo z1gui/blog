@@ -415,14 +415,15 @@ a
 {
     color: var(--font-color-1);
     opacity: .7;
-    transition: opacity ease-in-out .5s;
+    transition: all ease-in-out .3s;
     position: relative;
 }
+
 .nav li a:hover
 {
     opacity: 1;
-    transition: opacity ease-in-out .5s;
 }
+
 .nav li a::after
 {
     content: '';
@@ -434,7 +435,20 @@ a
     background-color: var(--font-color-0);
     transition: width ease-in-out .3s;
 }
+
 .nav li a:hover::after
+{
+    width: 100%;
+}
+
+/* 当前页面的菜单项样式 */
+.nav li a.current
+{
+    opacity: 1;
+    font-weight: 600;
+}
+
+.nav li a.current::after
 {
     width: 100%;
 }
