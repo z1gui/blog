@@ -757,6 +757,14 @@ h6:hover .heading-anchor {
                 toggleBackToTop();
             }
             
+            // 返回主页按钮功能（仅在文章页面）
+            const homeBtn = document.getElementById('homeBtn');
+            if (homeBtn) {
+                homeBtn.addEventListener('click', function() {
+                    window.location.href = '/';
+                });
+            }
+            
             // 目录切换按钮功能（仅在文章页面）
             const tocToggleBtn = document.getElementById('tocToggleBtn');
             if (tocToggleBtn) {

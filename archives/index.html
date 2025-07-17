@@ -192,7 +192,7 @@
                         </article>
                     
                         <article class="archive-item" data-categories="生活" data-year="2025">
-                            <a href="/cmd48kync0013sop8ad5t4lwo/" class="archive-title">为什么一定要有一个个人网站？</a>
+                            <a href="/cmd6spirt001iaop8dsf0a6ub/" class="archive-title">为什么一定要有一个个人网站？</a>
                             <div class="archive-meta">
                                 <time class="archive-date">2025-04-24</time>
                                 <div class="archive-tags">
@@ -859,6 +859,14 @@ h6:hover .heading-anchor {
                 // 监听滚动事件
                 window.addEventListener('scroll', toggleBackToTop);
                 toggleBackToTop();
+            }
+            
+            // 返回主页按钮功能（仅在文章页面）
+            const homeBtn = document.getElementById('homeBtn');
+            if (homeBtn) {
+                homeBtn.addEventListener('click', function() {
+                    window.location.href = '/';
+                });
             }
             
             // 目录切换按钮功能（仅在文章页面）

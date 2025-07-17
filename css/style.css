@@ -1409,6 +1409,40 @@ a
     display: none;
 }
 
+/* 返回主页按钮样式 */
+.home-btn {
+    width: 45px;
+    height: 45px;
+    background: var(--bg-color-main);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.home-btn:hover {
+    border-color: var(--font-color-0);
+    color: var(--font-color-0);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.home-btn svg {
+    width: 20px;
+    height: 20px;
+    color: var(--font-color-2);
+    transition: all 0.3s ease;
+}
+
+.home-btn:hover svg {
+    color: var(--font-color-0);
+    transform: translateY(-1px);
+}
+
 /* 移动端适配 */
 @media screen and (max-width: 768px) {
     .fixed-toolbar {
@@ -1418,6 +1452,7 @@ a
     }
     
     .theme-toggle,
+    .home-btn,
     .back-to-top,
     .toc-toggle-btn {
         width: 40px;
@@ -1425,6 +1460,7 @@ a
     }
     
     .theme-toggle svg,
+    .home-btn svg,
     .back-to-top svg,
     .toc-toggle-btn svg {
         width: 18px;
