@@ -72,35 +72,19 @@ a
 }
 
 .profile-card {
-    background: var(--bg-color-main);
-    border-radius: 24px;
-    padding: 24px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
+    background: none;
+    box-shadow: 0 2px 16px var(--shadow-color);
+    transition: box-shadow 0.3s, transform 0.3s;
     position: relative;
-    overflow: hidden;
 }
 
-.profile-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--font-color-0), #ff6666);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
+/* 删除个人简介卡片悬停红线和所有悬停效果 */
+.profile-card::before,
 .profile-card:hover::before {
-    transform: scaleX(1);
-}
-
-.profile-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px var(--shadow-color);
+    display: none !important;
+    content: none !important;
+    background: none !important;
+    transform: none !important;
 }
 
 /* 个人介绍卡片点击效果 */
@@ -118,6 +102,8 @@ a
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+    z-index: 2;
+    position: relative;
 }
 
 .profile-avatar img {
@@ -153,7 +139,6 @@ a
     padding: 8px 12px;
     background: var(--bg-color-1);
     border-radius: 10px;
-    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
@@ -210,7 +195,6 @@ a
     flex: 1;
     transition: all 0.3s ease;
     padding: 8px;
-    border-radius: 8px;
     margin: -8px;
     display: flex;
     flex-direction: column;
@@ -344,11 +328,8 @@ a
 {
     flex: 1;
     padding: 72px 6vw 24px;
-    background: var(--bg-color-main);
-    border-radius: 24px;
-    position: relative;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 20px var(--shadow-color);
+    background: none;
+    box-shadow: none;
     margin-right: 80px;
 }
 
@@ -411,44 +392,41 @@ a
 {
     margin-right: 0;
 }
-.nav li a
-{
+.nav li a {
     color: var(--font-color-1);
-    opacity: .7;
-    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.8;
+    font-size: 15px;
+    padding: 4px 12px;
     position: relative;
-    font-size: 14px;
+    transition: color 0.2s, opacity 0.2s;
+    overflow: hidden;
 }
-.nav li a:hover
-{
-    opacity: 1;
-}
-.nav li a::after
-{
+.nav li a::after {
     content: '';
     position: absolute;
     left: 0;
-    bottom: -2px;
+    bottom: 0;
     width: 0;
     height: 2px;
-    background-color: var(--font-color-0);
-    transition: width .3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--font-color-0);
+    transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
+    border-radius: 2px;
 }
-.nav li a:hover::after
-{
+.nav li a:hover,
+.nav li a:focus {
+    color: var(--font-color-0);
+    opacity: 1;
+}
+.nav li a:hover::after,
+.nav li a:focus::after {
     width: 100%;
 }
-
-/* 当前页面的菜单项样式 */
-.nav li a.current
-{
-    opacity: 1;
-    font-size: 20px;
+.nav li a.current {
     color: var(--font-color-0);
-    font-weight: 600;
+    font-weight: 700;
+    opacity: 1;
 }
-.nav li a.current::after
-{
+.nav li a.current::after {
     width: 100%;
 }
 .post-header
@@ -816,130 +794,135 @@ a
     word-break: break-all;
 }
 
+/* antfu workshop 风格目录竖线样式 */
 .post-toc {
     position: fixed;
-    top: 200px;
-    right: 20px;
-    width: 280px;
-    max-height: calc(100vh - 360px);
-    background: var(--bg-color-main);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px var(--shadow-color);
+    top: 120px;
+    right: 32px;
+    left: auto;
+    width: 220px;
+    max-height: 70vh;
+    background: none;
+    box-shadow: none;
     z-index: 100;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
-    transform: translateX(0);
-}
-
-.toc-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 16px 12px;
-    background: var(--bg-color-main);
-    border-radius: 12px 12px 0 0;
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-
-.toc-title {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 13px;
+    color: var(--font-color-3);
+    border: none;
+    padding: 0;
     margin: 0;
-    color: var(--font-color-1);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+    transform: none;
 }
-
 .post-toc.hidden {
-    transform: translateX(calc(100% + 20px));
+    transform: translateX(120%);
+    opacity: 0;
+    pointer-events: none;
 }
-
+.toc-header { display: none; }
 .toc-content {
     flex: 1;
     overflow-y: auto;
-    padding: 0 16px 16px;
+    padding: 0;
+    max-height: 70vh;
     scrollbar-width: thin;
     scrollbar-color: var(--font-color-3) transparent;
-    max-height: calc(100vh - 420px);
 }
-
-.toc-content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.toc-content::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.toc-content::-webkit-scrollbar-thumb {
-    background-color: var(--font-color-3);
-    border-radius: 3px;
-}
-
-.toc-content::-webkit-scrollbar-thumb:hover {
-    background-color: var(--font-color-2);
-}
-
 .toc-list {
     list-style: none;
     padding: 0;
     margin: 0;
+    position: relative;
 }
-
+.toc-list::before {
+    display: none !important;
+}
 .toc-list li {
-    margin: 4px 0;
-    line-height: 1.4;
+    margin: 0;
+    line-height: 1.6;
+    padding: 0;
+    position: relative;
 }
-
 .toc-list a {
-    color: var(--font-color-2);
+    color: var(--font-color-3);
     text-decoration: none;
     font-size: 13px;
-    display: block;
-    padding: 6px 10px 6px 10px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    border-left: 2px solid transparent;
-    margin: 2px 0;
-    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    padding: 2px 0 2px 24px;
+    border-radius: 4px;
+    background: none;
+    transition: color 0.2s, background 0.2s;
+    position: relative;
+    font-weight: 400;
+    z-index: 1;
 }
-
-.toc-list a:hover {
-    color: var(--font-color-0);
-    border-left-color: var(--font-color-0);
-    background: var(--bg-color-1);
+.toc-list a::before {
+    display: none !important;
 }
-
+.toc-list a::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: transparent;
+    border-radius: 1px;
+    z-index: 1;
+    transition: background 0.2s;
+}
+.toc-list a.active::after {
+    background: var(--font-color-0);
+}
 .toc-list a.active {
     color: var(--font-color-0);
-    border-left-color: var(--font-color-0);
-    background: var(--bg-color-1);
-    font-weight: 500;
+    background: none;
+    font-weight: 600;
 }
-
+.toc-list a:hover {
+    color: var(--font-color-0);
+    background: none;
+}
 .toc-sublist {
     list-style: none;
-    padding-left: 16px;
-    margin: 4px 0;
+    padding-left: 18px;
+    margin: 0;
 }
-
 .toc-sublist a {
     font-size: 12px;
     color: var(--font-color-3);
-    padding: 4px 10px 4px 10px;
-    border-left: 2px solid transparent;
-    margin: 1px 0;
-    line-height: 1.3;
+    padding: 2px 0 2px 24px;
+    background: none;
+    border-radius: 4px;
 }
-
-.toc-sublist a:hover,
 .toc-sublist a.active {
     color: var(--font-color-0);
-    border-left-color: var(--font-color-0);
-    background: var(--bg-color-1);
+    font-weight: 600;
+}
+@media (max-width: 1200px) {
+    .post-toc {
+        position: static;
+        width: 100%;
+        max-height: none;
+        right: 0;
+        left: 0;
+        padding: 0;
+        margin: 24px 0 0 0;
+    }
+}
+@media (max-width: 768px) {
+    .post-toc {
+        width: 100%;
+        right: 0;
+        left: 0;
+        padding: 0;
+        margin: 16px 0 0 0;
+    }
+    .toc-content {
+        max-height: none;
+    }
 }
 
 @media screen and (min-width: 1600px) {
@@ -1131,7 +1114,6 @@ a
     flex-direction: column;
     margin-bottom: 1.5rem;
     padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
@@ -1471,4 +1453,10 @@ a
     .fixed-toolbar:not(:has(.toc-toggle-btn)) {
         gap: 12px;
     }
+}
+
+.typewriter-container,
+.profile-mood {
+    background: none !important;
+    /* border: none; */
 }
