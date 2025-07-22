@@ -73,8 +73,8 @@ a
 
 .profile-card {
     background: none;
-    box-shadow: 0 2px 16px var(--shadow-color);
-    transition: box-shadow 0.3s, transform 0.3s;
+    box-shadow: none !important;
+    border: none !important;
     position: relative;
 }
 
