@@ -23,10 +23,6 @@
   
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet">
   <!-- CSS -->
   
 <link rel="stylesheet" href="/css/reset.css">
@@ -75,40 +71,48 @@
         
         <div class="paper">
             <div class="paper-main">
+                <div class="header">
+    <div class="header-content">
+        <!-- 头像和主标题一起可点击 -->
+        <a href="/" class="header-home-link">
+            <div class="hero-header">
+                <div class="hero-header-visual">
+                    <div class="hero-header-graphic">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo" width="30" height="30" data-src="/img/favicon.png" loading="lazy">
+                    </div>
+                </div>
+                <div class="hero-header-text">
+                    <h1 class="hero-header-title">子规入梧桐</h1>
+                </div>
+            </div>
+        </a>
+        <!-- 导航栏 -->
+        <ul class="nav">
+            
+            <li>
                 
-                    <div class="header">
-    <!-- <a class="logo" href="/">子规入梧桐</a> -->
-    <!-- <div class="logo"><a href="/" title="z1gui"><img src="/img/favicon.png" alt="z1gui" aria-label="logo" height="60" ></a></div> -->
-    <!-- <div class="typewriter-container">
-        <span class="typewriter-text" id="typewriter"></span>
-        <span class="cursor">|</span>
-    </div> -->
-    <ul class="nav">
-        
-        <li>
+                <a href="/" class="">主页</a>
+            </li>
             
-            <a href="/" class="">主页</a>
-        </li>
-        
-        <li>
+            <li>
+                
+                <a href="/archives" class="current">归档</a>
+            </li>
             
-            <a href="/archives" class="current">归档</a>
-        </li>
-        
-        <li>
+            <li>
+                
+                <a href="/about" class="">关于</a>
+            </li>
             
-            <a href="/about" class="">关于</a>
-        </li>
-        
-        <li>
+            <li>
+                
+                <a href="/use" class="">设备</a>
+            </li>
             
-            <a href="/use" class="">设备</a>
-        </li>
-        
-    </ul>
+        </ul>
+    </div>
 </div>
 
-                
                 <div class="archive-container">
     <div class="category-filter" style="display: none;">
         <button class="category-btn active" data-category="all">全部</button>
@@ -389,47 +393,42 @@ h6:hover .heading-anchor {
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             const html = document.documentElement;
-            const nav = document.querySelector('.nav');
+            const header = document.querySelector('.header');
             
-            // 导航栏滚动显示/隐藏功能
+            // 头部内容滚动显示/隐藏功能
             let lastScrollTop = 0;
             let scrollThreshold = 3; // 滚动阈值，避免微小滚动触发
             
-            function handleNavScroll() {
-                if (!nav) return;
+            function handleHeaderScroll() {
+                if (!header) return;
                 
                 const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
                 // 计算滚动距离
                 const scrollDifference = currentScrollTop - lastScrollTop;
                 
-                console.log('滚动位置:', currentScrollTop, '滚动差异:', scrollDifference, '阈值:', scrollThreshold);
-                
                 // 向下滚动隐藏
                 if (scrollDifference > scrollThreshold && currentScrollTop > 30) {
-                    nav.classList.add('hidden');
-                    console.log('向下滚动，隐藏导航栏');
+                    header.classList.add('hidden');
                 }
                 // 向上滚动显示
                 else if (scrollDifference < -scrollThreshold) {
-                    nav.classList.remove('hidden');
-                    console.log('向上滚动，显示导航栏');
+                    header.classList.remove('hidden');
                 }
                 // 在页面顶部时显示
                 else if (currentScrollTop <= 30) {
-                    nav.classList.remove('hidden');
-                    console.log('在页面顶部，显示导航栏');
+                    header.classList.remove('hidden');
                 }
                 
                 lastScrollTop = currentScrollTop;
             }
             
             // 监听滚动事件
-            window.addEventListener('scroll', handleNavScroll, { passive: true });
+            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
             
-            // 页面加载时显示导航栏
-            if (nav) {
-                nav.classList.remove('hidden');
+            // 页面加载时显示头部内容
+            if (header) {
+                header.classList.remove('hidden');
             }
             
             // 目录切换按钮功能（仅在文章页面）

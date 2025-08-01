@@ -8,14 +8,46 @@
          url("../fonts/JetBrainsMono-Italic[wght].ttf") format("truetype");
 }
 
-/* Ubuntu Mono */
+
+
+/* Noto Serif */
 @font-face {
-    font-family: "Ubuntu Mono";
+    font-family: "Noto Serif";
     font-style: normal;
-    font-weight: 400;
-    src: local("Ubuntu Mono"),
-         local("UbuntuMono-Regular"),
-         url("../fonts/UbuntuMono-BoldItalic.ttf") format("truetype");
+    font-weight: 400 900;
+    src: local("Noto Serif"),
+         url("../fonts/Noto_Serif/NotoSerif-VariableFont_wdth,wght.ttf") format("truetype");
 }
 
-/* Noto Serif 字体现在通过 Google Fonts 加载 */ 
+@font-face {
+    font-family: "Noto Serif";
+    font-style: italic;
+    font-weight: 400 900;
+    src: local("Noto Serif Italic"),
+         url("../fonts/Noto_Serif/NotoSerif-Italic-VariableFont_wdth,wght.ttf") format("truetype");
+}
+
+/* Noto Serif SC (中文) */
+@font-face {
+    font-family: "Noto Serif SC";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Noto Serif SC"),
+         url("../fonts/Noto_Serif_SC/NotoSerifSC-VariableFont_wght.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Noto Serif SC";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Noto Serif SC"),
+         url("../fonts/Noto_Serif_SC/NotoSerifSC-VariableFont_wght.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Noto Serif SC";
+    font-style: normal;
+    font-weight: 900;
+    src: local("Noto Serif SC"),
+         url("../fonts/Noto_Serif_SC/NotoSerifSC-VariableFont_wght.ttf") format("truetype");
+} 
