@@ -67,7 +67,7 @@ a
     }
     
     .paper-main {
-        padding: 0;
+        padding: 4rem 0 2rem;
         max-width: 100%;
     }
     
@@ -129,7 +129,7 @@ a
     }
     
     .paper-main {
-        padding: 0;
+        padding: 4rem 0 2rem;
     }
     
     .post-main {
@@ -139,7 +139,7 @@ a
 .paper-main
 {
     flex: 1;
-    padding: 0;
+    padding: 4rem 0 2rem;
     background: none;
     box-shadow: none;
     max-width: 650px;
