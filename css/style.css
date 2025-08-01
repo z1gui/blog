@@ -1447,7 +1447,7 @@ a
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 0 12px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     transition: all 0.3s ease;
@@ -1476,11 +1476,12 @@ a
     text-align: left;
 }
 
-.device-card h3 {
+.device-card head3 {
     margin: 0 0 0 0;
     font-size: 15px;
     color: var(--font-color-1);
     font-weight: 600;
+    font-family: "JetBrains Mono", "Montserrat", monospace;
 }
 
 .device-card p {
@@ -1760,6 +1761,7 @@ a
     .device-card h3 {
         font-size: 13px;
         margin-bottom: 0px;
+        font-family: "JetBrains Mono", "Montserrat", monospace;
     }
     
     .device-card p {
