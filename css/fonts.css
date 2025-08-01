@@ -16,4 +16,6 @@
     src: local("Ubuntu Mono"),
          local("UbuntuMono-Regular"),
          url("../fonts/UbuntuMono-BoldItalic.ttf") format("truetype");
-} 
+}
+
+/* Noto Serif 字体现在通过 Google Fonts 加载 */ 

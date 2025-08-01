@@ -1,0 +1,227 @@
+// 生成目录
+function generateTOC() {
+    const tocContent = document.querySelector('.toc-content');
+    if (!tocContent) return;
+
+    const headings = document.querySelectorAll('.post-md h1, .post-md h2, .post-md h3, .post-md h4, .post-md h5, .post-md h6');
+    
+    if (headings.length === 0) {
+        const postToc = document.querySelector('.post-toc');
+        if (postToc) {
+            postToc.style.display = 'none';
+        }
+        return;
+    }
+
+    // 清空现有内容
+    tocContent.innerHTML = '';
+
+    const tocList = document.createElement('ul');
+    tocList.className = 'toc-list';
+    let currentLevel = 0;
+    let currentList = tocList;
+
+    // 生成唯一 id
+    const idMap = {};
+    headings.forEach((heading) => {
+        // 修改ID生成逻辑，确保ID以字母开头
+        let baseId = heading.textContent.toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')  // 将非字母数字字符替换为连字符
+            .replace(/^[0-9]+/, 'h-$&')   // 如果以数字开头，添加'h-'前缀
+            .replace(/(^-+|-+$)/g, '');   // 移除首尾的连字符
+        
+        if (!baseId) baseId = 'heading';
+        let uniqueId = baseId;
+        if (idMap[baseId] !== undefined) {
+            idMap[baseId] += 1;
+            uniqueId = `${baseId}-${idMap[baseId]}`;
+        } else {
+            idMap[baseId] = 0;
+        }
+        heading.id = uniqueId;
+    });
+
+    headings.forEach((heading, index) => {
+        const level = parseInt(heading.tagName[1]);
+        const id = heading.id;
+
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `#${id}`;
+        link.textContent = heading.textContent;
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetHeading = document.getElementById(id);
+            if (targetHeading) {
+                const headerOffset = 100;
+                const elementPosition = targetHeading.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+
+                // 更新 URL 的 hash
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+
+        listItem.appendChild(link);
+
+        if (level > currentLevel) {
+            const newList = document.createElement('ul');
+            newList.className = 'toc-sublist';
+            if (currentList.lastChild) {
+                currentList.lastChild.appendChild(newList);
+            } else {
+                currentList.appendChild(newList);
+            }
+            currentList = newList;
+        } else if (level < currentLevel) {
+            const diff = currentLevel - level;
+            for (let i = 0; i < diff && currentList.parentNode && currentList.parentNode.parentNode; i++) {
+                currentList = currentList.parentNode.parentNode;
+            }
+        }
+
+        if (currentList) {
+            currentList.appendChild(listItem);
+        }
+        currentLevel = level;
+    });
+
+    if (tocList) {
+        tocContent.appendChild(tocList);
+    }
+
+    // 初始化时检查 URL hash 并滚动到对应位置
+    if (window.location.hash) {
+        const targetId = window.location.hash.slice(1);
+        const targetHeading = document.getElementById(targetId);
+        if (targetHeading) {
+            setTimeout(() => {
+                const headerOffset = 100;
+                const elementPosition = targetHeading.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
+    }
+
+    // 添加目录滚动监听
+    const tocLinks = document.querySelectorAll('.toc-content a');
+    const postToc = document.querySelector('.post-toc');
+    let activeLink = null;
+    let ticking = false;
+
+    function updateTOCPosition() {
+        if (!postToc || !tocContent || !activeLink) return;
+
+        const tocContentRect = tocContent.getBoundingClientRect();
+        const activeLinkRect = activeLink.getBoundingClientRect();
+        
+        // 计算目录内容区域的中心位置
+        const tocContentCenter = tocContentRect.top + tocContentRect.height / 2;
+        
+        // 计算活动链接的中心位置
+        const linkCenter = activeLinkRect.top + activeLinkRect.height / 2;
+        
+        // 计算需要滚动的距离，使活动链接居中
+        const scrollDistance = linkCenter - tocContentCenter;
+        
+        // 计算新的滚动位置
+        const newScrollTop = tocContent.scrollTop + scrollDistance;
+        
+        // 确保滚动位置在有效范围内
+        const maxScroll = tocContent.scrollHeight - tocContent.clientHeight;
+        const boundedScrollTop = Math.max(0, Math.min(newScrollTop, maxScroll));
+        
+        // 平滑滚动到新位置
+        tocContent.scrollTo({
+            top: boundedScrollTop,
+            behavior: 'smooth'
+        });
+    }
+
+    function setActiveLink() {
+        if (ticking) return;
+        ticking = true;
+
+        requestAnimationFrame(() => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const headerOffset = 100;
+            let currentActive = null;
+            let minDistance = Infinity;
+
+            // 找到距离视口顶部最近的标题
+            headings.forEach((heading) => {
+                const rect = heading.getBoundingClientRect();
+                const distance = Math.abs(rect.top - headerOffset);
+                
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    currentActive = tocLinks[Array.from(headings).indexOf(heading)];
+                }
+            });
+
+            // 更新活动链接状态
+            if (currentActive !== activeLink) {
+                tocLinks.forEach(link => {
+                    if (link === currentActive) {
+                        if (!link.classList.contains('active')) {
+                            link.classList.add('active');
+                            activeLink = link;
+                            // 当活动链接改变时，更新目录位置
+                            setTimeout(updateTOCPosition, 0);
+                        }
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            ticking = false;
+        });
+    }
+
+    // 使用节流函数优化滚动事件处理
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+
+    // 监听滚动事件，使用节流函数优化性能
+    window.addEventListener('scroll', throttle(() => {
+        setActiveLink();
+    }, 16)); // 使用约60fps的更新频率
+
+    // 监听窗口大小改变事件
+    window.addEventListener('resize', throttle(() => {
+        setActiveLink();
+        updateTOCPosition();
+    }, 100));
+
+    // 初始化时执行一次
+    setActiveLink();
+}
+
+// 确保在DOM完全加载后执行
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        generateTOC();
+    } catch (error) {
+        console.error('Error initializing TOC:', error);
+    }
+}); 
