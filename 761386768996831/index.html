@@ -58,6 +58,9 @@
 <link rel="stylesheet" href="/css/fonts.css">
 
   
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+  
 <script src="/js/toc.js"></script>
 
   
@@ -1042,8 +1045,18 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         <!-- JavaScript -->
+        
+<script src="/js/highlight.min.js"></script>
+
+        
+<script src="/js/highlightjs-line-numbers.js"></script>
+
         <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化代码高亮
+            hljs.highlightAll();
+            hljs.initLineNumbersOnLoad();
+            
             const html = document.documentElement;
             const header = document.querySelector('.header');
             
