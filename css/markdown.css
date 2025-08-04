@@ -137,6 +137,53 @@
 {
     transform: scale(1.02);
 }
+
+/* 懒加载图片样式 */
+.post-md .lazy-image {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.post-md .lazy-image.loaded {
+    opacity: 1;
+}
+
+/* 加载中转圈圈样式 */
+.image-loading-spinner {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-loading-spinner::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--line-1);
+    border-top: 3px solid var(--font-color-0);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.image-loading-spinner.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 图片容器样式 */
+.post-md img {
+    position: relative;
+}
+
 .post-md hr
 {
     border: none;
