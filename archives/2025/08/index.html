@@ -1,0 +1,458 @@
+<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <meta name="robots" content="index, follow">
+  <!-- title -->
+  
+    
+  <title>所有文章 - 子规入梧桐</title>
+    
+  
+  
+  <!-- open graph -->
+  <meta property="og:type" content="website">
+<meta property="og:title" content="子规入梧桐">
+<meta property="og:url" content="https://www.lazydaily.cn/archives/2025/08/index.html">
+<meta property="og:site_name" content="子规入梧桐">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="z1gui">
+<meta name="twitter:card" content="summary">
+  <!-- canonical -->
+  
+  <link rel="canonical" href="https://www.lazydaily.cn/archives/2025/08/">
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/img/favicon.png">
+  <!-- CSS -->
+  
+<link rel="stylesheet" href="/css/reset.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/markdown.css">
+
+  
+<link rel="stylesheet" href="/css/fonts.css">
+
+  
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+  
+<script src="/js/toc.js"></script>
+
+  
+
+  
+  <!-- 图片懒加载 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      lazyImages.forEach(img => imageObserver.observe(img));
+    });
+  </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
+</head>
+
+    <body>
+        <!-- 固定工具栏 -->
+        <div class="fixed-toolbar">
+        </div>
+        
+        <div class="paper">
+            <div class="paper-main">
+                <div class="header">
+    <div class="header-content">
+        <!-- 头像和主标题一起可点击 -->
+        <a href="/" class="header-home-link">
+            <div class="hero-header">
+                <div class="hero-header-visual">
+                    <div class="hero-header-graphic">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo" width="30" height="30" data-src="/img/favicon.png" loading="lazy">
+                    </div>
+                </div>
+                <div class="hero-header-text">
+                    <h1 class="hero-header-title">子规入梧桐</h1>
+                </div>
+            </div>
+        </a>
+        <!-- 导航栏 -->
+        <ul class="nav">
+            
+            <li>
+                
+                <a href="/" class="">主页</a>
+            </li>
+            
+            <li>
+                
+                <a href="/archives" class="current">归档</a>
+            </li>
+            
+            <li>
+                
+                <a href="/about" class="">关于</a>
+            </li>
+            
+            <li>
+                
+                <a href="/use" class="">设备</a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                <div class="archive-container">
+    <div class="category-filter" style="display: none;">
+        <button class="category-btn active" data-category="all">全部</button>
+        
+            <button class="category-btn" data-category="AI">AI (1)</button>
+        
+            <button class="category-btn" data-category="中间件">中间件 (1)</button>
+        
+            <button class="category-btn" data-category="前端">前端 (2)</button>
+        
+            <button class="category-btn" data-category="后端">后端 (3)</button>
+        
+            <button class="category-btn" data-category="数据库">数据库 (1)</button>
+        
+            <button class="category-btn" data-category="生活">生活 (1)</button>
+        
+    </div>
+    <div class="archive-content">
+        <div class="empty-state" style="display: none;">
+            <p>该分类下文章正在创作中，请过段时间再来看看~</p>
+        </div>
+        
+            <div class="archive-year" data-year="2025">
+                <h2 class="year-title">
+                    2025
+                    <span class="year-count">共 1 篇文章</span>
+                </h2>
+                <div class="year-posts">
+                    
+                        <article class="archive-item" data-categories="" data-year="2025">
+                            <a href="/cmdweeolb000g7op85mczawwf/" class="archive-title"></a>
+                            <div class="archive-meta">
+                                <time class="archive-date">2025-08-04</time>
+                                <div class="archive-tags">
+                                    
+                                </div>
+                            </div>
+                        </article>
+                    
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryFilter = document.querySelector('.category-filter');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const archiveItems = document.querySelectorAll('.archive-item');
+    const emptyState = document.querySelector('.empty-state');
+    const archiveContent = document.querySelector('.archive-content');
+
+    // 检查是否应该显示分类列表
+    function checkShouldShowCategoryFilter() {
+        const referrer = document.referrer;
+        const currentHost = window.location.host;
+        const currentPath = window.location.pathname;
+        
+        // 如果当前页面URL包含tags或categories，不显示分类列表
+        if (currentPath.includes('/tags/') || currentPath.includes('/categories/')) {
+            return false;
+        }
+        
+        // 如果是从其他页面进入，显示分类列表
+        if (referrer && referrer.includes(currentHost)) {
+            return true;
+        }
+        return false;
+    }
+
+    function updateDisplay() {
+        const selectedCategory = document.querySelector('.category-btn.active').dataset.category;
+        let hasVisibleItems = false;
+
+        // 根据选择的分类显示文章
+        if (selectedCategory === 'all') {
+            // 显示所有文章
+            archiveItems.forEach(item => {
+                item.style.display = 'flex';
+                hasVisibleItems = true;
+            });
+        } else {
+            // 先隐藏所有文章
+            archiveItems.forEach(item => {
+                item.style.display = 'none';
+            });
+
+            // 显示选中分类的文章
+            archiveItems.forEach(item => {
+                const categories = item.dataset.categories.split(' ');
+                if (categories.includes(selectedCategory)) {
+                    item.style.display = 'flex';
+                    hasVisibleItems = true;
+                }
+            });
+        }
+
+        // 更新年份标题的显示
+        const years = document.querySelectorAll('.archive-year');
+        years.forEach(year => {
+            const yearValue = year.dataset.year;
+            const yearPosts = document.querySelectorAll(`.archive-item[data-year="${yearValue}"]`);
+            const hasVisiblePosts = Array.from(yearPosts).some(post => post.style.display === 'flex');
+            
+            // 如果该年份下没有可见的文章，隐藏整个年份区块
+            year.style.display = hasVisiblePosts ? 'block' : 'none';
+        });
+
+        // 显示或隐藏空状态提示
+        if (!hasVisibleItems && selectedCategory !== 'all') {
+            emptyState.style.display = 'block';
+            archiveContent.style.display = 'none';
+        } else {
+            emptyState.style.display = 'none';
+            archiveContent.style.display = 'block';
+        }
+    }
+
+    // 为每个分类按钮添加点击事件
+    categoryBtns.forEach(function(btn) {
+        btn.onclick = function() {
+            // 移除所有按钮的active类
+            categoryBtns.forEach(function(b) {
+                b.classList.remove('active');
+            });
+            // 为当前点击的按钮添加active类
+            this.classList.add('active');
+            // 更新显示
+            updateDisplay();
+        };
+    });
+
+    // 检查URL中是否包含分类参数
+    function checkUrlForCategory() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        if (category) {
+            const decodedCategory = decodeURIComponent(category);
+            const targetBtn = Array.from(categoryBtns).find(btn => btn.dataset.category === decodedCategory);
+            if (targetBtn) {
+                // 显示分类列表
+                categoryFilter.style.display = 'flex';
+                // 移除所有按钮的active类
+                categoryBtns.forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                // 激活目标按钮
+                targetBtn.classList.add('active');
+                // 更新显示
+                updateDisplay();
+            }
+        }
+    }
+
+    // 初始化显示
+    if (checkShouldShowCategoryFilter()) {
+        categoryFilter.style.display = 'flex';
+    }
+    checkUrlForCategory();
+});
+</script>
+                
+                    <div class="footer">
+    <!-- <div class="typewriter-container">
+        <span class="typewriter-text" id="typewriter"></span>
+        <span class="cursor">|</span>
+    </div> -->
+    <span>Copyright © <script>document.write(new Date().getFullYear())</script> <a target="_blank" rel="noopener" href="https://github.com/z1gui">z1gui</a></span>
+    <div class="footer-bottom">
+        <span>以<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"> CC-BY-NC-SA 4.0 </a>许可发布</span>
+        
+            <!-- 页脚社交链接 -->
+    <div class="footer-social-links">
+        <a href="https://github.com/z1gui" target="_blank" title="GitHub" class="footer-social-icon">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="GitHub" data-src="/img/github1.png" loading="lazy">
+        </a>
+        <a href="mailto:leon6line@gmail.com" title="Email" class="footer-social-icon">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Email" data-src="/img/mail.png" loading="lazy">
+        </a>
+        <a href="/atom.xml" title="RSS Feed" class="footer-social-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 11a9 9 0 0 1 9 9"></path>
+                <path d="M4 4a16 16 0 0 1 16 16"></path>
+                <circle cx="5" cy="19" r="1"></circle>
+            </svg>
+        </a>
+    </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+<style>
+.heading-anchor {
+    position: absolute;
+    left: 0;
+    color: var(--font-color-3);
+    opacity: 0;
+    transition: opacity 0.3s, color 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.heading-anchor:hover {
+    color: var(--font-color-0);
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor {
+    opacity: 1;
+}
+
+.copy-tooltip {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--font-color-1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+</style>
+
+
+
+                
+            </div>
+        </div>
+
+        <!-- JavaScript -->
+        
+<script src="/js/highlight.min.js"></script>
+
+        
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化代码高亮
+            hljs.highlightAll();
+            hljs.initLineNumbersOnLoad();
+            
+            const html = document.documentElement;
+            const header = document.querySelector('.header');
+            
+            // 头部内容滚动显示/隐藏功能
+            let lastScrollTop = 0;
+            let scrollThreshold = 3; // 滚动阈值，避免微小滚动触发
+            
+            function handleHeaderScroll() {
+                if (!header) return;
+                
+                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 计算滚动距离
+                const scrollDifference = currentScrollTop - lastScrollTop;
+                
+                // 向下滚动隐藏
+                if (scrollDifference > scrollThreshold && currentScrollTop > 30) {
+                    header.classList.add('hidden');
+                }
+                // 向上滚动显示
+                else if (scrollDifference < -scrollThreshold) {
+                    header.classList.remove('hidden');
+                }
+                // 在页面顶部时显示
+                else if (currentScrollTop <= 30) {
+                    header.classList.remove('hidden');
+                }
+                
+                lastScrollTop = currentScrollTop;
+            }
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+            
+            // 页面加载时显示头部内容
+            if (header) {
+                header.classList.remove('hidden');
+            }
+            
+            // 目录切换按钮功能（仅在文章页面）
+            const tocToggleBtn = document.getElementById('tocToggleBtn');
+            if (tocToggleBtn) {
+                const postToc = document.getElementById('postToc');
+                
+                // 从localStorage获取目录状态
+                const tocHidden = localStorage.getItem('tocHidden') === 'true';
+                if (tocHidden && postToc) {
+                    postToc.classList.add('hidden');
+                    tocToggleBtn.classList.add('hidden');
+                }
+                
+                // 点击切换目录显示/隐藏
+                tocToggleBtn.addEventListener('click', function() {
+                    if (postToc) {
+                        const isHidden = postToc.classList.contains('hidden');
+                        if (isHidden) {
+                            postToc.classList.remove('hidden');
+                            this.classList.remove('hidden');
+                            localStorage.setItem('tocHidden', 'false');
+                        } else {
+                            postToc.classList.add('hidden');
+                            this.classList.add('hidden');
+                            localStorage.setItem('tocHidden', 'true');
+                        }
+                    }
+                });
+            }
+        });
+        </script>
+    
+</body></html>
