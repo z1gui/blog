@@ -357,6 +357,19 @@ a
     border-radius: 1px;
 }
 
+/* 外部链接图标样式 */
+.external-link-icon {
+    font-size: 0.9em;
+    margin-left: 4px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    vertical-align: middle;
+}
+
+.nav li a:hover .external-link-icon {
+    opacity: 0.9;
+}
+
 
 
 
@@ -1144,7 +1157,7 @@ a
     }
     
     .post-content-main {
-        width: 100%;h
+        width: 100%;
     }
     
     .post-content-sidebar {

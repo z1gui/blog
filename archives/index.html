@@ -48,7 +48,8 @@
   <!-- 图片懒加载 -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const lazyImages = document.querySelectorAll('.lazy-image');
+      // 只选择markdown文档中的懒加载图片
+      const lazyImages = document.querySelectorAll('.post-md .lazy-image');
       
       if (lazyImages.length === 0) return;
       
@@ -109,7 +110,7 @@
             <div class="hero-header">
                 <div class="hero-header-visual">
                     <div class="hero-header-graphic">
-                        <div class="image-loading-spinner"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo" width="30" height="30" data-src="/img/favicon.png" loading="lazy" class="lazy-image">
+                        <img src="/img/favicon.png" alt="Logo" width="30" height="30">
                     </div>
                 </div>
                 <div class="hero-header-text">
@@ -122,22 +123,44 @@
             
             <li>
                 
-                <a href="/" class="">主页</a>
+                <a href="/" class="">
+                   主页
+                   
+                </a>
             </li>
             
             <li>
                 
-                <a href="/archives" class="current">归档</a>
+                <a href="/archives" class="current">
+                   归档
+                   
+                </a>
             </li>
             
             <li>
                 
-                <a href="/about" class="">关于</a>
+                <a href="/about" class="">
+                   关于
+                   
+                </a>
             </li>
             
             <li>
                 
-                <a href="/use" class="">设备</a>
+                <a href="/use" class="">
+                   设备
+                   
+                </a>
+            </li>
+            
+            <li>
+                
+                <a href="https://k51qzi5uqu5dhkrc84dmwh5nvl64df99eb86wag4em9avg3dhkhi66tyvsr7sq.eth.sucks/" class="" target="&quot;_blank&quot;" rel="&quot;noopener" noreferrer&#34;="">
+                   碎碎念
+                   
+                   <span class="external-link-icon">🔗</span>
+                   
+                </a>
             </li>
             
         </ul>
@@ -463,10 +486,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <!-- 页脚社交链接 -->
     <div class="footer-social-links">
         <a href="https://github.com/z1gui" target="_blank" title="GitHub" class="footer-social-icon">
-            <div class="image-loading-spinner"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="GitHub" data-src="/img/github1.png" loading="lazy" class="lazy-image">
+            <img src="/img/github1.png" alt="GitHub">
         </a>
         <a href="mailto:leon6line@gmail.com" title="Email" class="footer-social-icon">
-            <div class="image-loading-spinner"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Email" data-src="/img/mail.png" loading="lazy" class="lazy-image">
+            <img src="/img/mail.png" alt="Email">
         </a>
         <a href="/atom.xml" title="RSS Feed" class="footer-social-icon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
