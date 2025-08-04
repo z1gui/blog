@@ -1694,7 +1694,7 @@ a
         max-width: 100%;
         padding: 0 1rem;
         border-radius: 20px;
-        margin: 0.5rem 1rem;
+        margin: 0.5rem 0rem;
         width: calc(100% - 2rem);
     }
     
