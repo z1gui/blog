@@ -31,6 +31,40 @@
   
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
+  
+  <!-- Google Fonts 预加载 - 优化字体加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  
+  <!-- 预加载所有字体 -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  
+  <!-- 字体加载优化脚本 -->
+  <script>
+    // 字体加载优化
+    (function() {
+      // 检查是否支持Font Loading API
+      if ('fonts' in document) {
+        // 异步加载字体，不阻塞页面渲染
+        setTimeout(function() {
+          Promise.all([
+            document.fonts.load('400 1em "JetBrains Mono"'),
+            document.fonts.load('400 1em "Noto Serif"'),
+            document.fonts.load('400 1em "Noto Serif SC"')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+          }).catch(function() {
+            document.documentElement.classList.add('fonts-fallback');
+          });
+        }, 0);
+      } else {
+        // 不支持Font Loading API的浏览器，直接使用系统字体
+        document.documentElement.classList.add('fonts-fallback');
+      }
+    })();
+  </script>
+  
   <!-- CSS -->
   
 <link rel="stylesheet" href="/css/reset.css">
@@ -56,6 +90,33 @@
       let isProcessing = false;
       let processedImages = new Set();
       
+      // 创建loading效果
+      function createLoadingEffect(img) {
+        // 检查是否已经有容器
+        let container = img.parentElement;
+        if (!container || !container.classList.contains('image-container')) {
+          // 创建图片容器
+          container = document.createElement('div');
+          container.className = 'image-container loading';
+          
+          // 将图片包装在容器中
+          img.parentNode.insertBefore(container, img);
+          container.appendChild(img);
+        } else {
+          // 如果已有容器，添加loading类
+          container.classList.add('loading');
+        }
+        
+        return container;
+      }
+      
+      // 移除loading效果
+      function removeLoadingEffect(container) {
+        if (container && container.classList.contains('loading')) {
+          container.classList.remove('loading');
+        }
+      }
+      
       // 处理预加载队列
       function processPreloadQueue() {
         if (isProcessing || preloadQueue.length === 0) return;
@@ -65,16 +126,22 @@
         
         if (img && img.dataset.src && !processedImages.has(img)) {
           processedImages.add(img);
+          
+          // 添加loading效果
+          const container = createLoadingEffect(img);
+          
           img.src = img.dataset.src;
           
           img.addEventListener('load', function() {
             img.classList.add('loaded');
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
           });
           
           img.addEventListener('error', function() {
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
@@ -103,12 +170,20 @@
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
               
+              // 添加loading效果
+              const container = createLoadingEffect(img);
+              
               // 立即加载图片
               img.src = img.dataset.src;
               
               // 图片加载完成后的处理
               img.addEventListener('load', function() {
                 img.classList.add('loaded');
+                removeLoadingEffect(container);
+              });
+              
+              img.addEventListener('error', function() {
+                removeLoadingEffect(container);
               });
             }
           });
@@ -248,7 +323,7 @@
 <p>早在 2024 年初，我就开始接触 AI 编程，一开始就使用了 Cursor。当我熟悉了它的操作之后，惊叹于它输出代码的质量。随后，我向身边朋友，同事极力推荐 Cursor。</p>
 <p>本质上，Cursor 是一个集成 AI 能力的 VS Code 编辑器。尽管后来尝试各个大厂的不同的 AI 编程工具，例如：通义灵码，Windsurf，Trae 等，甚至自己搭建平台调用 Deepseek Api 完成编程辅助工作，但坦言来讲，体验都不如 Cursor。</p>
 <h2 id="Cursor-收费模式"><a href="#Cursor-收费模式" class="headerlink" title="Cursor 收费模式"></a>Cursor 收费模式</h2><p>当然，Cursor 并不是免费的。它的收费方式是订阅制，订阅价格在 $20 / 月。其中包含 500 次快请求，以及不限次数的慢请求。说实话，每月 140 块钱确实让人望而却步。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.png" loading="lazy" class="lazy-image"></div></p>
 <p>Cursor 相对新用户还是有很好的政策。新用户首月 14 天 150 次快请求，次月及以后每月 50 次快请求，用完就不能再使用了。理论上有足够多的账号，也可以白嫖。在没有教育优惠前，我就是用两个账号的试用和免费请求体验了 cursor 的绝大数功能。</p>
 <blockquote>
 <p>个人使用来说，我一般使用 cursor 调整前端样式，或者解决前端报错问题。或者直接需求文档丢给 cursor 让他给我生成前端文件。50 次请求大概能完成 2~3 个复杂功能页面的开发。</p>
@@ -258,7 +333,7 @@
 <blockquote>
 <p>2025-5-20：订阅时间从 2025 年 5 月 12 号到 2026 年 5 月 12 号，当前使用无问题，后续有问题补充</p>
 </blockquote>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.png" loading="lazy" class="lazy-image"></div></p>
 <p>目前来说，500 次快请求基本满足个人高强度使用的要求。</p>
 
                 </div>

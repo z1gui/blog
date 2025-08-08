@@ -30,6 +30,40 @@
   
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
+  
+  <!-- Google Fonts 预加载 - 优化字体加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  
+  <!-- 预加载所有字体 -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  
+  <!-- 字体加载优化脚本 -->
+  <script>
+    // 字体加载优化
+    (function() {
+      // 检查是否支持Font Loading API
+      if ('fonts' in document) {
+        // 异步加载字体，不阻塞页面渲染
+        setTimeout(function() {
+          Promise.all([
+            document.fonts.load('400 1em "JetBrains Mono"'),
+            document.fonts.load('400 1em "Noto Serif"'),
+            document.fonts.load('400 1em "Noto Serif SC"')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+          }).catch(function() {
+            document.documentElement.classList.add('fonts-fallback');
+          });
+        }, 0);
+      } else {
+        // 不支持Font Loading API的浏览器，直接使用系统字体
+        document.documentElement.classList.add('fonts-fallback');
+      }
+    })();
+  </script>
+  
   <!-- CSS -->
   
 <link rel="stylesheet" href="/css/reset.css">
@@ -55,6 +89,33 @@
       let isProcessing = false;
       let processedImages = new Set();
       
+      // 创建loading效果
+      function createLoadingEffect(img) {
+        // 检查是否已经有容器
+        let container = img.parentElement;
+        if (!container || !container.classList.contains('image-container')) {
+          // 创建图片容器
+          container = document.createElement('div');
+          container.className = 'image-container loading';
+          
+          // 将图片包装在容器中
+          img.parentNode.insertBefore(container, img);
+          container.appendChild(img);
+        } else {
+          // 如果已有容器，添加loading类
+          container.classList.add('loading');
+        }
+        
+        return container;
+      }
+      
+      // 移除loading效果
+      function removeLoadingEffect(container) {
+        if (container && container.classList.contains('loading')) {
+          container.classList.remove('loading');
+        }
+      }
+      
       // 处理预加载队列
       function processPreloadQueue() {
         if (isProcessing || preloadQueue.length === 0) return;
@@ -64,16 +125,22 @@
         
         if (img && img.dataset.src && !processedImages.has(img)) {
           processedImages.add(img);
+          
+          // 添加loading效果
+          const container = createLoadingEffect(img);
+          
           img.src = img.dataset.src;
           
           img.addEventListener('load', function() {
             img.classList.add('loaded');
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
           });
           
           img.addEventListener('error', function() {
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
@@ -102,12 +169,20 @@
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
               
+              // 添加loading效果
+              const container = createLoadingEffect(img);
+              
               // 立即加载图片
               img.src = img.dataset.src;
               
               // 图片加载完成后的处理
               img.addEventListener('load', function() {
                 img.classList.add('loaded');
+                removeLoadingEffect(container);
+              });
+              
+              img.addEventListener('error', function() {
+                removeLoadingEffect(container);
               });
             }
           });
@@ -299,7 +374,7 @@ let bar = 'global'
 console.log(this.foo) // global
 console.log(this.bar) // undefined
 </code></pre>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[d81d47f1a51cc2ecfe16e8966e7949b8_MD5.jpeg]" data-src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.jpeg" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[d81d47f1a51cc2ecfe16e8966e7949b8_MD5.jpeg]" data-src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.jpeg" loading="lazy" class="lazy-image"></div></p>
 <p>由上图可知，let 在全局环境声明变量 bar 保存在[[Scopes]][0]: Script 这个变量对象的属性中，而 [[Scopes]][1]: Global 就是我们常说的全局对象。</p>
 <h3 id="变量提升和暂存死区"><a href="#变量提升和暂存死区" class="headerlink" title="变量提升和暂存死区"></a>变量提升和暂存死区</h3><p>了解变量提升，就需要了解到上线文和变量对象。详见<a href="/md/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B.md">详解：javascript 创建执行释放过程</a></p>
 <h4 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h4><p>所有使用 var 声明的变量都会在执行上下文的创建阶段时作为变量对象的属性被创建并初始化，这样才能保证在执行阶段能通过标识符在变量对象里找到对应变量进行赋值操作等。即 var 在声明变量构建变量的时：</p>

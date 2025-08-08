@@ -23,6 +23,40 @@
   
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
+  
+  <!-- Google Fonts 预加载 - 优化字体加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  
+  <!-- 预加载所有字体 -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  
+  <!-- 字体加载优化脚本 -->
+  <script>
+    // 字体加载优化
+    (function() {
+      // 检查是否支持Font Loading API
+      if ('fonts' in document) {
+        // 异步加载字体，不阻塞页面渲染
+        setTimeout(function() {
+          Promise.all([
+            document.fonts.load('400 1em "JetBrains Mono"'),
+            document.fonts.load('400 1em "Noto Serif"'),
+            document.fonts.load('400 1em "Noto Serif SC"')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+          }).catch(function() {
+            document.documentElement.classList.add('fonts-fallback');
+          });
+        }, 0);
+      } else {
+        // 不支持Font Loading API的浏览器，直接使用系统字体
+        document.documentElement.classList.add('fonts-fallback');
+      }
+    })();
+  </script>
+  
   <!-- CSS -->
   
 <link rel="stylesheet" href="/css/reset.css">
@@ -48,6 +82,33 @@
       let isProcessing = false;
       let processedImages = new Set();
       
+      // 创建loading效果
+      function createLoadingEffect(img) {
+        // 检查是否已经有容器
+        let container = img.parentElement;
+        if (!container || !container.classList.contains('image-container')) {
+          // 创建图片容器
+          container = document.createElement('div');
+          container.className = 'image-container loading';
+          
+          // 将图片包装在容器中
+          img.parentNode.insertBefore(container, img);
+          container.appendChild(img);
+        } else {
+          // 如果已有容器，添加loading类
+          container.classList.add('loading');
+        }
+        
+        return container;
+      }
+      
+      // 移除loading效果
+      function removeLoadingEffect(container) {
+        if (container && container.classList.contains('loading')) {
+          container.classList.remove('loading');
+        }
+      }
+      
       // 处理预加载队列
       function processPreloadQueue() {
         if (isProcessing || preloadQueue.length === 0) return;
@@ -57,16 +118,22 @@
         
         if (img && img.dataset.src && !processedImages.has(img)) {
           processedImages.add(img);
+          
+          // 添加loading效果
+          const container = createLoadingEffect(img);
+          
           img.src = img.dataset.src;
           
           img.addEventListener('load', function() {
             img.classList.add('loaded');
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
           });
           
           img.addEventListener('error', function() {
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
@@ -95,12 +162,20 @@
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
               
+              // 添加loading效果
+              const container = createLoadingEffect(img);
+              
               // 立即加载图片
               img.src = img.dataset.src;
               
               // 图片加载完成后的处理
               img.addEventListener('load', function() {
                 img.classList.add('loaded');
+                removeLoadingEffect(container);
+              });
+              
+              img.addEventListener('error', function() {
+                removeLoadingEffect(container);
               });
             }
           });
@@ -403,10 +478,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <!-- 页脚社交链接 -->
     <div class="footer-social-links">
         <a href="https://github.com/z1gui" target="_blank" title="GitHub" class="footer-social-icon">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="GitHub" data-src="/img/github1.png" loading="lazy" class="lazy-image">
+            <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="GitHub" data-src="/img/github1.png" loading="lazy" class="lazy-image"></div>
         </a>
         <a href="mailto:leon6line@gmail.com" title="Email" class="footer-social-icon">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Email" data-src="/img/mail.png" loading="lazy" class="lazy-image">
+            <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Email" data-src="/img/mail.png" loading="lazy" class="lazy-image"></div>
         </a>
         <a href="/atom.xml" title="RSS Feed" class="footer-social-icon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

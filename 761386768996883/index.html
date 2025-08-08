@@ -34,6 +34,40 @@
   
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
+  
+  <!-- Google Fonts 预加载 - 优化字体加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  
+  <!-- 预加载所有字体 -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  
+  <!-- 字体加载优化脚本 -->
+  <script>
+    // 字体加载优化
+    (function() {
+      // 检查是否支持Font Loading API
+      if ('fonts' in document) {
+        // 异步加载字体，不阻塞页面渲染
+        setTimeout(function() {
+          Promise.all([
+            document.fonts.load('400 1em "JetBrains Mono"'),
+            document.fonts.load('400 1em "Noto Serif"'),
+            document.fonts.load('400 1em "Noto Serif SC"')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+          }).catch(function() {
+            document.documentElement.classList.add('fonts-fallback');
+          });
+        }, 0);
+      } else {
+        // 不支持Font Loading API的浏览器，直接使用系统字体
+        document.documentElement.classList.add('fonts-fallback');
+      }
+    })();
+  </script>
+  
   <!-- CSS -->
   
 <link rel="stylesheet" href="/css/reset.css">
@@ -59,6 +93,33 @@
       let isProcessing = false;
       let processedImages = new Set();
       
+      // 创建loading效果
+      function createLoadingEffect(img) {
+        // 检查是否已经有容器
+        let container = img.parentElement;
+        if (!container || !container.classList.contains('image-container')) {
+          // 创建图片容器
+          container = document.createElement('div');
+          container.className = 'image-container loading';
+          
+          // 将图片包装在容器中
+          img.parentNode.insertBefore(container, img);
+          container.appendChild(img);
+        } else {
+          // 如果已有容器，添加loading类
+          container.classList.add('loading');
+        }
+        
+        return container;
+      }
+      
+      // 移除loading效果
+      function removeLoadingEffect(container) {
+        if (container && container.classList.contains('loading')) {
+          container.classList.remove('loading');
+        }
+      }
+      
       // 处理预加载队列
       function processPreloadQueue() {
         if (isProcessing || preloadQueue.length === 0) return;
@@ -68,16 +129,22 @@
         
         if (img && img.dataset.src && !processedImages.has(img)) {
           processedImages.add(img);
+          
+          // 添加loading效果
+          const container = createLoadingEffect(img);
+          
           img.src = img.dataset.src;
           
           img.addEventListener('load', function() {
             img.classList.add('loaded');
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
           });
           
           img.addEventListener('error', function() {
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
@@ -106,12 +173,20 @@
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
               
+              // 添加loading效果
+              const container = createLoadingEffect(img);
+              
               // 立即加载图片
               img.src = img.dataset.src;
               
               // 图片加载完成后的处理
               img.addEventListener('load', function() {
                 img.classList.add('loaded');
+                removeLoadingEffect(container);
+              });
+              
+              img.addEventListener('error', function() {
+                removeLoadingEffect(container);
               });
             }
           });
@@ -260,18 +335,18 @@ insert into cs  select 1,'Tom',to_blob('123412f') from dual;
 insert into cs  select 2,'King',to_blob('123412f') from dual;
 insert into cs  select 3,'Leo',to_blob('124123F21F') from dual;
 </code></pre>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="库表结构" data-src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="库表结构" data-src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.png" loading="lazy" class="lazy-image"></div></p>
 <h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h4 id="1-通过Group-by-方式进行查重（操作失败）"><a href="#1-通过Group-by-方式进行查重（操作失败）" class="headerlink" title="1.通过Group by 方式进行查重（操作失败）"></a>1.通过Group by 方式进行查重（操作失败）</h4><p>遇到这个问题，我熟啊！写 <code>group by</code> 语句就行了呗，然后就写了这样的语句</p>
 <pre><code class="language-sql">select  jl,count(1) from cs group by jl having count(1)&gt;1;
 </code></pre>
-<p>当我美滋滋开始执行的时候，却出现的问题<br><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题1" data-src="/img/584082192807448bb4db57a334ebb740.png" loading="lazy" class="lazy-image"><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行 <code>group by</code> 的，那我把这个字段用 <code>to_char()</code> 转换一下试试看</p>
+<p>当我美滋滋开始执行的时候，却出现的问题<br><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题1" data-src="/img/584082192807448bb4db57a334ebb740.png" loading="lazy" class="lazy-image"></div><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行 <code>group by</code> 的，那我把这个字段用 <code>to_char()</code> 转换一下试试看</p>
 <pre><code class="language-sql">select jl,count(1) from cs group by to_char(jl) having count(1)&gt;1;
 </code></pre>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题2" data-src="/img/6576c5fe4a184619b7fe4897d6ea30af.png" loading="lazy" class="lazy-image"><br>显然，<code>group by</code> 也不能后跟 <code>to_char()</code> 函数。那我只能是自己写语句吧。</p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题2" data-src="/img/6576c5fe4a184619b7fe4897d6ea30af.png" loading="lazy" class="lazy-image"></div><br>显然，<code>group by</code> 也不能后跟 <code>to_char()</code> 函数。那我只能是自己写语句吧。</p>
 <h4 id="2-自己写语句查重"><a href="#2-自己写语句查重" class="headerlink" title="2.自己写语句查重"></a>2.自己写语句查重</h4><p>如果不能用group by 进行查重的话，只能是自己写查重语句，然后就写了如下语句</p>
 <pre><code class="language-sql">select * from cs t1 where exists (select 1 from cs t2 where to_char(t2.jl) = to_char(t1.jl) and t2.id !=t1.id);
 </code></pre>
-<p>需要注意的是blob类型字段是不能直接=，需要 <code>to_char()</code> 转换，这个语句就执行成功了。结果如下，问题解决。<br><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="结果1" data-src="/img/35a289c650094738966c332480bc7da5.png" loading="lazy" class="lazy-image"></p>
+<p>需要注意的是blob类型字段是不能直接=，需要 <code>to_char()</code> 转换，这个语句就执行成功了。结果如下，问题解决。<br><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="结果1" data-src="/img/35a289c650094738966c332480bc7da5.png" loading="lazy" class="lazy-image"></div></p>
 
                 </div>
             </div>

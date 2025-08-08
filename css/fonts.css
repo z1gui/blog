@@ -1,53 +1,18 @@
+/* Google Fonts CDN - 优化字体加载 */
 /* JetBrains Mono */
-@font-face {
-    font-family: "JetBrains Mono";
-    font-style: italic;
-    font-weight: 400;
-    src: local("JetBrains Mono"),
-         local("JetBrainsMono-Italic"),
-         url("../fonts/JetBrainsMono-Italic[wght].ttf") format("truetype");
-}
-
-
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&display=swap');
 
 /* Noto Serif */
-@font-face {
-    font-family: "Noto Serif";
-    font-style: normal;
-    font-weight: 400 900;
-    src: local("Noto Serif"),
-         url("../fonts/Noto_Serif/NotoSerif-VariableFont_wdth,wght.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Noto Serif";
-    font-style: italic;
-    font-weight: 400 900;
-    src: local("Noto Serif Italic"),
-         url("../fonts/Noto_Serif/NotoSerif-Italic-VariableFont_wdth,wght.ttf") format("truetype");
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
 
 /* Noto Serif SC (中文) */
-@font-face {
-    font-family: "Noto Serif SC";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Noto Serif SC"),
-         url("../fonts/Noto_Serif_SC/NotoSerifSC-VariableFont_wght.ttf") format("truetype");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap');
+
+/* 字体加载优化 - 添加字体回退策略 */
+.fonts-loading {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-@font-face {
-    font-family: "Noto Serif SC";
-    font-style: normal;
-    font-weight: 700;
-    src: local("Noto Serif SC"),
-         url("../fonts/Noto_Serif_SC/NotoSerifSC-VariableFont_wght.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Noto Serif SC";
-    font-style: normal;
-    font-weight: 900;
-    src: local("Noto Serif SC"),
-         url("../fonts/Noto_Serif_SC/NotoSerifSC-VariableFont_wght.ttf") format("truetype");
+.fonts-loaded {
+    font-family: "Noto Serif", "Noto Serif SC", serif;
 } 

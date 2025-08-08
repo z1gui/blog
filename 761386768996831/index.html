@@ -44,6 +44,40 @@
   
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
+  
+  <!-- Google Fonts 预加载 - 优化字体加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  
+  <!-- 预加载所有字体 -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  
+  <!-- 字体加载优化脚本 -->
+  <script>
+    // 字体加载优化
+    (function() {
+      // 检查是否支持Font Loading API
+      if ('fonts' in document) {
+        // 异步加载字体，不阻塞页面渲染
+        setTimeout(function() {
+          Promise.all([
+            document.fonts.load('400 1em "JetBrains Mono"'),
+            document.fonts.load('400 1em "Noto Serif"'),
+            document.fonts.load('400 1em "Noto Serif SC"')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+          }).catch(function() {
+            document.documentElement.classList.add('fonts-fallback');
+          });
+        }, 0);
+      } else {
+        // 不支持Font Loading API的浏览器，直接使用系统字体
+        document.documentElement.classList.add('fonts-fallback');
+      }
+    })();
+  </script>
+  
   <!-- CSS -->
   
 <link rel="stylesheet" href="/css/reset.css">
@@ -69,6 +103,33 @@
       let isProcessing = false;
       let processedImages = new Set();
       
+      // 创建loading效果
+      function createLoadingEffect(img) {
+        // 检查是否已经有容器
+        let container = img.parentElement;
+        if (!container || !container.classList.contains('image-container')) {
+          // 创建图片容器
+          container = document.createElement('div');
+          container.className = 'image-container loading';
+          
+          // 将图片包装在容器中
+          img.parentNode.insertBefore(container, img);
+          container.appendChild(img);
+        } else {
+          // 如果已有容器，添加loading类
+          container.classList.add('loading');
+        }
+        
+        return container;
+      }
+      
+      // 移除loading效果
+      function removeLoadingEffect(container) {
+        if (container && container.classList.contains('loading')) {
+          container.classList.remove('loading');
+        }
+      }
+      
       // 处理预加载队列
       function processPreloadQueue() {
         if (isProcessing || preloadQueue.length === 0) return;
@@ -78,16 +139,22 @@
         
         if (img && img.dataset.src && !processedImages.has(img)) {
           processedImages.add(img);
+          
+          // 添加loading效果
+          const container = createLoadingEffect(img);
+          
           img.src = img.dataset.src;
           
           img.addEventListener('load', function() {
             img.classList.add('loaded');
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
           });
           
           img.addEventListener('error', function() {
+            removeLoadingEffect(container);
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
@@ -116,12 +183,20 @@
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
               
+              // 添加loading效果
+              const container = createLoadingEffect(img);
+              
               // 立即加载图片
               img.src = img.dataset.src;
               
               // 图片加载完成后的处理
               img.addEventListener('load', function() {
                 img.classList.add('loaded');
+                removeLoadingEffect(container);
+              });
+              
+              img.addEventListener('error', function() {
+                removeLoadingEffect(container);
               });
             }
           });
@@ -259,7 +334,7 @@
                 <div class="post-md">
                     <p>Kafka 服务器端的代码是由 Scala 代码编写，支持面向对象编程和函数式数据，编译过后也是普通的 .class 文件。其的作用：提供统一的、高吞吐量、低延迟的平台来处理实时数据</p>
 <h1 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h1><h2 id="「Kafka-是什么？主要应用场景什么？」"><a href="#「Kafka-是什么？主要应用场景什么？」" class="headerlink" title="「Kafka 是什么？主要应用场景什么？」"></a>「Kafka 是什么？主要应用场景什么？」</h2><p>Kafka 是一个分布式流式处理平台。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="6aaf06740442599b6c52bb586545dfb8_MD5.png" data-src="/img/6aaf06740442599b6c52bb586545dfb8_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="6aaf06740442599b6c52bb586545dfb8_MD5.png" data-src="/img/6aaf06740442599b6c52bb586545dfb8_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p><strong>1 . 主题</strong>：发布订阅的对象是主题（Topic），可以为每个业务、每个应用甚至每类数据都创建专属的主题</p>
 <p><strong>2 . 生产者和消费者</strong>：向主题发布消息的客户端应用程序成为生产者，生产者程序通常持续不断地向一个或者多个主题发送消息</p>
 <p><strong>3 . Broker</strong>：集群由多个 Broker 组成，Broker 负责接收和处理客户端发送过来的请求，以及对消息进行持久化。</p>
@@ -300,7 +375,7 @@
 <p><strong>13 . HW（High Watermark）</strong>：高水位，标识一个特定的消息偏移量（offset），消费者只能来取这个水位 offset 之前的消息</p>
 <p>下图表示一个日志文件，这个日志文件中只有9条消息，第一条消息的offset（LogStartOffset）为0，最有一条消息的offset为8，offset为9的消息使用虚线表示的，代表下一条待写入的消息。</p>
 <p>日志文件的 HW 为6，表示消费者只能拉取offset在 0 到 5 之间的消息，offset为6的消息对消费者而言是不可见的。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[ce77dd7ccc11dc7642aad16560000cb9_MD5.png]" data-src="/img/ce77dd7ccc11dc7642aad16560000cb9_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[ce77dd7ccc11dc7642aad16560000cb9_MD5.png]" data-src="/img/ce77dd7ccc11dc7642aad16560000cb9_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p><strong>14 . LEO（Log End Offset）</strong>：标识当前日志文件中下一条待写入的消息的offset</p>
 <h1 id="二、系统架构"><a href="#二、系统架构" class="headerlink" title="二、系统架构"></a>二、系统架构</h1><p>Kafka 基础框架：一个生产者发送一个消息到 Kafka 的一个 Topic，该 Topic 的消息存放在 Broker 中，消费者订阅这个 Topic，然后从 Broker 中消费消息。</p>
 <p>1.<strong>消息状态</strong>：在 Kafka 中，消息是否被消费的状态保存在消费者中，Broker 不会关系消息是否消费，或者被谁消费，消费者会记录一个 offset 值（指向分区中下一条被消费的消息位置），如果 offset 被错误设置可能会导致同一条消息多次消费或者丢失。</p>
@@ -308,7 +383,7 @@
 <p>3.<strong>批量发送</strong>：Kafka 支持以消息集合为单位进行批量发送，以提高效率。</p>
 <p>4.<strong>Push-and-Pull</strong>：Kafka 中的生产者和消费者采用的是 Push-and-Pull 模式，即生产者向 Broker Push 消息，消费者从 Broker Pull 消息。</p>
 <p>5.<strong>分区机制</strong>：Kafka 的 Broker 是支持分区的，Producer 可以决定将消息放在哪个 Partition，在一个 Partition 中的消息顺序就是 Producer 发送消息的顺序，一个 Topic 中的 Partition 是可以配置的，Partition 是保证 Kafka 高吞吐量的重要保证。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[68d9aaa9dd34dbc9d516201de1f2ab55_MD5.png]" data-src="/img/68d9aaa9dd34dbc9d516201de1f2ab55_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[68d9aaa9dd34dbc9d516201de1f2ab55_MD5.png]" data-src="/img/68d9aaa9dd34dbc9d516201de1f2ab55_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p>通常情况下，一个 Kafka 体系是包含多个 Producer，多个 Broker，多个 Consumer，以及一个 Zookeeper 集群</p>
 <h1 id="三、生产者分区"><a href="#三、生产者分区" class="headerlink" title="三、生产者分区"></a>三、生产者分区</h1><p>一条 Kafka 消息的的组织架构是三层：主题（Topic）- 分区（Partition）- 消息（Message）</p>
 <p>分区其实是一种负载均衡的做法。因为同一个 Topic 下的不同分区可以在不同 Broker 节点上，并且，数据读写是以分区为粒度，这样的话，每个节点都可以执行自己分区的消息的读写。除此之外，还能通过增加节点来提高吞吐量。</p>
@@ -390,9 +465,9 @@ Producer producer = new KafkaProducer&lt;&gt;(props);
 <p>这个内部主题就是_counsumer_offset.</p>
 <h1 id="六、消费者策略"><a href="#六、消费者策略" class="headerlink" title="六、消费者策略"></a>六、消费者策略</h1><p>消费者消费同一主题的哪个分区，是通过消费者策略决定的。</p>
 <h4 id="轮询-Round"><a href="#轮询-Round" class="headerlink" title="轮询 Round"></a>轮询 Round</h4><p>Kakfa 默认的消费者策略——轮询，通过轮询方式，决定消费者消费的分区。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[2ca562d1dc3a2d8d06c7c2bfe2c394c8_MD5.png]" data-src="/img/2ca562d1dc3a2d8d06c7c2bfe2c394c8_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[2ca562d1dc3a2d8d06c7c2bfe2c394c8_MD5.png]" data-src="/img/2ca562d1dc3a2d8d06c7c2bfe2c394c8_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <h4 id="范围计算-Range"><a href="#范围计算-Range" class="headerlink" title="范围计算 Range"></a>范围计算 Range</h4><p>对一个消费者组来说，决定消费方式是以分区总数除以消费者总数来决定，一般如果不能整除，往往是从头开始将剩余的分区分配开</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[c3276b5f713b8b0641463b496c196ce2_MD5.png]" data-src="/img/c3276b5f713b8b0641463b496c196ce2_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[c3276b5f713b8b0641463b496c196ce2_MD5.png]" data-src="/img/c3276b5f713b8b0641463b496c196ce2_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <h4 id="范围计算升华版-Sticky"><a href="#范围计算升华版-Sticky" class="headerlink" title="范围计算升华版 Sticky"></a>范围计算升华版 Sticky</h4><p>是在0.11.x，新增的，它和前面两个不是很一样，它是在Range上的一种升华，且前面两个当同组内有新的消费者加入或者旧的消费者退出的时候，会从新开始决定消费者消费方式，但是Sticky，在同组中有新的新的消费者加入或者旧的消费者退出时，不会直接开始新的Range分配，而是保留现有消费者原来的消费策略，将退出的消费者所消费的分区平均分配给现有消费者，新增消费者同理，同其他现存消费者的消费策略中分离。</p>
 <h1 id="七、位移提交"><a href="#七、位移提交" class="headerlink" title="七、位移提交"></a>七、位移提交</h1><p>假设一个分区中有 10 条消息，唯一分别是 0 到 9.</p>
 <p>某个 Consumer 应用已经消费了 5 条消息，这就说明该 Consumer 消费了位移为 0 到 4 的 5 条消息，此时 Consumer 的位移是 5，指向了下一条消息的位移。因为 Consumer 能够同时消费多个分区的数据，所以位移的提交实际上是在分区粒度上进行的，即 <strong>Consumer 需要为分配给它的每一个分区提交各自的位移数据。</strong></p>
@@ -532,7 +607,7 @@ while (true) {
 <h1 id="十、副本机制"><a href="#十、副本机制" class="headerlink" title="十、副本机制"></a>十、副本机制</h1><p>根据 Kafka 副本机制定义，同一个分区下面的所有副本保存有相同的消息队列，这些副本是分布在不同 Broker 中，以确保某个 Broker 宕机后其他副本可以正常使用。</p>
 <p>在 Kafka 中，副本分为领导者副本和追随者副本。其中追随者副本不参与什么读写请求操作。追随者副本只异步拉去领导者副本，在领导者副本所在的 Broker 宕机的时候，重新从追随者副本中推选出一个领导者副本。</p>
 <p>追随者副本唯一的工作就是，不断的从领导者副本中拉取消息，然后写入自己的提交日志中。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[ff0fd5af97f5f5ad3a954f3ffa4076d0_MD5.png]" data-src="/img/ff0fd5af97f5f5ad3a954f3ffa4076d0_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[ff0fd5af97f5f5ad3a954f3ffa4076d0_MD5.png]" data-src="/img/ff0fd5af97f5f5ad3a954f3ffa4076d0_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <h1 id="十一、ISR-机制"><a href="#十一、ISR-机制" class="headerlink" title="十一、ISR 机制"></a>十一、ISR 机制</h1><p>in-sync Replicas，也就是所谓的 ISR 副本集合。这个集合是动态的，而非静态不变。</p>
 <p>ISR 中的副本一定是好 Leader 副本同步的，相反不在 ISR 中的副本一定是和 Leader 副本不同步的。</p>
 <p>Leader 副本一定在 ISR 中，Follower 副本不一定在 ISR 中。在 Broker 端有个配置参数 <code>replica.lag.time.max.ms</code>，这个参数的含义是 Follower 副本落后 Leader 副本的时间不连续超过 10 秒，那么 Kafka 认为 Follower 副本和 Leader 是同步的，即使此时 Follower 副本中保存的消息明显少于 Leader 副本中的消息。</p>
@@ -541,16 +616,16 @@ while (true) {
 <h1 id="十三、副本选举"><a href="#十三、副本选举" class="headerlink" title="十三、副本选举"></a>十三、副本选举</h1><p>Kafka 在选取 Leader 副本时候，考虑到负载均衡的平衡性，会将不同的分区的 Leader 副本分配到不同的 Broker 中，这样既能避免 Broker 宕机导致多个分区不可用，也能平衡 Broker 的负载。</p>
 <p>Kafka 引入了优先副本的概念，优先副本的意思是，在分区的所有 AR 集合列表中的第一个副本，理想状态下就是该分区的 Leader 副本。</p>
 <p>例如kafka集群由3台broker组成，创建了一个名为 <code>topic-partitions</code> 的topic，设置partition为3，副本数为3，partition0中AR列表为&nbsp;<code>[1,2,0]</code>，那么分区0的优先副本为1</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[882565aff441558b043b911c7c240f29_MD5.png]" data-src="/img/882565aff441558b043b911c7c240f29_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[882565aff441558b043b911c7c240f29_MD5.png]" data-src="/img/882565aff441558b043b911c7c240f29_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p>当分区leader节点发生故障时，其中的一个follower节点就会选举为新的leader节点。当原来leader的节点恢复之后，它只能成为一个follower节点，此时就导致了集群负载不均衡。比如分区1的leader节点broker2崩溃了，此时选举了在broker1上的分区1follower节点作为新的leader节点。当broker2重新恢复时，此时的kafka集群状态如下：</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[d9e50eff06b436f7621152f2739a05c5_MD5.png]" data-src="/img/d9e50eff06b436f7621152f2739a05c5_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[d9e50eff06b436f7621152f2739a05c5_MD5.png]" data-src="/img/d9e50eff06b436f7621152f2739a05c5_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p>可以看到，此时broker1上负载更大，而broker2上没有负载。</p>
 <p><strong>「为了解决上述负载不均衡的情况，kafka支持了优先副本选举，优先副本指的是一个分区所在的AR集合的第一个副本」</strong>。</p>
 <p>比如上面的分区1，它的AR集合是<code>[2,0,1]</code>，表示分区1的优先副本就是在broker2上。</p>
 <p>理想情况下，优先副本应该就是leader副本，kafka保证了优先副本的均衡分布，而这与broker节点宕机与否没有关系。</p>
 <p><strong>「优先副本选举就是对分区leader副本进行选举的时候，尽可能让优先副本成为leader副本」</strong>，针对上述的情况，只要再触发一次优先副本选举就能保证分区负载均衡。</p>
 <p>kafka支持自动优先副本选举功能，默认每5分钟触发一次优先副本选举操作。</p>
-<h1 id="十四、网络通信模型"><a href="#十四、网络通信模型" class="headerlink" title="十四、网络通信模型"></a>十四、网络通信模型</h1><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[93681a72e52523561d8f052cb74d6da0_MD5.png]" data-src="/img/93681a72e52523561d8f052cb74d6da0_MD5.png" loading="lazy" class="lazy-image"></p>
+<h1 id="十四、网络通信模型"><a href="#十四、网络通信模型" class="headerlink" title="十四、网络通信模型"></a>十四、网络通信模型</h1><p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[93681a72e52523561d8f052cb74d6da0_MD5.png]" data-src="/img/93681a72e52523561d8f052cb74d6da0_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p>Broker 中有个<code>Acceptor(mainReactor)</code>监听新连接的到来，与新连接建连之后轮询选择一个<code>Processor(subReactor)</code>管理这个连接。</p>
 <p>而<code>Processor</code>会监听其管理的连接，当事件到达之后，读取封装成<code>Request</code>，并将<code>Request</code>放入共享请求队列中。</p>
 <p>然后IO线程池不断的从该队列中取出请求，执行真正的处理。处理完之后将响应发送到对应的<code>Processor</code>的响应队列中，然后由<code>Processor</code>将<code>Response</code>返还给客户端。</p>
@@ -649,7 +724,7 @@ props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,&nbsp;interceptors);
 </ol>
 <p>控制器上保存了最全的集群元数据信息，其他所有Broker会定期接收控制器发来的元数据更新请求，从而更新其内存中的缓存数据。</p>
 <h2 id="「控制器故障转移（Failover）」"><a href="#「控制器故障转移（Failover）」" class="headerlink" title="「控制器故障转移（Failover）」"></a>「控制器故障转移（Failover）」</h2><p><strong>「故障转移指的是，当运行中的控制器突然宕机或意外终止时，Kafka能够快速地感知到，并立即启用备用控制器来代替之前失败的控制器」</strong>。这个过程就被称为Failover，该过程是自动完成的，无需你手动干预。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[5711d6da84f2000a181c356e080deec4_MD5.png]" data-src="/img/5711d6da84f2000a181c356e080deec4_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[5711d6da84f2000a181c356e080deec4_MD5.png]" data-src="/img/5711d6da84f2000a181c356e080deec4_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p>最开始时，Broker 0是控制器。当Broker 0宕机后，ZooKeeper通过Watch机制感知到并删除了<code>/controller</code>临时节点。</p>
 <p>之后，所有存活的Broker开始竞选新的控制器身份。Broker 3最终赢得了选举，成功地在ZooKeeper上重建了 <code>/controller</code> 节点。之后，Broker 3会从ZooKeeper中读取集群元数据信息，并初始化到自己的缓存中。</p>
 <p>至此，控制器的Failover完成，可以行使正常的工作职责了。</p>
@@ -657,11 +732,11 @@ props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,&nbsp;interceptors);
 <p>每个主题又可以分为一个或多个分区，在不考虑副本的情况下，一个分区会对应一个日志。</p>
 <p>但设计者考虑到随着时间推移，日志文件会不断扩大，因此为了防止Log过大，设计者引入了日志分段（LogSegment）的概念，将Log切分为多个LogSegment，便于后续的消息维护和清理工作。</p>
 <p>下图描绘了主题、分区、副本、Log、LogSegment五者之间的关系。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[4cc119f98ed02df15c264d1cf428d32b_MD5.png]" data-src="/img/4cc119f98ed02df15c264d1cf428d32b_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[4cc119f98ed02df15c264d1cf428d32b_MD5.png]" data-src="/img/4cc119f98ed02df15c264d1cf428d32b_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p><strong>「LogSegment」</strong></p>
 <p>在Kafka中，每个Log对象又可以划分为多个LogSegment文件，每个LogSegment文件包括一个日志数据文件和两个索引文件（偏移量索引文件和消息时间戳索引文件）。</p>
 <p>其中，每个LogSegment中的日志数据文件大小均相等（该日志数据文件的大小可以通过在Kafka Broker的 <code>config/server.properties</code> 配置文件的中的**「log.segment.bytes」**进行设置，默认为1G大小（1073741824字节），在顺序写入消息时如果超出该设定的阈值，将会创建一组新的日志数据和索引文件）。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[5c376d6d6186292ebc461285ce0ac879_MD5.png]" data-src="/img/5c376d6d6186292ebc461285ce0ac879_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[5c376d6d6186292ebc461285ce0ac879_MD5.png]" data-src="/img/5c376d6d6186292ebc461285ce0ac879_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <h1 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h1><p><strong>「broker端配置」</strong></p>
 <ul>
 <li><code>broker.id</code></li>
@@ -751,7 +826,7 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
 <p>它能准确地告诉你消息是否真的提交成功了。一旦出现消息提交失败的情况，你就可以有针对性地进行处理。</p>
 <h2 id="「消费者程序丢失数据」"><a href="#「消费者程序丢失数据」" class="headerlink" title="「消费者程序丢失数据」"></a><strong>「消费者程序丢失数据」</strong></h2><p>Consumer端丢失数据主要体现在Consumer端要消费的消息不见了。</p>
 <p>下面这张图它清晰地展示了Consumer端的位移数据。</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[adc9951c2edb1fba60deea2d87fb2d44_MD5.png]" data-src="/img/adc9951c2edb1fba60deea2d87fb2d44_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[adc9951c2edb1fba60deea2d87fb2d44_MD5.png]" data-src="/img/adc9951c2edb1fba60deea2d87fb2d44_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p>比如对于Consumer A而言，它当前的位移值就是9；Consumer B的位移值是11。Consumer程序从Kafka获取到消息后开启了多个线程异步处理消息，而Consumer程序自动地向前更新位移。</p>
 <p>假如其中某个线程运行失败了，它负责的消息没有被成功处理，但位移已经被更新了，因此这条消息对于Consumer而言实际上是丢失了。这里的关键在于Consumer自动提交位移。这个问题的解决方案也很简单：<strong>「如果是多线程异步处理消费消息，Consumer程序不要开启自动提交位移，而是要应用程序手动提交位移」</strong>。</p>
 <h2 id="「Kafka-内部出现消息丢失」"><a href="#「Kafka-内部出现消息丢失」" class="headerlink" title="「Kafka 内部出现消息丢失」"></a><strong>「Kafka 内部出现消息丢失」</strong></h2><p>试想一种情况：假如 leader 副本所在的 broker 突然挂掉，那么就要从 follower 副本重新选出一个 leader ，但是 leader 的数据还有一些没有被 follower 副本的同步的话，就会造成消息丢失。</p>
@@ -814,7 +889,7 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
 <p>1、提高消费能力，提高单条消息的处理速度；根据实际场景可讲<code>max.poll.interval.ms</code>值设置大一点，避免不必要的rebalance；可适当减小<code>max.poll.records</code>的值，默认值是500，可根据实际消息速率适当调小。</p>
 <p>2、生成消息时，可加入唯一标识符如消息id，在消费端，保存最近的1000条消息id存入到redis或mysql中，消费的消息时通过前置去重。</p>
 <h1 id="消息顺序问题"><a href="#消息顺序问题" class="headerlink" title="消息顺序问题"></a>消息顺序问题</h1><p>我们都知道 <code>kafka</code> 的 <code>topic</code> 是无序的，但是一个 <code>topic</code> 包含多个 <code>partition</code>，每个 <code>partition</code> 内部是有序的（分区内采用尾插法）</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[466a6f44f4b183a6bae184c90378b300_MD5.png]" data-src="/img/466a6f44f4b183a6bae184c90378b300_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[466a6f44f4b183a6bae184c90378b300_MD5.png]" data-src="/img/466a6f44f4b183a6bae184c90378b300_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p><strong>「乱序场景1」</strong></p>
 <p>因为一个topic可以有多个partition，kafka只能保证partition内部有序</p>
 <p><strong>「解决方案」</strong></p>
@@ -824,7 +899,7 @@ future.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, Object&
 <p>对于同一业务进入了同一个消费者组之后，用了多线程来处理消息，会导致消息的乱序</p>
 <p><strong>「解决方案」</strong></p>
 <p>消费者内部根据线程数量创建等量的内存队列，对于需要顺序的一系列业务数据，根据key或者业务数据，放到同一个内存队列中，然后线程从对应的内存队列中取出并操作</p>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[bb94c4025a04733be2eb858d968eaffd_MD5.png]" data-src="/img/bb94c4025a04733be2eb858d968eaffd_MD5.png" loading="lazy" class="lazy-image"></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="[bb94c4025a04733be2eb858d968eaffd_MD5.png]" data-src="/img/bb94c4025a04733be2eb858d968eaffd_MD5.png" loading="lazy" class="lazy-image"></div></p>
 <p><strong>「通过设置相同key来保证消息有序性，会有一点缺陷：」</strong></p>
 <p>例如消息发送设置了重试机制，并且异步发送，消息A和B设置相同的key，业务上A先发，B后发，由于网络或者其他原因A发送失败，B发送成功；A由于发送失败就会重试且重试成功，这时候消息顺序B在前A在后，与业务发送顺序不一致，如果需要解决这个问题，需要设置参数 <code>max.in.flight.requests.per.connection=1</code>，其含义是限制客户端在单个连接上能够发送的未响应请求的个数，设置此值是1表示kafka broker在响应请求之前client不能再向同一个broker发送请求，这个参数默认值是5</p>
 <h1 id="高性能原因"><a href="#高性能原因" class="headerlink" title="高性能原因"></a>高性能原因</h1><h2 id="「顺序读写」"><a href="#「顺序读写」" class="headerlink" title="「顺序读写」"></a><strong>「顺序读写」</strong></h2><p>kafka的消息是不断追加到文件中的，这个特性使<code>kafka</code>可以充分利用磁盘的顺序读写性能</p>
