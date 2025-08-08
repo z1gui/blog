@@ -69,20 +69,12 @@
           
           img.addEventListener('load', function() {
             img.classList.add('loaded');
-            const spinner = img.previousElementSibling;
-            if (spinner && spinner.classList.contains('image-loading-spinner')) {
-              spinner.classList.add('hidden');
-            }
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
           });
           
           img.addEventListener('error', function() {
-            const spinner = img.previousElementSibling;
-            if (spinner && spinner.classList.contains('image-loading-spinner')) {
-              spinner.classList.add('hidden');
-            }
             isProcessing = false;
             // 继续处理队列中的下一张图片
             setTimeout(processPreloadQueue, 10);
@@ -106,7 +98,6 @@
             if (img.dataset.src && !img.classList.contains('lazy-image')) {
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
-              const spinner = img.previousElementSibling;
               
               // 立即加载图片
               img.src = img.dataset.src;
@@ -114,16 +105,6 @@
               // 图片加载完成后的处理
               img.addEventListener('load', function() {
                 img.classList.add('loaded');
-                if (spinner && spinner.classList.contains('image-loading-spinner')) {
-                  spinner.classList.add('hidden');
-                }
-              });
-              
-              // 图片加载失败的处理
-              img.addEventListener('error', function() {
-                if (spinner && spinner.classList.contains('image-loading-spinner')) {
-                  spinner.classList.add('hidden');
-                }
               });
             }
           });
@@ -135,7 +116,6 @@
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const img = entry.target;
-              const spinner = img.previousElementSibling;
               
               // 检查是否有data-src属性
               if (img.dataset.src && !processedImages.has(img)) {
@@ -145,9 +125,6 @@
               } else if (!img.dataset.src) {
                 // 如果没有data-src，直接显示图片
                 img.classList.add('loaded');
-                if (spinner && spinner.classList.contains('image-loading-spinner')) {
-                  spinner.classList.add('hidden');
-                }
               }
               
               // 停止观察这个图片
@@ -262,7 +239,7 @@
                 <div class="post-md">
                     <h2 id="一、-ASCII-码"><a href="#一、-ASCII-码" class="headerlink" title="一、 #ASCII 码"></a>一、 #ASCII 码</h2><p>计算机内所有的信息都是二进制位。一个字节包含 8 个二进制位，可以表示 256 个状态，每个状态表示一个符号。</p>
 <p>ASCII 码一共规定了128个字符的编码，比如空格 SPACE 是32（二进制00100000），大写的字母 A 是65（二进制01000001）。这128个符号（包括32个不能打印出来的控制符号）。ASCII 码只占用了一个字节的后面7位，最前面的一位统一规定为0。</p>
-<p><div class="image-loading-spinner"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ASCII码" data-src="/img/546b99e807733344235b0b668c3c9e7e_MD5.jpeg" loading="lazy" class="lazy-image"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ASCII码" data-src="/img/546b99e807733344235b0b668c3c9e7e_MD5.jpeg" loading="lazy" class="lazy-image"></p>
 <h2 id="二、非-ASCII-编码"><a href="#二、非-ASCII-编码" class="headerlink" title="二、非 ASCII 编码"></a>二、非 ASCII 编码</h2><p>英语用128个符号编码就够了，但是用来表示其他语言，128个符号是不够的。比如，在法语中，字母上方有注音符号，它就无法用 ASCII 码表示。于是，一些欧洲国家就决定，利用字节中闲置的最高位编入新的符号。比如，法语中的é的编码为130（二进制10000010）。这样一来，这些欧洲国家使用的编码体系，可以表示最多256个符号。</p>
 <p>所有这些编码方式中，0-127表示的符号是一样的，不一样的只是128-255的这一段，不同的国家相同的 ASCII 码表示的可能是不同的符号。</p>
 <p>至于亚洲国家的文字，使用的符号就更多了，汉字就多达10万左右。一个字节只能表示256种符号，肯定是不够的，就必须使用多个字节表达一个符号。比如，简体中文常见的编码方式是 GB2312 ，使用两个字节表示一个汉字，所以理论上最多可以表示 256 x 256 = 65536 个符号。</p>
@@ -277,7 +254,7 @@
 <li><p>2）对于 n 字节的符号（n &gt; 1）：第一个字节的前 n 位都设为 1，第 n + 1 位设为 0，后面字节的前两位一律设为 10。剩下的没有提及的二进制位，全部为这个符号的 Unicode 码。</p>
 </li>
 </ul>
-<p><div class="image-loading-spinner"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Unicode编码和UTF-8编码方式" data-src="/img/c17560b740940d095c678b2769092f11_MD5.jpeg" loading="lazy" class="lazy-image"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Unicode编码和UTF-8编码方式" data-src="/img/c17560b740940d095c678b2769092f11_MD5.jpeg" loading="lazy" class="lazy-image"></p>
 <p><strong>如果一个字节的第一位是0，则这个字节单独就是一个字符；如果第一位是1，则连续有多少个1，就表示当前字符占用多少个字节。</strong></p>
 <p>下面，还是以汉字严为例，演示如何实现 UTF-8 编码。</p>
 <p>严的 Unicode 是4E25（100111000100101），根据上表，可以发现4E25处在第三行的范围内（0000 0800 - 0000 FFFF），因此严的 UTF-8 编码需要三个字节，即格式是1110xxxx 10xxxxxx 10xxxxxx。然后，从严的最后一个二进制位开始，依次从后向前填入格式中的 x，多出的位补0。这样就得到了，严的 UTF-8 编码是11100100 10111000 10100101，转换成十六进制就是 E4B8A5。</p>
