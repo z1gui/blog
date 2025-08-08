@@ -153,13 +153,15 @@
 }
 
 /* 懒加载图片样式 */
-.post-md .lazy-image {
+.lazy-image {
     opacity: 0;
-    transition: opacity 0.2s ease; /* 减少过渡时间，提升响应速度 */
-    will-change: opacity; /* 优化性能 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    transform: translateZ(0) scale(0.98);
 }
 
-.post-md .lazy-image.loaded {
+.lazy-image.loaded {
     opacity: 1;
     transform: translateZ(0) scale(1);
 }

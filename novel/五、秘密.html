@@ -84,14 +84,18 @@
       
       // 处理所有图片
       function handleImages() {
-        // 选择所有懒加载图片
-        const lazyImages = document.querySelectorAll('.post-md .lazy-image');
-        const allImages = document.querySelectorAll('.post-md img');
+        // 选择所有懒加载图片，但排除favicon
+        const lazyImages = document.querySelectorAll('.lazy-image');
+        const allImages = document.querySelectorAll('img');
+        
+        console.log('找到图片数量:', allImages.length, '懒加载图片数量:', lazyImages.length);
         
         // 如果没有懒加载图片，检查是否有需要处理的图片
         if (lazyImages.length === 0) {
           allImages.forEach(img => {
-            if (img.dataset.src && !img.classList.contains('lazy-image')) {
+            // 排除favicon.png
+            if (img.src && !img.src.includes('favicon.png') && !img.src.includes('favicon1.png') && 
+                img.dataset.src && !img.classList.contains('lazy-image')) {
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
               
@@ -134,7 +138,10 @@
         
         // 开始观察所有懒加载图片
         lazyImages.forEach(img => {
-          imageObserver.observe(img);
+          // 排除favicon.png
+          if (!img.src.includes('favicon.png') && !img.src.includes('favicon1.png')) {
+            imageObserver.observe(img);
+          }
         });
       }
       
@@ -585,10 +592,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <!-- 页脚社交链接 -->
     <div class="footer-social-links">
         <a href="https://github.com/z1gui" target="_blank" title="GitHub" class="footer-social-icon">
-            <img src="/img/github1.png" alt="GitHub">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="GitHub" data-src="/img/github1.png" loading="lazy" class="lazy-image">
         </a>
         <a href="mailto:leon6line@gmail.com" title="Email" class="footer-social-icon">
-            <img src="/img/mail.png" alt="Email">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Email" data-src="/img/mail.png" loading="lazy" class="lazy-image">
         </a>
         <a href="/atom.xml" title="RSS Feed" class="footer-social-icon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
