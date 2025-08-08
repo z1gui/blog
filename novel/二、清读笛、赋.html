@@ -44,67 +44,114 @@
 <link rel="stylesheet" href="/css/a11y-dark.min.css">
 
   
-<script src="/js/toc.js"></script>
-
-  
-
-  
   <!-- 图片懒加载 -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // 只选择markdown文档中的懒加载图片
-      const lazyImages = document.querySelectorAll('.post-md .lazy-image');
-      
-      if (lazyImages.length === 0) return;
-      
-      const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            const spinner = img.previousElementSibling;
-            
-            // 加载图片
-            img.src = img.dataset.src;
-            
-            // 图片加载完成后的处理
-            img.addEventListener('load', function() {
-              img.classList.add('loaded');
-              if (spinner && spinner.classList.contains('image-loading-spinner')) {
-                spinner.classList.add('hidden');
+      // 处理所有图片
+      function handleImages() {
+        // 选择所有懒加载图片
+        const lazyImages = document.querySelectorAll('.post-md .lazy-image');
+        const allImages = document.querySelectorAll('.post-md img');
+        
+        console.log('找到图片数量:', allImages.length, '懒加载图片数量:', lazyImages.length);
+        
+        // 如果没有懒加载图片，检查是否有需要处理的图片
+        if (lazyImages.length === 0) {
+          allImages.forEach(img => {
+            if (img.dataset.src && !img.classList.contains('lazy-image')) {
+              console.log('处理懒加载图片:', img.dataset.src);
+              // 如果有data-src属性，说明是懒加载图片
+              img.classList.add('lazy-image');
+              const spinner = img.previousElementSibling;
+              
+              // 加载图片
+              img.src = img.dataset.src;
+              
+              // 图片加载完成后的处理
+              img.addEventListener('load', function() {
+                console.log('图片加载成功:', img.dataset.src);
+                img.classList.add('loaded');
+                if (spinner && spinner.classList.contains('image-loading-spinner')) {
+                  spinner.classList.add('hidden');
+                }
+              });
+              
+              // 图片加载失败的处理
+              img.addEventListener('error', function() {
+                console.error('图片加载失败:', img.dataset.src);
+                if (spinner && spinner.classList.contains('image-loading-spinner')) {
+                  spinner.classList.add('hidden');
+                }
+              });
+            }
+          });
+          return;
+        }
+        
+        // 使用Intersection Observer处理懒加载图片
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              const spinner = img.previousElementSibling;
+              
+              console.log('图片进入视口:', img.dataset.src);
+              
+              // 检查是否有data-src属性
+              if (img.dataset.src) {
+                // 加载图片
+                img.src = img.dataset.src;
+                
+                // 图片加载完成后的处理
+                img.addEventListener('load', function() {
+                  console.log('图片加载成功:', img.dataset.src);
+                  img.classList.add('loaded');
+                  if (spinner && spinner.classList.contains('image-loading-spinner')) {
+                    spinner.classList.add('hidden');
+                  }
+                });
+                
+                // 图片加载失败的处理
+                img.addEventListener('error', function() {
+                  console.error('图片加载失败:', img.dataset.src);
+                  if (spinner && spinner.classList.contains('image-loading-spinner')) {
+                    spinner.classList.add('hidden');
+                  }
+                });
+              } else {
+                // 如果没有data-src，直接显示图片
+                img.classList.add('loaded');
+                if (spinner && spinner.classList.contains('image-loading-spinner')) {
+                  spinner.classList.add('hidden');
+                }
               }
-            });
-            
-            // 图片加载失败的处理
-            img.addEventListener('error', function() {
-              if (spinner && spinner.classList.contains('image-loading-spinner')) {
-                spinner.classList.add('hidden');
-              }
-              console.error('图片加载失败:', img.dataset.src);
-            });
-            
-            // 停止观察这个图片
-            observer.unobserve(img);
-          }
+              
+              // 停止观察这个图片
+              observer.unobserve(img);
+            }
+          });
+        }, {
+          rootMargin: '50px 0px', // 提前50px开始加载
+          threshold: 0.01
         });
-      }, {
-        rootMargin: '50px 0px', // 提前50px开始加载
-        threshold: 0.01
-      });
+        
+        // 开始观察所有懒加载图片
+        lazyImages.forEach(img => {
+          imageObserver.observe(img);
+        });
+      }
       
-      // 开始观察所有懒加载图片
-      lazyImages.forEach(img => {
-        imageObserver.observe(img);
-      });
+      // 立即执行一次
+      handleImages();
+      
+      // 如果页面内容动态加载，可以再次执行
+      setTimeout(handleImages, 100);
     });
   </script>
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
 </head>
 
     <body>
-        <!-- 固定工具栏 -->
-        <div class="fixed-toolbar">
-        </div>
-        
         <div class="paper">
             <div class="paper-main">
                 <div class="header">
@@ -619,18 +666,8 @@ h6:hover .heading-anchor {
         </div>
 
         <!-- JavaScript -->
-        
-<script src="/js/highlight.min.js"></script>
-
-        
-<script src="/js/highlightjs-line-numbers.js"></script>
-
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化代码高亮
-            hljs.highlightAll();
-            hljs.initLineNumbersOnLoad();
-            
             const html = document.documentElement;
             const header = document.querySelector('.header');
             
@@ -700,5 +737,11 @@ h6:hover .heading-anchor {
             }
         });
         </script>
+        
+        <!-- 异步加载代码高亮 -->
+        
+        
+        <!-- 异步加载目录功能 -->
+        <script async="" src="/js/toc.js"></script>
     
 </body></html>

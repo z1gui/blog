@@ -1,13 +1,3 @@
-/*=============== SCROLL REVEAL ANIMATION ===============*/
-const sr = ScrollReveal({
-    distance: '90px',
-    duration: 3000,
-})
-
-sr.reveal(`.home__data`, {origin: 'top', delay: 400})
-sr.reveal(`.home__img`, {origin: 'bottom', delay: 600})
-sr.reveal(`.home__footer`, {origin: 'bottom', delay: 800})
-
 // 目录高亮竖线效果
 function updateTocActiveLine() {
     const tocLinks = document.querySelectorAll('.toc-list a');
@@ -32,6 +22,30 @@ function updateTocActiveLine() {
     });
     if (activeLink) {
         activeLink.classList.add('active');
+        // 创建激活点
+        if (!activeLink._activeDot) {
+            const dot = document.createElement('div');
+            dot.className = 'toc-active-dot';
+            dot.style.cssText = `
+                position: absolute;
+                left: -20px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 4px;
+                background: var(--font-color-0);
+                border-radius: 50%;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            activeLink.style.position = 'relative';
+            activeLink.appendChild(dot);
+            activeLink._activeDot = dot;
+            // 显示激活点
+            setTimeout(() => {
+                dot.style.opacity = '1';
+            }, 10);
+        }
     }
 }
 window.addEventListener('scroll', updateTocActiveLine);
