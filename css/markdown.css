@@ -155,7 +155,8 @@
 /* 懒加载图片样式 */
 .post-md .lazy-image {
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease; /* 减少过渡时间，提升响应速度 */
+    will-change: opacity; /* 优化性能 */
 }
 
 .post-md .lazy-image.loaded {
@@ -165,9 +166,9 @@
 /* 加载中转圈圈样式 */
 .image-loading-spinner {
     position: relative;
-    width: 40px;
-    height: 40px;
-    margin: 20px auto;
+    width: 30px; /* 减小加载指示器尺寸 */
+    height: 30px;
+    margin: 15px auto; /* 减少边距 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -176,12 +177,12 @@
 .image-loading-spinner::before {
     content: '';
     position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 3px solid var(--line-1);
-    border-top: 3px solid var(--font-color-0);
+    width: 20px; /* 减小内圈尺寸 */
+    height: 20px;
+    border: 2px solid var(--line-1); /* 减小边框宽度 */
+    border-top: 2px solid var(--font-color-0);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: spin 0.8s linear infinite; /* 加快旋转速度 */
 }
 
 .image-loading-spinner.hidden {
