@@ -475,6 +475,112 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // 分享功能
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', function() {
+            // 获取文章信息
+            const title = document.querySelector('.post-main-title')?.textContent?.trim() || '未知标题';
+            const date = document.querySelector('.post-meta')?.textContent?.match(/\d{4}-\d{2}-\d{2}/)?.[0] || '';
+            const url = window.location.href;
+            
+            // 获取文章前几行内容（排除标题、元信息等）
+            const postContent = document.querySelector('.post-md');
+            let content = '';
+            if (postContent) {
+                // 获取所有段落和文本内容
+                const paragraphs = postContent.querySelectorAll('p, h1, h2, h3, h4, h5, h6');
+                const contentArray = [];
+                
+                for (let i = 0; i < Math.min(paragraphs.length, 3); i++) {
+                    const text = paragraphs[i].textContent?.trim();
+                    if (text && text.length > 0) {
+                        contentArray.push(text);
+                    }
+                }
+                
+                content = contentArray.join('\n\n');
+                
+                // 如果内容太长，截取前100个字符
+                if (content.length > 100) {
+                    content = content.substring(0, 100) + '...';
+                }
+            }
+            
+            // 构建分享内容
+            let shareText = `文章标题： ${title}`;
+            if (date) {
+                shareText += `\n发布时间： ${date}`;
+            }
+            if (content) {
+                shareText += `\n\n${content}`;
+            }
+            shareText += `\n\n🔗 ${url}`;
+            
+            // 复制到剪贴板
+            if (navigator.clipboard && window.isSecureContext) {
+                // 使用现代 Clipboard API
+                navigator.clipboard.writeText(shareText).then(function() {
+                    showShareSuccess();
+                }).catch(function(err) {
+                    console.error('复制失败:', err);
+                    fallbackCopyTextToClipboard(shareText);
+                });
+            } else {
+                // 降级方案
+                fallbackCopyTextToClipboard(shareText);
+            }
+        });
+    }
+    
+    // 显示分享成功提示
+    function showShareSuccess() {
+        const shareBtn = document.getElementById('shareBtn');
+        if (shareBtn) {
+            const originalText = shareBtn.innerHTML;
+            shareBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                已复制
+            `;
+            shareBtn.classList.add('copied');
+            
+            setTimeout(function() {
+                shareBtn.innerHTML = originalText;
+                shareBtn.classList.remove('copied');
+            }, 2000);
+        }
+    }
+    
+    // 降级复制方案
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showShareSuccess();
+            } else {
+                alert('复制失败，请手动复制以下内容：\n\n' + text);
+            }
+        } catch (err) {
+            console.error('复制失败:', err);
+            alert('复制失败，请手动复制以下内容：\n\n' + text);
+        }
+        
+        document.body.removeChild(textArea);
+    }
 });
 </script>
                 

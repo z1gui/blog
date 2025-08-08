@@ -666,6 +666,54 @@ a
     letter-spacing: 0.1px;
 }
 
+/* 分享按钮样式 */
+.post-share {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-0) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--font-color-1);
+    font-size: 0.9rem;
+    font-family: "Noto Serif", "Noto Serif SC", serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 68, 68, 0.3);
+    color: var(--font-color-0);
+}
+
+.share-btn svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.share-btn:hover svg {
+    transform: scale(1.1);
+}
+
+.share-btn.copied {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%);
+    border-color: rgba(76, 175, 80, 0.5);
+    color: #4CAF50;
+}
+
 .archive
 {
     display: flex;
