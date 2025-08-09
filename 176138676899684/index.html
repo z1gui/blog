@@ -29,6 +29,19 @@
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/favicon.png">
   
+  <!-- 防止页面闪烁的内联样式 -->
+  <style>
+    /* 立即设置背景色，防止CSS加载前的闪烁 */
+    html, body {
+      background-color: #0f0f0f !important;
+      color: rgb(201, 196, 189) !important;
+    }
+    /* 确保页面加载时立即显示正确的背景色 */
+    * {
+      background-color: inherit;
+    }
+  </style>
+  
   <!-- Google Fonts 预加载 - 优化字体加载 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
