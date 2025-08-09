@@ -51,13 +51,4 @@ function updateTocActiveLine() {
 window.addEventListener('scroll', updateTocActiveLine);
 document.addEventListener('DOMContentLoaded', updateTocActiveLine);
 
-// 目录按钮显示/隐藏功能
-function toggleToc() {
-    const toc = document.querySelector('.post-toc');
-    if (!toc) return;
-    toc.classList.toggle('hidden');
-}
-const tocToggleBtn = document.getElementById('tocToggleBtn');
-if (tocToggleBtn) {
-    tocToggleBtn.addEventListener('click', toggleToc);
-}
+// 目录按钮功能已移至layout.ejs统一管理

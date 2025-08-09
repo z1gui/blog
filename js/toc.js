@@ -218,10 +218,35 @@ function generateTOC() {
 }
 
 // 确保在DOM完全加载后执行
-document.addEventListener('DOMContentLoaded', () => {
+function initTOC() {
+    const tocContent = document.querySelector('.toc-content');
+    const postToc = document.querySelector('.post-toc');
+    
+    // 检查目录元素是否存在
+    if (!tocContent || !postToc) {
+
+        setTimeout(initTOC, 100);
+        return;
+    }
+    
     try {
+        // 确保目录容器默认可见
+        postToc.style.display = 'flex';
+        postToc.classList.remove('hidden');
+        
         generateTOC();
+
     } catch (error) {
         console.error('Error initializing TOC:', error);
+        // 出错时重试一次
+        setTimeout(initTOC, 200);
     }
-}); 
+}
+
+// 多种方式确保目录初始化
+document.addEventListener('DOMContentLoaded', initTOC);
+
+// 如果DOM已经加载完成，立即执行
+if (document.readyState !== 'loading') {
+    setTimeout(initTOC, 50);
+} 

@@ -155,7 +155,7 @@
         const lazyImages = document.querySelectorAll('.lazy-image');
         const allImages = document.querySelectorAll('img');
         
-        console.log('找到图片数量:', allImages.length, '懒加载图片数量:', lazyImages.length);
+
         
         // 如果没有懒加载图片，检查是否有需要处理的图片
         if (lazyImages.length === 0) {
@@ -784,33 +784,62 @@ h6:hover .heading-anchor {
             }
             
             // 目录切换按钮功能（仅在文章页面）
-            const tocToggleBtn = document.getElementById('tocToggleBtn');
-            if (tocToggleBtn) {
+            function setupTocToggle() {
+                const tocToggleBtn = document.getElementById('tocToggleBtn');
                 const postToc = document.getElementById('postToc');
                 
-                // 从localStorage获取目录状态
-                const tocHidden = localStorage.getItem('tocHidden') === 'true';
-                if (tocHidden && postToc) {
-                    postToc.classList.add('hidden');
-                    tocToggleBtn.classList.add('hidden');
+                if (!tocToggleBtn || !postToc) {
+                    // 元素还没准备好，延迟重试
+                    setTimeout(setupTocToggle, 100);
+                    return;
                 }
                 
+
+                
+                // 延迟应用localStorage状态，确保目录已初始化
+                setTimeout(() => {
+                    const tocHidden = localStorage.getItem('tocHidden') === 'true';
+                    if (tocHidden) {
+                        postToc.classList.add('hidden');
+                        tocToggleBtn.classList.add('hidden');
+
+                    }
+                }, 200);
+                
                 // 点击切换目录显示/隐藏
-                tocToggleBtn.addEventListener('click', function() {
+                tocToggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+
+                    
                     if (postToc) {
                         const isHidden = postToc.classList.contains('hidden');
+
+                        
                         if (isHidden) {
+                            // 显示目录
                             postToc.classList.remove('hidden');
                             this.classList.remove('hidden');
+                            // 确保目录可见
+                            postToc.style.display = 'flex';
                             localStorage.setItem('tocHidden', 'false');
+
                         } else {
+                            // 隐藏目录
                             postToc.classList.add('hidden');
                             this.classList.add('hidden');
                             localStorage.setItem('tocHidden', 'true');
+
                         }
                     }
                 });
+                
+
             }
+            
+            // 启动目录切换功能设置
+            setupTocToggle();
         });
         </script>
         

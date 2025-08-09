@@ -846,23 +846,34 @@ a
 
 /* 主图区域动画效果 */
 .hero-section {
-    /* 删除无用的动画 */
+    animation: fadeInUp 0.8s ease-out;
 }
 
 .hero-title {
-    /* 删除无用的动画 */
+    animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
 .hero-subtitle {
-    /* 删除无用的动画 */
+    animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
 .hero-description {
-    /* 删除无用的动画 */
+    animation: fadeInUp 0.8s ease-out 0.6s both;
 }
 
 .hero-graphic {
-    /* 删除无用的动画 */
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 文章分类 */
@@ -1221,7 +1232,7 @@ a
 
 @media screen and (max-width: 768px) {
     .post-content-wrapper {
-        padding: 0 1rem;
+        padding: 0 0;
     }
     
     .post-toc {
@@ -1526,7 +1537,27 @@ a
 
 .empty-state p {
     margin: 0;
-    color: var(--font-color-3);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes underlineAnimation {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
 }
 
 /* 阅读进度条样式 */
@@ -1855,7 +1886,7 @@ a
 
 /* 目录隐藏时按钮状态 */
 .toc-toggle-btn.hidden svg {
-    opacity: 0.3;
+    transform: rotate(180deg);
 }
 
 /* 移动端适配 */
@@ -1870,5 +1901,251 @@ a
         width: 14px;
         height: 14px;
     }
+}
+
+/* 固定工具栏样式 */
+.fixed-toolbar {
+    position: fixed;
+    top: 80px;
+    right: 25px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10001;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-0) 100%);
+    border-radius: 20px;
+    padding: 12px 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+
+.fixed-toolbar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .header {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+    
+    .nav {
+        display: flex;
+        padding: 0;
+        gap: 4px;
+        max-width: 100%;
+        width: auto;
+        left: auto;
+        transform: none;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+    
+    .post-list {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .paginator {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .post-title {
+        font-size: 22px;
+    }
+    
+    .post-main {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .post-main-title {
+        font-size: 26px;
+    }
+    
+    .post-content-wrapper {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .post-content-main {
+        width: 100%;
+    }
+    
+    .post-md {
+        width: 100%;
+        padding: 0;
+        font-size: 18px;
+    }
+    
+    .post-meta {
+        max-width: 100%;
+        padding: 0 1rem;
+        font-size: 1rem;
+    }
+    
+    .post-categories {
+        max-width: 100%;
+        padding: 0;
+        font-size: 1rem;
+    }
+    
+    .post-navigation {
+        max-width: 100%;
+        padding: 0 0rem;
+    }
+    
+    .fixed-toolbar {
+        top: 80px;
+        right: 15px;
+        gap: 8px;
+        padding: 8px 6px;
+        border-radius: 16px;
+    }
+    
+    .toc-toggle-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+    
+    /* 移动端头部优化 */
+    .header-home-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .header-home-link:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    /* 超小屏幕适配 */
+    @media screen and (max-width: 480px) {
+        .header-content {
+            padding: 0.6rem 0.8rem;
+            gap: 0.6rem;
+        }
+        
+        .hero-header-title {
+            font-size: 0.9rem;
+            max-width: 120px;
+            text-align: center;
+        }
+        
+        .hero-header-graphic {
+            width: 22px;
+            height: 22px;
+        }
+        
+        .nav li a {
+            font-size: 0.8rem;
+            padding: 5px 8px;
+        }
+        
+        .nav {
+            justify-content: center;
+        }
+    }
+    
+    .toc-toggle-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    /* 非文章页面时调整工具栏间距 */
+    .fixed-toolbar:not(:has(.toc-toggle-btn)) {
+        gap: 12px;
+    }
+    
+    /* 移动端关于页面和设备页面适配 */
+    .timeline-content {
+        padding: 12px;
+    }
+    
+    .social-links {
+        gap: 20px;
+    }
+    
+    .social-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .social-icon img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .device-card {
+        padding: 10px;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+    
+    .device-card img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .device-card h3 {
+        font-size: 13px;
+        margin-bottom: 0px;
+        font-family: "JetBrains Mono", "Montserrat", monospace;
+    }
+    
+    .device-card p {
+        font-size: 11px;
+        line-height: 1;
+    }
+    
+    /* 移动端页脚适配 */
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        margin-top: 6px;
+    }
+    
+    .footer-social-links {
+        gap: 5px;
+    }
+    
+    .footer-social-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .footer-social-icon img,
+    .footer-social-icon svg {
+        width: 14px;
+        height: 14px;
+        filter: brightness(0) invert(1);
+    }
+}
+
+.header-home-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s;
+}
+.header-home-link:hover {
+    opacity: 0.8;
 }
 

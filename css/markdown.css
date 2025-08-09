@@ -6,6 +6,9 @@
     font-size: 20px;
     font-family: "Noto Serif", "Noto Serif SC", serif;
     letter-spacing: 0.1px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .post-md h1,
@@ -20,6 +23,8 @@
     position: relative;
     font-family: "Noto Serif", "Noto Serif SC", serif;
     letter-spacing: 0.05px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .post-md h1::before,
@@ -132,6 +137,8 @@
 .post-md ul li
 {
     margin-bottom: 0.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .post-md img
 {
@@ -144,7 +151,7 @@
     max-width: 100%;
     height: auto;
     display: block;
-    margin: 1rem auto;
+    margin: 0rem auto; /* 减小图片上下间距 */
 }
 
 .post-md img:hover
@@ -167,65 +174,11 @@
     transform: translateZ(0) scale(1);
 }
 
-/* 图片loading效果 */
-.image-loading {
-    position: relative;
-    min-height: 200px;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.image-loading::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    animation: shimmer 1.5s infinite;
-}
-
-.image-loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e0e0e0;
-    border-top: 3px solid #ff4444;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-/* 图片loading动画 */
-@keyframes shimmer {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
-
 /* 图片容器样式 */
 .image-container {
     position: relative;
     display: inline-block;
     max-width: 100%;
-    margin: 1rem auto;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -236,46 +189,58 @@
     height: auto;
     border-radius: 8px;
     transition: all 0.3s ease;
+    opacity: 0; /* 默认隐藏图片 */
 }
 
+/* 简化的圆圈loading样式 */
 .image-container.loading {
     min-height: 200px;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-}
-
-.image-container.loading::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    animation: shimmer 1.5s infinite;
-    z-index: 1;
+    background: #f8f9fa;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .image-container.loading::after {
     content: '';
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e9ecef;
+    border-top: 3px solid #ff4444;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e0e0e0;
-    border-top: 3px solid #ff4444;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    z-index: 2;
+    z-index: 1;
 }
 
-.image-container.loading img {
-    opacity: 0;
-}
-
+/* 图片加载完成后显示图片，隐藏loading */
 .image-container:not(.loading) img {
     opacity: 1;
+}
+
+.image-container:not(.loading)::after {
+    display: none; /* 隐藏loading圈圈 */
+}
+
+/* 确保loading圈圈在图片加载过程中始终显示 */
+.image-container.loading img {
+    opacity: 0;
+    position: absolute;
+    z-index: 0;
+}
+
+/* 圆圈loading动画 */
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 .post-md hr
@@ -292,6 +257,8 @@
     line-height: 2;
     letter-spacing: 0.1px;
     margin-bottom: 1.5rem; /* 增加段落间距 */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .post-md blockquote
@@ -306,6 +273,7 @@
     border-radius: 0 8px 8px 0;
     position: relative;
     word-wrap: break-word;
+    overflow-wrap: break-word;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -327,6 +295,8 @@
     margin-bottom: 1rem;
     position: relative;
     z-index: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .post-md blockquote p:last-child
@@ -367,6 +337,8 @@
     padding: 12px 0;
     border-bottom: 2px solid var(--line-1);
     letter-spacing: 0.1px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .post-md>table tr:nth-child(odd) td
 {
@@ -374,6 +346,8 @@
     border-bottom: 1px solid var(--line-1);
     background: #fafafa;
     letter-spacing: 0.1px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .post-md>table tr:nth-child(even) td
 {
@@ -381,6 +355,8 @@
     border-bottom: 1px solid var(--line-1);
     background: #fff;
     letter-spacing: 0.1px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .post-md code
@@ -393,6 +369,8 @@
     font-family: "JetBrains Mono", "Montserrat", monospace;
     font-style: italic;
     letter-spacing: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* 确保代码块内的行内代码样式正确 */
@@ -406,7 +384,8 @@
 .post-md pre {
     position: relative;
     border-radius: 8px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: visible;
     background: #2b2b2b;
     margin: 1em 0;
 }
@@ -423,6 +402,9 @@
     letter-spacing: 0;
     background: transparent;
     color: #f8f8f2;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 /* 代码块全屏按钮 */
@@ -586,6 +568,9 @@
 .code-modal-code pre code {
     font-family: "JetBrains Mono", "Montserrat", monospace;
     font-style: italic;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 /* 当代码有行号时，移除默认padding */
@@ -628,7 +613,9 @@
 
 .code-modal-code .hljs-ln-code {
     padding: 0 24px 0 16px;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
     width: auto;
     line-height: 1.4;
     font-style: italic;
@@ -694,6 +681,9 @@
     .code-modal-code .hljs-ln-code {
         padding: 0 16px 0 12px;
         line-height: 1.4;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        word-break: break-all;
     }
     
     .code-fullscreen-btn {
