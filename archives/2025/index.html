@@ -431,12 +431,22 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // 更新年份标题的显示
+        // 更新年份标题的显示和文章数量
         const years = document.querySelectorAll('.archive-year');
         years.forEach(year => {
             const yearValue = year.dataset.year;
             const yearPosts = document.querySelectorAll(`.archive-item[data-year="${yearValue}"]`);
-            const hasVisiblePosts = Array.from(yearPosts).some(post => post.style.display === 'flex');
+            const visiblePosts = Array.from(yearPosts).filter(post => {
+                const display = post.style.display;
+                return display === 'flex' || display === '' || display === 'block';
+            });
+            const hasVisiblePosts = visiblePosts.length > 0;
+            
+            // 更新年份文章数量
+            const yearCountElement = year.querySelector('.year-count');
+            if (yearCountElement) {
+                yearCountElement.textContent = `共 ${visiblePosts.length} 篇文章`;
+            }
             
             // 如果该年份下没有可见的文章，隐藏整个年份区块
             year.style.display = hasVisiblePosts ? 'block' : 'none';
