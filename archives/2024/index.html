@@ -157,7 +157,7 @@
         if (lazyImages.length === 0) {
           allImages.forEach(img => {
             // 排除favicon.png
-            if (img.src && !img.src.includes('favicon.png') && !img.src.includes('favicon1.png') && 
+            if (img.src && !img.src.includes('favicon.png') && !img.src.includes('github.png') && !img.src.includes('mail.png') && !img.src.includes('rss-fill.png') && 
                 img.dataset.src && !img.classList.contains('lazy-image')) {
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
@@ -210,7 +210,7 @@
         // 开始观察所有懒加载图片
         lazyImages.forEach(img => {
           // 排除favicon.png
-          if (!img.src.includes('favicon.png') && !img.src.includes('favicon1.png')) {
+          if (!img.src.includes('favicon.png') && !img.src.includes('github.png') && !img.src.includes('mail.png') && !img.src.includes('rss-fill.png')) {
             imageObserver.observe(img);
           }
         });
@@ -540,13 +540,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <!-- 页脚社交链接 -->
     <div class="footer-social-links">
         <a href="https://github.com/z1gui" target="_blank" title="GitHub" class="footer-social-icon">
-            <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="GitHub" data-src="/img/github.png" loading="lazy" class="lazy-image"></div>
+            <img src="/img/github.png" alt="GitHub">
         </a>
         <a href="mailto:leon6line@gmail.com" title="Email" class="footer-social-icon">
-            <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Email" data-src="/img/mail.png" loading="lazy" class="lazy-image"></div>
+            <img src="/img/mail.png" alt="Email">
         </a>
         <a href="/atom.xml" title="RSS Feed" class="footer-social-icon">
-            <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="RSS Feed" data-src="/img/rss-fill.png" loading="lazy" class="lazy-image"></div>
+            <img src="/img/rss-fill.png" alt="RSS Feed">
         </a>
     </div>
     </div>

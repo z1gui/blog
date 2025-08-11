@@ -178,7 +178,7 @@
         if (lazyImages.length === 0) {
           allImages.forEach(img => {
             // 排除favicon.png
-            if (img.src && !img.src.includes('favicon.png') && !img.src.includes('favicon1.png') && 
+            if (img.src && !img.src.includes('favicon.png') && !img.src.includes('github.png') && !img.src.includes('mail.png') && !img.src.includes('rss-fill.png') && 
                 img.dataset.src && !img.classList.contains('lazy-image')) {
               // 如果有data-src属性，说明是懒加载图片
               img.classList.add('lazy-image');
@@ -231,7 +231,7 @@
         // 开始观察所有懒加载图片
         lazyImages.forEach(img => {
           // 排除favicon.png
-          if (!img.src.includes('favicon.png') && !img.src.includes('favicon1.png')) {
+          if (!img.src.includes('favicon.png') && !img.src.includes('github.png') && !img.src.includes('mail.png') && !img.src.includes('rss-fill.png')) {
             imageObserver.observe(img);
           }
         });
