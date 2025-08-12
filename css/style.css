@@ -663,6 +663,18 @@ a
     filter: brightness(0) invert(1) brightness(1.3);
 }
 
+/* 确保Telegram图标与其他图标样式完全一致 */
+.footer-social-icon img[alt="Telegram"] {
+    filter: brightness(0) invert(1);
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.footer-social-icon:hover img[alt="Telegram"] {
+    filter: brightness(0) invert(1) brightness(1.3);
+}
+
 .post-main
 {
     display: flex;
@@ -2198,6 +2210,14 @@ a
         width: 16px;
         height: 16px;
         filter: brightness(0) invert(1);
+    }
+    
+    /* 移动端Telegram图标样式调整 */
+    .footer-social-icon img[alt="Telegram"] {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1);
+        object-fit: contain;
     }
 }
 
