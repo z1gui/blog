@@ -541,15 +541,15 @@ a
     display: block;
     padding: 8px 16px;
     border-radius: 18px;
-    background: #fff;
-    border: 1px solid #eee;
+    background: var(--bg-color-1);
+    border: 1px solid var(--border-color);
 }
 .paginator .space
 {
     display: block;
     padding: 8px 16px;
     border-radius: 18px;
-    background: #fff;
+    background: var(--bg-color-1);
     border: none;
 }
 .paginator a
