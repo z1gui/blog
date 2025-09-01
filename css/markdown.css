@@ -154,6 +154,16 @@
     margin: 0rem auto; /* 减小图片上下间距 */
 }
 
+/* 图片说明文字样式 */
+.post-md .image-caption {
+    margin: 8px auto 16px;
+    color: var(--font-color-3);
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 100%;
+}
+
 .post-md img:hover
 {
     transform: scale(1.02);

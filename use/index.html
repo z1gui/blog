@@ -35,8 +35,8 @@
 <meta property="og:image" content="https://www.lazydaily.cn/use/img/airpods3.jpg">
 <meta property="og:image" content="https://www.lazydaily.cn/use/img/athim70.jpg">
 <meta property="og:image" content="https://www.lazydaily.cn/use/img/fg830.webp">
-<meta property="article:published_time" content="2025-08-12T02:33:16.828Z">
-<meta property="article:modified_time" content="2025-08-12T02:33:16.828Z">
+<meta property="article:published_time" content="2025-08-15T02:56:00.519Z">
+<meta property="article:modified_time" content="2025-08-15T02:56:00.519Z">
 <meta property="article:author" content="z1gui">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.lazydaily.cn/use/img/macbookpro.jpg">
@@ -504,6 +504,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImage');
     const postImages = document.querySelectorAll('.post-md img');
+
+    // 为图片添加说明文字（优先 data-caption，其次 alt，最后 title）
+    postImages.forEach(img => {
+        // 跳过社交链接中的图标
+        const isSocialIcon = img.closest('.social-links') !== null;
+        if (isSocialIcon) return;
+
+        // 已有说明则不重复添加（检测紧邻的说明节点）
+        const container = img.closest('.image-container');
+        const link = img.closest('a');
+        const injector = link || container || img;
+        const nextEl = injector.nextElementSibling;
+        if (nextEl && nextEl.classList && nextEl.classList.contains('image-caption')) return;
+
+        const captionText = (img.getAttribute('data-caption') || img.getAttribute('alt') || img.getAttribute('title') || '').trim();
+        if (!captionText) return;
+
+        const captionEl = document.createElement('div');
+        captionEl.className = 'image-caption';
+        captionEl.textContent = captionText;
+
+        injector.insertAdjacentElement('afterend', captionEl);
+    });
 
     // 点击图片打开模态框
     postImages.forEach(img => {
