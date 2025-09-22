@@ -718,6 +718,34 @@ a
     letter-spacing: 0.1px;
 }
 
+/* 标签链接悬停效果 */
+.post-meta a {
+    color: var(--font-color-3);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.post-meta a:hover {
+    color: var(--font-color-0, #ff4444);
+    background: rgba(255, 68, 68, 0.1);
+    transform: translateY(-1px);
+}
+
+.post-meta a:hover::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 1px solid var(--font-color-0, #ff4444);
+    border-radius: 6px;
+    opacity: 0.5;
+}
+
 /* 分类和分享按钮同行布局 */
 .post-categories-with-share {
     display: flex;
@@ -739,6 +767,30 @@ a
     letter-spacing: 0.1px;
     flex: 1;
     margin: 0;
+}
+
+/* 分类链接悬停效果 */
+.post-categories a {
+    color: var(--font-color-3);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.post-categories a:hover {
+    color: var(--font-color-0, #ff4444);
+    transform: translateY(-1px);
+}
+
+.post-categories a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--font-color-0, #ff4444);
+    border-radius: 1px;
 }
 
 /* 没有分类时的分享按钮独立布局 */
@@ -2379,6 +2431,65 @@ a
 }
 .header-home-link:hover {
     opacity: 0.8;
+}
+
+/* 分享成功弹出通知样式 */
+.share-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.share-notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.share-notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: var(--bg-color-1, #2a2a2a);
+    color: var(--font-color-0, #ff4444);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--font-color-0, #ff4444);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.share-notification-content svg {
+    flex-shrink: 0;
+    color: var(--font-color-0, #ff4444);
+}
+
+.share-notification-content span {
+    color: var(--font-color-1);
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .share-notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        right: 10px;
+    }
+    
+    .share-notification-content {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        justify-content: center;
+    }
 }
 
 /* Giscus 评论系统样式 */

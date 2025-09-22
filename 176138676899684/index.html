@@ -454,6 +454,16 @@ obj1 = null; // 现在只有obj2指向原对象
     <img id="modalImage" src="" alt="全屏图片">
 </div>
 
+<!-- 分享成功弹出通知 -->
+<div class="share-notification" id="shareNotification">
+    <div class="share-notification-content">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>链接已复制到剪贴板</span>
+    </div>
+</div>
+
 <!-- 代码全屏显示模态框 -->
 <div class="code-modal" id="codeModal">
     <div class="code-modal-content">
@@ -746,21 +756,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 显示分享成功提示
     function showShareSuccess() {
-        const shareBtn = document.getElementById('shareBtn');
-        if (shareBtn) {
-            const originalText = shareBtn.innerHTML;
-            shareBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                已复制
-            `;
-            shareBtn.classList.add('copied');
+        const notification = document.getElementById('shareNotification');
+        if (notification) {
+            notification.classList.add('show');
             
+            // 3秒后自动隐藏
             setTimeout(function() {
-                shareBtn.innerHTML = originalText;
-                shareBtn.classList.remove('copied');
-            }, 2000);
+                notification.classList.remove('show');
+            }, 3000);
         }
     }
     
