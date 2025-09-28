@@ -238,7 +238,7 @@
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
 </head>
 
-    <body>
+    <body class="is-post">
         <div class="paper">
             <div class="paper-main">
                 <div class="header">
@@ -630,6 +630,47 @@ document.addEventListener('DOMContentLoaded', function() {
         updateReadingProgress();
     }
 
+    // 文章页：初始化隐藏头部，向上滚动时显示，向下滚动时隐藏
+    
+    (function() {
+        const headerEl = document.querySelector('.header');
+        if (!headerEl) return;
+
+        // 初始隐藏
+        headerEl.classList.add('hidden');
+
+        let lastScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        let ticking = false;
+
+        function onScroll() {
+            const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+            const diff = currentY - lastScrollY;
+
+            // 小幅滚动忽略，避免抖动
+            if (Math.abs(diff) > 4) {
+                if (diff > 0 && currentY > 80) {
+                    // 向下滚动且离开顶部一定距离：隐藏
+                    headerEl.classList.add('hidden');
+                } else {
+                    // 向上滚动：显示
+                    headerEl.classList.remove('hidden');
+                }
+                lastScrollY = currentY;
+            } else {
+                lastScrollY = currentY;
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+    })();
+    
+
 
 
     // 目录功能已移至工具栏统一管理
@@ -894,9 +935,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 else if (scrollDifference < -scrollThreshold) {
                     header.classList.remove('hidden');
                 }
-                // 在页面顶部时显示
+                // 在页面顶部时的处理：非文章页显示，文章页保持当前（隐藏）
                 else if (currentScrollTop <= 30) {
-                    header.classList.remove('hidden');
+                    
                 }
                 
                 lastScrollTop = currentScrollTop;
@@ -905,9 +946,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // 监听滚动事件
             window.addEventListener('scroll', handleHeaderScroll, { passive: true });
             
-            // 页面加载时显示头部内容
+            // 页面加载时的头部初始状态
             if (header) {
-                header.classList.remove('hidden');
+                
+                // 文章页：初始隐藏
+                header.classList.add('hidden');
+                
             }
             
             // 目录切换按钮功能（仅在文章页面）

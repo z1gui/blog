@@ -226,7 +226,7 @@
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
 </head>
 
-    <body>
+    <body class="">
         <div class="paper">
             <div class="paper-main">
                 <div class="header">
@@ -602,9 +602,11 @@ h6:hover .heading-anchor {
                 else if (scrollDifference < -scrollThreshold) {
                     header.classList.remove('hidden');
                 }
-                // 在页面顶部时显示
+                // 在页面顶部时的处理：非文章页显示，文章页保持当前（隐藏）
                 else if (currentScrollTop <= 30) {
+                    
                     header.classList.remove('hidden');
+                    
                 }
                 
                 lastScrollTop = currentScrollTop;
@@ -613,9 +615,12 @@ h6:hover .heading-anchor {
             // 监听滚动事件
             window.addEventListener('scroll', handleHeaderScroll, { passive: true });
             
-            // 页面加载时显示头部内容
+            // 页面加载时的头部初始状态
             if (header) {
+                
+                // 非文章页：初始显示
                 header.classList.remove('hidden');
+                
             }
             
             // 目录切换按钮功能（仅在文章页面）

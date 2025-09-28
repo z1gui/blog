@@ -163,6 +163,32 @@ a
     margin: 0 auto;
 }
 
+/* 文章页尽量顶头显示：减少上边距 */
+body.is-post .paper-main {
+    padding-top: 3.2rem;
+}
+
+/* 小屏进一步贴近顶部 */
+@media screen and (max-width: 768px) {
+    body.is-post .paper-main {
+        padding-top: 2.4rem;
+    }
+}
+
+/* 关于页面和设备页面：适中的顶部间距 */
+body.is-about .paper-main,
+body.is-use .paper-main {
+    padding-top: 5rem;
+}
+
+/* 小屏关于页面和设备页面 */
+@media screen and (max-width: 768px) {
+    body.is-about .paper-main,
+    body.is-use .paper-main {
+        padding-top: 4rem;
+    }
+}
+
 .header
 {
     display: flex;
@@ -691,7 +717,7 @@ a
 .post-main-title
 {
     margin-bottom: 1.2rem;
-    font-size: 30px;
+    font-size: 36px;
     font-weight: 900;
     font-family: "Noto Serif", "Noto Serif SC", serif;
     line-height: 1.4;
@@ -1167,7 +1193,8 @@ a
 .post-md {
     width: 100%;
     box-sizing: border-box;
-    word-break: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
     line-height: 2;
     
     font-size: 20px;
@@ -1216,12 +1243,23 @@ a
     font-size: 1.1rem;
 }
 
-/* 图片自适应内容区，不超出 */
+/* 图片自适应内容区，不超出，强制居中显示 */
 .post-md img {
     max-width: 100%;
     height: auto;
     display: block;
     margin: 16px auto;
+}
+
+/* 只让包含图片的段落居中对齐 */
+.post-md p:has(img) {
+    text-align: center;
+}
+
+/* 确保图片本身也居中 */
+.post-md img {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* 代码块、表格等超出时横向滚动，不撑破内容区 */
