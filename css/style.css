@@ -42,7 +42,7 @@ a
 .paper
 {
     display: flex;
-    max-width: 650px;
+    max-width: 850px;
     margin: 0 auto;
     
     align-items: flex-start;
@@ -138,7 +138,7 @@ a
     }
     
     .post-content-main {
-        width: 650px;
+        width: 850px;
     }
     
     .post-content-sidebar {
@@ -159,8 +159,13 @@ a
     padding: 8rem 0 2rem;
     background: none;
     box-shadow: none;
-    max-width: 650px;
+    max-width: 850px;
     margin: 0 auto;
+}
+
+/* 非文章页（如主页、归档、关于、设备）在大屏下使用更窄的内容宽度 */
+body:not(.is-post) .paper-main {
+    max-width: 650px;
 }
 
 /* 文章页尽量顶头显示：减少上边距 */
@@ -194,7 +199,7 @@ body.is-use .paper-main {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 650px;
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
     position: fixed;
@@ -460,7 +465,7 @@ body.is-use .paper-main {
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: stretch;
-    max-width: 650px;
+    max-width: 850px;
     margin: 0 auto;
 }
 .post
@@ -553,7 +558,7 @@ body.is-use .paper-main {
 {
     font-size: 1rem;
     width: 100%;
-    max-width: 650px;
+    max-width: 850px;
     margin: 0 auto 24px;
     display: flex;
     flex-direction: row;
@@ -710,7 +715,7 @@ body.is-use .paper-main {
     margin-bottom: 2rem;
     padding-top: 2rem;
     border-top: none;
-    max-width: 650px;
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -737,7 +742,7 @@ body.is-use .paper-main {
     width: 100%;
     line-height: 2;
     text-align: left;
-    max-width: 650px;
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
     padding: 0 ;
@@ -779,7 +784,7 @@ body.is-use .paper-main {
     align-items: center;
     margin-bottom: 1.5rem;
     width: 100%;
-    max-width: 650px;
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
     padding: 0;
@@ -825,7 +830,7 @@ body.is-use .paper-main {
     justify-content: flex-end;
     margin-bottom: 1.5rem;
     width: 100%;
-    max-width: 650px;
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
     padding: 0;
@@ -919,7 +924,7 @@ body.is-use .paper-main {
 
 /* 分享按钮样式 */
 .post-share {
-    max-width: 650px;
+    max-width: 850px;
     margin: 0 auto;
     padding: 1rem;
     margin-bottom: 2rem;
@@ -1174,7 +1179,7 @@ body.is-use .paper-main {
 }
 
 .post-content-main {
-    width: 650px;
+    width: 850px;
     flex-shrink: 0;
 }
 
@@ -1260,6 +1265,11 @@ body.is-use .paper-main {
 .post-md img {
     margin-left: auto;
     margin-right: auto;
+}
+
+/* 文章页：图片在不同屏幕下使用容器宽度的 80% */
+body.is-post .post-md img {
+    width: 50%;
 }
 
 /* 代码块、表格等超出时横向滚动，不撑破内容区 */
@@ -1444,7 +1454,7 @@ body.is-use .paper-main {
     }
     
     .post-content-main {
-        width: 650px;
+        width: 850px;
     }
     
     .post-content-sidebar {
@@ -1462,7 +1472,7 @@ body.is-use .paper-main {
 
 @media screen and (max-width: 1200px) {
     .post-content-wrapper {
-        max-width: 650px;
+        max-width: 850px;
         flex-direction: column;
         gap: 0;
     }
@@ -1520,7 +1530,7 @@ body.is-use .paper-main {
     padding-top: 1rem;
     border-top: none;
     width: 100%;
-    max-width: 650px;
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 0rem;
@@ -2535,7 +2545,7 @@ body.is-use .paper-main {
     margin: 3rem 0 2rem;
     padding: 2rem 0;
     border-top: 1px solid var(--border-color);
-    width: 650px; /* 与文章内容区域宽度一致 */
+    width: 850px; /* 与文章内容区域宽度一致 */
     max-width: 100%;
     box-sizing: border-box;
 }
@@ -2556,7 +2566,7 @@ body.is-use .paper-main {
 /* 平板端调整 */
 @media (max-width: 1024px) {
     .comments-section {
-        width: 650px;
+        width: 850px;
     }
 }
 
