@@ -1272,6 +1272,20 @@ body.is-post .post-md img {
     width: 50%;
 }
 
+/* 文章页：使评论、导航、元信息、分类、分享与分页宽度与正文一致（850px） */
+body.is-post .post-navigation,
+body.is-post .comments-section,
+body.is-post .post-meta,
+body.is-post .post-categories,
+body.is-post .post-categories-with-share,
+body.is-post .post-share,
+body.is-post .paginator {
+    width: 100%;
+    max-width: 850px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* 代码块、表格等超出时横向滚动，不撑破内容区 */
 .post-md pre,
 .post-md code,
@@ -1466,7 +1480,7 @@ body.is-post .post-md img {
     }
     
     .post-main {
-        max-width: 800px;
+        max-width: 850px;
     }
 }
 
