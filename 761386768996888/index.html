@@ -323,7 +323,7 @@
 <p>早在 2024 年初，我就开始接触 AI 编程，一开始就使用了 Cursor。当我熟悉了它的操作之后，惊叹于它输出代码的质量。随后，我向身边朋友，同事极力推荐 Cursor。</p>
 <p>本质上，Cursor 是一个集成 AI 能力的 VS Code 编辑器。尽管后来尝试各个大厂的不同的 AI 编程工具，例如：通义灵码，Windsurf，Trae 等，甚至自己搭建平台调用 Deepseek Api 完成编程辅助工作，但坦言来讲，体验都不如 Cursor。</p>
 <h2 id="Cursor-收费模式"><a href="#Cursor-收费模式" class="headerlink" title="Cursor 收费模式"></a>Cursor 收费模式</h2><p>当然，Cursor 并不是免费的。它的收费方式是订阅制，订阅价格在 $20 / 月。其中包含 500 次快请求，以及不限次数的慢请求。说实话，每月 140 块钱确实让人望而却步。</p>
-<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.png" loading="lazy" class="lazy-image"></div></p>
+<p></p><div class="image-container loading"><img src="/img/Pastedimage20250514161308.webp" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>Cursor 相对新用户还是有很好的政策。新用户首月 14 天 150 次快请求，次月及以后每月 50 次快请求，用完就不能再使用了。理论上有足够多的账号，也可以白嫖。在没有教育优惠前，我就是用两个账号的试用和免费请求体验了 cursor 的绝大数功能。</p>
 <blockquote>
 <p>个人使用来说，我一般使用 cursor 调整前端样式，或者解决前端报错问题。或者直接需求文档丢给 cursor 让他给我生成前端文件。50 次请求大概能完成 2~3 个复杂功能页面的开发。</p>
@@ -333,7 +333,7 @@
 <blockquote>
 <p>2025-5-20：订阅时间从 2025 年 5 月 12 号到 2026 年 5 月 12 号，当前使用无问题，后续有问题补充</p>
 </blockquote>
-<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.png" loading="lazy" class="lazy-image"></div></p>
+<p></p><div class="image-container loading"><img src="/img/Pastedimage20250520090726.webp" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>目前来说，500 次快请求基本满足个人高强度使用的要求。</p>
 
                 </div>
@@ -477,8 +477,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isSocialIcon) {
             img.addEventListener('click', function() {
                 modal.classList.add('active');
-                modalImg.src = this.src;
+                
+                // 获取原始图片路径（将WebP转换回原始格式）
+                let originalSrc = this.src || this.dataset.src;
+                
+                // 如果是WebP格式，转换为原始格式
+                if (originalSrc && originalSrc.includes('.webp')) {
+                    originalSrc = originalSrc.replace('.webp', originalSrc.includes('IMG_') ? '.png' : '.jpg');
+                    // 对于没有扩展名的文件，尝试.jpeg扩展名
+                    if (!originalSrc.includes('.')) {
+                        originalSrc += '.jpg';
+                    }
+                }
+                
+                modalImg.src = originalSrc;
                 document.body.style.overflow = 'hidden'; // 防止背景滚动
+                
+                // 添加加载状态
+                modalImg.onload = function() {
+                    console.log('原始图片加载完成:', originalSrc);
+                };
+                
+                modalImg.onerror = function() {
+                    console.log('原始图片加载失败，使用WebP版本');
+                    modalImg.src = this.src || this.dataset.src;
+                }.bind(this);
             });
         }
     });

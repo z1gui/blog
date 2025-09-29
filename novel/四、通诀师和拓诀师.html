@@ -384,8 +384,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isSocialIcon) {
             img.addEventListener('click', function() {
                 modal.classList.add('active');
-                modalImg.src = this.src;
+                
+                // 获取原始图片路径（将WebP转换回原始格式）
+                let originalSrc = this.src || this.dataset.src;
+                
+                // 如果是WebP格式，转换为原始格式
+                if (originalSrc && originalSrc.includes('.webp')) {
+                    originalSrc = originalSrc.replace('.webp', originalSrc.includes('IMG_') ? '.png' : '.jpg');
+                    // 对于没有扩展名的文件，尝试.jpeg扩展名
+                    if (!originalSrc.includes('.')) {
+                        originalSrc += '.jpg';
+                    }
+                }
+                
+                modalImg.src = originalSrc;
                 document.body.style.overflow = 'hidden'; // 防止背景滚动
+                
+                // 添加加载状态
+                modalImg.onload = function() {
+                    console.log('原始图片加载完成:', originalSrc);
+                };
+                
+                modalImg.onerror = function() {
+                    console.log('原始图片加载失败，使用WebP版本');
+                    modalImg.src = this.src || this.dataset.src;
+                }.bind(this);
             });
         }
     });
