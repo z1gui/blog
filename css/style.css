@@ -367,12 +367,21 @@ body.is-use .paper-main {
 .nav li a.current {
     color: var(--font-color-0);
     font-weight: 700;
+}
+
+/* 返回顶部按钮样式 */
+.back-to-top-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.6rem !important;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.back-to-top-btn:hover {
     opacity: 1;
-    background: transparent;
-    border-color: transparent;
-    box-shadow: none;
-    transform: none;
-    position: relative;
+    color: var(--font-color-0) !important;
 }
 
 .nav li a.current::after {

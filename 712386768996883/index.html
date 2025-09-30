@@ -265,47 +265,14 @@
         <!-- 导航栏 -->
         <ul class="nav">
             
-            <li>
-                
-                <a href="/" class="">
-                   主页
-                   
-                </a>
-            </li>
-            
-            <li>
-                
-                <a href="/archives" class="">
-                   归档
-                   
-                </a>
-            </li>
-            
-            <li>
-                
-                <a href="/about" class="">
-                   关于
-                   
-                </a>
-            </li>
-            
-            <li>
-                
-                <a href="/use" class="">
-                   设备
-                   
-                </a>
-            </li>
-            
-            <li>
-                
-                <a href="https://uhufoundme.sol.build/" class="" target="&quot;_blank&quot;" rel="&quot;noopener" noreferrer&#34;="">
-                   碎碎念
-                   
-                   <span class="external-link-icon">🔗</span>
-                   
-                </a>
-            </li>
+                <!-- 文章页面专用导航 -->
+                <li>
+                    <a href="/" class="">返回主页</a>
+                </li>
+                <!-- 返回顶部按钮 -->
+                <li>
+                    <a href="#" id="backToTop" class="back-to-top-btn" title="返回顶部">返回顶部</a>
+                </li>
             
         </ul>
     </div>
@@ -1000,6 +967,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         document.addEventListener('DOMContentLoaded', initHighlight);
+        </script>
+        
+        
+        <!-- 返回顶部功能 -->
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
         </script>
         
         
