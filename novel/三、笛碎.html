@@ -716,30 +716,63 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.removeChild(textArea);
     }
     
-    // 评论区域显示/隐藏功能
+    // 评论区域显示/隐藏功能（顶部按钮仍可用）
     const commentToggleBtn = document.getElementById('commentToggleBtn');
     const commentsSection = document.getElementById('commentsSection');
+    const commentsDrawer = document.getElementById('commentsDrawer');
+    const commentsToggleBar = document.getElementById('commentsToggleBar');
     
-    if (commentToggleBtn && commentsSection) {
-        // 默认隐藏评论区域
-        commentsSection.style.display = 'none';
-        commentToggleBtn.setAttribute('title', '显示评论');
-        
-        commentToggleBtn.addEventListener('click', function() {
-            if (commentsSection.style.display === 'none') {
-                commentsSection.style.display = 'block';
-                commentToggleBtn.setAttribute('title', '隐藏评论');
-                // 添加显示状态的视觉反馈
-                commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
-                commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
-                commentToggleBtn.style.color = 'white';
+    function openComments() {
+        if (commentsDrawer) {
+            commentsDrawer.classList.add('open');
+            commentsDrawer.setAttribute('aria-hidden', 'false');
+        }
+        if (commentsToggleBar) {
+            commentsToggleBar.setAttribute('aria-expanded', 'true');
+            commentsToggleBar.textContent = '隐藏评论';
+        }
+        if (commentToggleBtn) {
+            commentToggleBtn.setAttribute('title', '隐藏评论');
+            commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
+            commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
+            commentToggleBtn.style.color = 'white';
+        }
+    }
+    
+    function closeComments() {
+        if (commentsDrawer) {
+            commentsDrawer.classList.remove('open');
+            commentsDrawer.setAttribute('aria-hidden', 'true');
+        }
+        if (commentsToggleBar) {
+            commentsToggleBar.setAttribute('aria-expanded', 'false');
+            commentsToggleBar.textContent = '显示评论';
+        }
+        if (commentToggleBtn) {
+            commentToggleBtn.setAttribute('title', '显示评论');
+            commentToggleBtn.style.background = '';
+            commentToggleBtn.style.borderColor = '';
+            commentToggleBtn.style.color = '';
+        }
+    }
+
+    if (commentsDrawer && commentsToggleBar) {
+        closeComments(); // 默认关闭抽屉
+        commentsToggleBar.addEventListener('click', function() {
+            if (commentsDrawer.classList.contains('open')) {
+                closeComments();
             } else {
-                commentsSection.style.display = 'none';
-                commentToggleBtn.setAttribute('title', '显示评论');
-                // 恢复默认状态
-                commentToggleBtn.style.background = '';
-                commentToggleBtn.style.borderColor = '';
-                commentToggleBtn.style.color = '';
+                openComments();
+            }
+        });
+    }
+
+    if (commentToggleBtn && commentsDrawer) {
+        commentToggleBtn.addEventListener('click', function() {
+            if (commentsDrawer.classList.contains('open')) {
+                closeComments();
+            } else {
+                openComments();
             }
         });
     }

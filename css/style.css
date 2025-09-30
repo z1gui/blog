@@ -1666,6 +1666,52 @@ body.is-post .paginator {
     margin-right: auto;
 }
 
+/* 评论抽屉切换条 */
+.comments-toggle-bar {
+    width: 100%;
+    max-width: 850px;
+    margin: 2rem auto 0.5rem;
+    padding: 10px 0;
+    color: var(--font-color-2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    border-top: 1px solid var(--line-1);
+}
+
+.comments-toggle-bar:hover {
+    color: var(--font-color-0);
+}
+
+.comments-toggle-arrow {
+    margin-left: 6px;
+    transition: transform 0.25s ease;
+}
+
+.comments-toggle-bar[aria-expanded="true"] .comments-toggle-arrow {
+    transform: rotate(180deg);
+}
+
+/* 评论抽屉容器（带过渡） */
+.comments-drawer {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto 1.5rem;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.35s ease;
+}
+
+.comments-drawer.open {
+    max-height: 1200px; /* 足以容纳初始内容，高度按需过渡 */
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .next-post-label {
     font-size: 3rem;
     font-style: italic;
