@@ -1249,7 +1249,7 @@ body.is-use .paper-main {
 }
 
 /* 图片自适应内容区，不超出，强制居中显示 */
-.post-md img {
+.post-md img { 
     max-width: 100%;
     height: auto;
     display: block;
@@ -1267,9 +1267,35 @@ body.is-use .paper-main {
     margin-right: auto;
 }
 
-/* 文章页：图片在不同屏幕下使用容器宽度的 80% */
+/* 文章页：图片最大宽度为50%，小图片保持原始尺寸并居中 */
 body.is-post .post-md img {
-    width: 50%;
+    max-width: 50%;
+    width: 850px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 文章页：非100%宽度时也可强制水平居中（兼容 p/a/figure 结构） */
+body.is-post .post-md p > img:only-child {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+body.is-post .post-md p > a:only-child {
+    display: inline-block; /* 链接作为可居中块 */
+    margin-left: auto;
+    margin-right: auto;
+}
+body.is-post .post-md p > a:only-child > img {
+    display: block;
+}
+body.is-post .post-md figure {
+    text-align: center;
+}
+body.is-post .post-md figure > img,
+body.is-post .post-md figure > a > img {
+    display: inline-block; /* 使用 inline-block 结合 text-align 居中 */
 }
 
 /* 文章页：使评论、导航、元信息、分类、分享与分页宽度与正文一致（850px） */

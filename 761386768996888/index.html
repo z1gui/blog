@@ -483,10 +483,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // 如果是WebP格式，转换为原始格式
                 if (originalSrc && originalSrc.includes('.webp')) {
-                    originalSrc = originalSrc.replace('.webp', originalSrc.includes('IMG_') ? '.png' : '.jpg');
-                    // 对于没有扩展名的文件，尝试.jpeg扩展名
-                    if (!originalSrc.includes('.')) {
-                        originalSrc += '.jpg';
+                    // 尝试多种原始格式
+                    const possibleFormats = ['.png', '.jpg', '.jpeg'];
+                    let foundOriginal = false;
+                    
+                    for (let format of possibleFormats) {
+                        const testSrc = originalSrc.replace('.webp', format);
+                        // 这里可以添加预检查逻辑，但为了简化，我们直接尝试加载
+                        if (!foundOriginal) {
+                            originalSrc = testSrc;
+                            foundOriginal = true;
+                        }
+                    }
+                    
+                    // 如果都没有找到，使用默认的.jpg格式
+                    if (!foundOriginal) {
+                        originalSrc = originalSrc.replace('.webp', '.jpg');
                     }
                 }
                 
@@ -499,8 +511,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 
                 modalImg.onerror = function() {
-                    console.log('原始图片加载失败，使用WebP版本');
-                    modalImg.src = this.src || this.dataset.src;
+                    console.log('原始图片加载失败，尝试其他格式');
+                    // 尝试其他可能的原始格式
+                    const webpSrc = this.src || this.dataset.src;
+                    if (webpSrc && webpSrc.includes('.webp')) {
+                        const formats = ['.png', '.jpeg', '.jpg'];
+                        let currentFormatIndex = 0;
+                        
+                        const tryNextFormat = () => {
+                            if (currentFormatIndex < formats.length) {
+                                const testSrc = webpSrc.replace('.webp', formats[currentFormatIndex]);
+                                modalImg.src = testSrc;
+                                currentFormatIndex++;
+                            } else {
+                                console.log('所有原始格式都失败，使用WebP版本');
+                                modalImg.src = webpSrc;
+                            }
+                        };
+                        
+                        // 重新绑定错误处理
+                        modalImg.onerror = tryNextFormat;
+                        tryNextFormat();
+                    } else {
+                        modalImg.src = webpSrc;
+                    }
                 }.bind(this);
             });
         }
