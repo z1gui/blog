@@ -337,7 +337,12 @@
                     <a href="/categories/%E7%94%9F%E6%B4%BB/"> / 生活</a>
                 
             </div>
-            <div class="post-share-icon">
+            <div class="post-action-buttons">
+                <button class="comment-toggle-btn" id="commentToggleBtn" title="显示/隐藏评论">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
                 <button class="share-icon-btn" id="shareBtn" title="点击分享这篇文章">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -347,32 +352,30 @@
         </div>
     
 
-    <!-- 添加上一篇和下一篇导航 -->
-    <div class="post-navigation">
-        <div class="post-nav-prev">
-            
-                <span class="nav-label">上一篇</span>
-                <a href="/761386768996888/" class="nav-title">「持续更新」AI辅助编程使用心得</a>
-            
-        </div>
-        <div class="post-nav-next">
-            
-                <span class="nav-label">下一篇</span>
-                <a href="/176138676899684/" class="nav-title">JavaScript 创建执行释放过程</a>
-            
+    <!-- 下一篇推荐 -->
+    
+    <div class="next-post-recommendation">
+        <div class="next-post-label">接下来阅读</div>
+        <div class="next-post-content">
+            <a href="/176138676899684/" class="next-post-title">JavaScript 创建执行释放过程</a>
+            <div class="next-post-excerpt">
+                
+                一、对象创建过程a. 内存分配 当我们创建一个对象时（无论是通过构造函数还是字面量方式），JavaScript 引擎会在内存堆（Heap）中为这个对象分配空间。堆是一个用于存储复杂数据结构（如对象和数组）的区域。 // 创建对象并分配内存 var person = new Object; person.name = &amp;39;Alice&amp;39;; person.age = 30; 或 // 字面量方式创建对象并分配内存 var person = &amp;123;   name: &amp;39;Alice&amp;39;,   age: 30 &amp;125;; b. 构造函数调用 如果使用 new 关键字调用构造函数来创...
+            </div>
         </div>
     </div>
+    
 
     <!-- 评论区域 -->
-    
-<div class="comments-section">
-    <div class="giscus-container">
-        <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
-        </script>
-    </div>
+    <div class="comments-section" id="commentsSection">
+        
+<div class="giscus-container">
+    <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
+    </script>
 </div>
 
 
+    </div>
 
 </div>
 
@@ -818,6 +821,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         document.body.removeChild(textArea);
+    }
+    
+    // 评论区域显示/隐藏功能
+    const commentToggleBtn = document.getElementById('commentToggleBtn');
+    const commentsSection = document.getElementById('commentsSection');
+    
+    if (commentToggleBtn && commentsSection) {
+        // 默认隐藏评论区域
+        commentsSection.style.display = 'none';
+        commentToggleBtn.setAttribute('title', '显示评论');
+        
+        commentToggleBtn.addEventListener('click', function() {
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                commentToggleBtn.setAttribute('title', '隐藏评论');
+                // 添加显示状态的视觉反馈
+                commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.color = 'white';
+            } else {
+                commentsSection.style.display = 'none';
+                commentToggleBtn.setAttribute('title', '显示评论');
+                // 恢复默认状态
+                commentToggleBtn.style.background = '';
+                commentToggleBtn.style.borderColor = '';
+                commentToggleBtn.style.color = '';
+            }
+        });
     }
 });
 </script>

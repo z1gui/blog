@@ -382,7 +382,12 @@
                     <a href="/categories/%E5%90%8E%E7%AB%AF/"> / 后端</a>
                 
             </div>
-            <div class="post-share-icon">
+            <div class="post-action-buttons">
+                <button class="comment-toggle-btn" id="commentToggleBtn" title="显示/隐藏评论">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
                 <button class="share-icon-btn" id="shareBtn" title="点击分享这篇文章">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -392,32 +397,30 @@
         </div>
     
 
-    <!-- 添加上一篇和下一篇导航 -->
-    <div class="post-navigation">
-        <div class="post-nav-prev">
-            
-                <span class="nav-label">上一篇</span>
-                <a href="/761386768996512/" class="nav-title">javascript中 const，var，let的区别</a>
-            
-        </div>
-        <div class="post-nav-next">
-            
-                <span class="nav-label">下一篇</span>
-                <a href="/761386768996883/" class="nav-title">关于oracle中以Blob字段查找重复值问题</a>
-            
+    <!-- 下一篇推荐 -->
+    
+    <div class="next-post-recommendation">
+        <div class="next-post-label">接下来阅读</div>
+        <div class="next-post-content">
+            <a href="/761386768996883/" class="next-post-title">关于oracle中以Blob字段查找重复值问题</a>
+            <div class="next-post-excerpt">
+                
+                问题产生最近在工作当中有个统计问题，统计Oracle数据库里面人员表中简历一致的人的有哪些。很明显，就是查重嘛。说到查重，当然想到就是 Group by 方法。 库表结构（简单的还原一下库表）create table cs id int PRIMARY KEY not null, name NVARCHAR250 not null, jl blob not null ; select  from cs; insert into cs  select 1,&amp;39;Tom&amp;39;,toblob&amp;39;123412f&amp;39; from dual; insert into cs  select 2,&amp;...
+            </div>
         </div>
     </div>
+    
 
     <!-- 评论区域 -->
-    
-<div class="comments-section">
-    <div class="giscus-container">
-        <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
-        </script>
-    </div>
+    <div class="comments-section" id="commentsSection">
+        
+<div class="giscus-container">
+    <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
+    </script>
 </div>
 
 
+    </div>
 
 </div>
 
@@ -863,6 +866,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         document.body.removeChild(textArea);
+    }
+    
+    // 评论区域显示/隐藏功能
+    const commentToggleBtn = document.getElementById('commentToggleBtn');
+    const commentsSection = document.getElementById('commentsSection');
+    
+    if (commentToggleBtn && commentsSection) {
+        // 默认隐藏评论区域
+        commentsSection.style.display = 'none';
+        commentToggleBtn.setAttribute('title', '显示评论');
+        
+        commentToggleBtn.addEventListener('click', function() {
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                commentToggleBtn.setAttribute('title', '隐藏评论');
+                // 添加显示状态的视觉反馈
+                commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.color = 'white';
+            } else {
+                commentsSection.style.display = 'none';
+                commentToggleBtn.setAttribute('title', '显示评论');
+                // 恢复默认状态
+                commentToggleBtn.style.background = '';
+                commentToggleBtn.style.borderColor = '';
+                commentToggleBtn.style.color = '';
+            }
+        });
     }
 });
 </script>

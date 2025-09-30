@@ -712,6 +712,34 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.body.removeChild(textArea);
     }
+    
+    // 评论区域显示/隐藏功能
+    const commentToggleBtn = document.getElementById('commentToggleBtn');
+    const commentsSection = document.getElementById('commentsSection');
+    
+    if (commentToggleBtn && commentsSection) {
+        // 默认隐藏评论区域
+        commentsSection.style.display = 'none';
+        commentToggleBtn.setAttribute('title', '显示评论');
+        
+        commentToggleBtn.addEventListener('click', function() {
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                commentToggleBtn.setAttribute('title', '隐藏评论');
+                // 添加显示状态的视觉反馈
+                commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.color = 'white';
+            } else {
+                commentsSection.style.display = 'none';
+                commentToggleBtn.setAttribute('title', '显示评论');
+                // 恢复默认状态
+                commentToggleBtn.style.background = '';
+                commentToggleBtn.style.borderColor = '';
+                commentToggleBtn.style.color = '';
+            }
+        });
+    }
 });
 </script>
                 

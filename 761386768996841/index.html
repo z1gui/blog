@@ -1253,7 +1253,12 @@ while(keyIterator.hasNext()){
                     <a href="/categories/%E5%90%8E%E7%AB%AF/"> / 后端</a>
                 
             </div>
-            <div class="post-share-icon">
+            <div class="post-action-buttons">
+                <button class="comment-toggle-btn" id="commentToggleBtn" title="显示/隐藏评论">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
                 <button class="share-icon-btn" id="shareBtn" title="点击分享这篇文章">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -1263,32 +1268,30 @@ while(keyIterator.hasNext()){
         </div>
     
 
-    <!-- 添加上一篇和下一篇导航 -->
-    <div class="post-navigation">
-        <div class="post-nav-prev">
-            
-                <span class="nav-label">上一篇</span>
-                <a href="/761386768996831/" class="nav-title">Kafka深入浅出</a>
-            
-        </div>
-        <div class="post-nav-next">
-            
-                <span class="nav-label">下一篇</span>
-                <a href="/761386768996885/" class="nav-title">类加载器以及双亲委派模型</a>
-            
+    <!-- 下一篇推荐 -->
+    
+    <div class="next-post-recommendation">
+        <div class="next-post-label">接下来阅读</div>
+        <div class="next-post-content">
+            <a href="/761386768996885/" class="next-post-title">类加载器以及双亲委派模型</a>
+            <div class="next-post-excerpt">
+                
+                一个类的生命周期（7个阶段）加载-验证-准备-解析-初始化-使用-卸载 其中，类的加载过程是十分重要的过程。在这一过程，是由JVM提供的类加载器来完成。 类加载器JVM提供三层类加载器 启动类加载器：Bootstrap Class Loader ，是C++写的，返回为NULL（比如String类），lib&amp;x2F;下的jar包，比如rt.jar,jce.jar等 拓展类加载器：Extension Class Loader，jre&amp;x2F;lib&amp;x2F;ext下的jar或者是指定的jar 应用程序类加载器：Application  Class Loader，加载calsspath指定内容 当然...
+            </div>
         </div>
     </div>
+    
 
     <!-- 评论区域 -->
-    
-<div class="comments-section">
-    <div class="giscus-container">
-        <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
-        </script>
-    </div>
+    <div class="comments-section" id="commentsSection">
+        
+<div class="giscus-container">
+    <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
+    </script>
 </div>
 
 
+    </div>
 
 </div>
 
@@ -1734,6 +1737,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         document.body.removeChild(textArea);
+    }
+    
+    // 评论区域显示/隐藏功能
+    const commentToggleBtn = document.getElementById('commentToggleBtn');
+    const commentsSection = document.getElementById('commentsSection');
+    
+    if (commentToggleBtn && commentsSection) {
+        // 默认隐藏评论区域
+        commentsSection.style.display = 'none';
+        commentToggleBtn.setAttribute('title', '显示评论');
+        
+        commentToggleBtn.addEventListener('click', function() {
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                commentToggleBtn.setAttribute('title', '隐藏评论');
+                // 添加显示状态的视觉反馈
+                commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.color = 'white';
+            } else {
+                commentsSection.style.display = 'none';
+                commentToggleBtn.setAttribute('title', '显示评论');
+                // 恢复默认状态
+                commentToggleBtn.style.background = '';
+                commentToggleBtn.style.borderColor = '';
+                commentToggleBtn.style.color = '';
+            }
+        });
     }
 });
 </script>

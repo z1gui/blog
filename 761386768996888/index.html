@@ -332,7 +332,12 @@
                     <a href="/categories/AI/"> / AI</a>
                 
             </div>
-            <div class="post-share-icon">
+            <div class="post-action-buttons">
+                <button class="comment-toggle-btn" id="commentToggleBtn" title="显示/隐藏评论">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
                 <button class="share-icon-btn" id="shareBtn" title="点击分享这篇文章">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -342,32 +347,30 @@
         </div>
     
 
-    <!-- 添加上一篇和下一篇导航 -->
-    <div class="post-navigation">
-        <div class="post-nav-prev">
-            
-                <span class="nav-label">上一篇</span>
-                <a href="/6885322357796359/" class="nav-title">Planet配置Web3域名</a>
-            
-        </div>
-        <div class="post-nav-next">
-            
-                <span class="nav-label">下一篇</span>
-                <a href="/761386768996832/" class="nav-title">为什么一定要有一个个人网站？</a>
-            
+    <!-- 下一篇推荐 -->
+    
+    <div class="next-post-recommendation">
+        <div class="next-post-label">接下来阅读</div>
+        <div class="next-post-content">
+            <a href="/761386768996832/" class="next-post-title">为什么一定要有一个个人网站？</a>
+            <div class="next-post-excerpt">
+                
+                前言大家好，我是子规，很高兴能够在这里和大家相遇。本篇文章记录该站建立的初衷、建站过程以及在过程中的思考。 为什么建立这个网站在此网站建立之前，我通常在CSDN上写作。 但随着时间推移，我开始发现，CSDN上的文章， Although it is very good, but it is not very good for SEO。尽管我在CSDN上没有很多有质量的输出，但是繁杂的信息流却充斥在我面前。关注，点赞，私信，评论，活动等等都是我要面对的。这些信息流无时无刻不在分散我的注意力，使我感到非常痛苦。 因此，我开始探索更有效的方式。前几年微信公众号爆火，我本人也关注不少微信公众号。其中，有...
+            </div>
         </div>
     </div>
+    
 
     <!-- 评论区域 -->
-    
-<div class="comments-section">
-    <div class="giscus-container">
-        <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
-        </script>
-    </div>
+    <div class="comments-section" id="commentsSection">
+        
+<div class="giscus-container">
+    <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
+    </script>
 </div>
 
 
+    </div>
 
 </div>
 
@@ -813,6 +816,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         document.body.removeChild(textArea);
+    }
+    
+    // 评论区域显示/隐藏功能
+    const commentToggleBtn = document.getElementById('commentToggleBtn');
+    const commentsSection = document.getElementById('commentsSection');
+    
+    if (commentToggleBtn && commentsSection) {
+        // 默认隐藏评论区域
+        commentsSection.style.display = 'none';
+        commentToggleBtn.setAttribute('title', '显示评论');
+        
+        commentToggleBtn.addEventListener('click', function() {
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                commentToggleBtn.setAttribute('title', '隐藏评论');
+                // 添加显示状态的视觉反馈
+                commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
+                commentToggleBtn.style.color = 'white';
+            } else {
+                commentsSection.style.display = 'none';
+                commentToggleBtn.setAttribute('title', '显示评论');
+                // 恢复默认状态
+                commentToggleBtn.style.background = '';
+                commentToggleBtn.style.borderColor = '';
+                commentToggleBtn.style.color = '';
+            }
+        });
     }
 });
 </script>
