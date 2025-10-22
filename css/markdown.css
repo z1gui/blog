@@ -284,15 +284,17 @@
     line-height: 1.7;
     letter-spacing: 0.05px;
     padding: 1.5rem 1.5rem 1.5rem 2rem;
+    
     margin: 2rem 0;
     border-radius: 0 8px 8px 0;
     position: relative;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background: rgba(96, 190, 41, 0.2);
-    border-color: rgba(96, 190, 41, 0.3);
+    background: rgba(3, 9, 0, 0.2);
+    border-color: rgba(3, 9, 0, 0.3);
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(96, 190, 41, 0.2);
+    border-left: 4px solid var(--font-color-0);
+    box-shadow: 0 2px 4px rgba(3, 9, 0, 0.2);
 }
 
 .post-md blockquote::before
@@ -300,7 +302,7 @@
     content: '"';
     position: absolute;
     top: 0.5rem;
-    left: 1rem;
+    left: 0.5rem;
     font-size: 3rem;
     color: var(--font-color-0);
     opacity: 0.3;
