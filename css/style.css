@@ -2,19 +2,19 @@
 
 :root
 {
-    --font-color-0: #ff4444;
+    --font-color-0: #60BE29;
     --font-color-1: rgb(201, 196, 189);
     --font-color-2: #ccc;
     --font-color-3: #888;
     --font-color-4: #fff;
     --bg-color-0: #0f0f0f;
     --bg-color-0-rgb: 15, 15, 15;
-    --bg-color-1: #2a2a2a;
+    --bg-color-1: #1a1a1a;
     --bg-color-2: #ce4b4b;
     --line-1: #444;
     --line-2: #555;
     --bg-color-main: #1a1a1a;
-    --bg-color-body: #0f0f0f;
+    --bg-color-body: #2a2a2a;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --border-color: #333;
 }
@@ -33,10 +33,13 @@ body
     color: var(--font-color-1);
     background: var(--bg-color-body);
     background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
     background-size: 25px 25px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
 }
 a
 {
@@ -49,43 +52,87 @@ a
     display: flex;
     max-width: 850px;
     margin: 0 auto;
-    
     align-items: flex-start;
 }
 
 
 
+/* 平板端适配 */
+@media screen and (max-width: 1200px) {
+    .header {
+        position: relative;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        margin: 0.5rem;
+        min-height: auto;
+    }
+    
+    .header-content {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    
+    .hero-header {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        width: auto;
+    }
+    
+    .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-left: 0;
+        width: auto;
+    }
+}
+
 /* 移动端适配 */
 @media screen and (max-width: 1024px) {
-    /* 头部内容中等屏幕适配 */
+    .header {
+        position: relative;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        margin: 0.5rem;
+        min-height: auto;
+    }
+    
     .header-content {
-        gap: 1.2rem;
-        max-width: 550px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.8rem 1rem;
     }
     
-    .hero-header-title {
-        font-size: 1rem;
+    .hero-header {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        width: auto;
     }
     
-    .hero-header-graphic {
-        width: 28px;
-        height: 28px;
+    .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-left: 0;
+        width: auto;
     }
     
     .paper {
         flex-direction: column;
         padding: 1rem;
         max-width: 100%;
-    }
-    
-    .nav {
-        display: flex;
-        padding: 6px 16px;
-        gap: 15px;
-        max-width: 100%;
-        width: calc(100% - 2rem);
-        left: 50%;
-        transform: translateX(-50%) translateY(0);
     }
     
     .paper-main {
@@ -151,7 +198,7 @@ a
     }
     
     .paper-main {
-        padding: 8rem 0 2rem;
+        padding: 2rem 0 2rem;
     }
     
     .post-main {
@@ -161,7 +208,7 @@ a
 .paper-main
 {
     flex: 1;
-    padding: 8rem 0 2rem;
+    padding: 2rem 0 2rem;
     background: none;
     box-shadow: none;
     max-width: 850px;
@@ -173,23 +220,29 @@ body:not(.is-post) .paper-main {
     max-width: 650px;
 }
 
-/* 文章页尽量顶头显示：减少上边距 */
-body.is-post .paper-main {
-    padding-top: 3.2rem;
-}
 
 /* 小屏进一步贴近顶部 */
 @media screen and (max-width: 768px) {
     body.is-post .paper-main {
         padding-top: 2.4rem;
     }
+    
+    .paper {
+        margin-left: 0;
+    }
+    
+    .header {
+        position: relative;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        margin: 0.5rem;
+        border-radius: 20px;
+        min-height: auto;
+    }
 }
 
-/* 关于页面和设备页面：适中的顶部间距 */
-body.is-about .paper-main,
-body.is-use .paper-main {
-    padding-top: 5rem;
-}
+
 
 /* 小屏关于页面和设备页面 */
 @media screen and (max-width: 768px) {
@@ -202,36 +255,39 @@ body.is-use .paper-main {
 .header
 {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 850px;
-    margin-left: auto;
-    margin-right: auto;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 250px;
+    margin: 0;
     position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(0);
+    top: 20px;
+    right: calc(50vw - 425px - 280px);
+    transform: none;
     z-index: 1000;
-    backdrop-filter: blur(10px);
-    border-radius: 50px;
+    border-radius: 20px;
     transition: all 0.3s ease;
+    height: auto;
+    min-height: 200px;
 }
 
 .header-content {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
     width: 100%;
-    max-width: 600px;
-    gap: 1.5rem;
-    padding: 0 1rem;
+    max-width: 100%;
+    gap: 1rem;
+    padding: 1rem;
 }
 /* 头部内容样式 */
 .hero-header {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 
@@ -310,18 +366,19 @@ body.is-use .paper-main {
 .nav
 {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-left: 16px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    margin-left: 0;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    width: 100%;
 }
 
 .header.hidden {
-    transform: translateX(-50%) translateY(-100%);
+    transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
 }
@@ -613,10 +670,10 @@ body.is-use .paper-main {
 
 .tag-link:hover {
     color: var(--font-color-0);
-    background: rgba(255, 68, 68, 0.1);
-    border-color: rgba(255, 68, 68, 0.3);
+    background: rgba(96, 190, 41, 0.1);
+    border-color: rgba(96, 190, 41, 0.3);
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(255, 68, 68, 0.2);
+    box-shadow: 0 2px 4px rgba(96, 190, 41, 0.2);
 }
 
 .paginator
@@ -778,7 +835,7 @@ body.is-use .paper-main {
     justify-content: flex-start;
     align-items: flex-start;
     margin-bottom: 2rem;
-    padding-top: 2rem;
+
     border-top: none;
     max-width: 850px;
     margin-left: auto;
@@ -1378,6 +1435,7 @@ body.is-use .paper-main {
     margin: 0 auto;
     position: relative;
     display: flex;
+    flex-direction: row-reverse;
     gap: 40px;
     align-items: flex-start;
 }
@@ -1395,7 +1453,7 @@ body.is-use .paper-main {
     height: fit-content;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 
 /* 文章内容区统一宽度并居中对齐 */
@@ -1706,7 +1764,7 @@ body.is-post .paginator {
     }
     
     .paper-main {
-        padding: 8rem 0 2rem;
+        padding: 2rem 0 2rem;
     }
     
     .post-main {
@@ -1923,12 +1981,13 @@ body.is-post .paginator {
     
     
     .next-post-title {
-        font-size: 1rem;
+        font-size: 26px;
         margin-bottom: 0.6rem;
     }
     
     .next-post-excerpt {
-        font-size: 0.9rem;
+        font-size: 18px;
+        line-height: 1.7;
     }
 }
 
@@ -1986,18 +2045,19 @@ body.is-post .paginator {
 }
 
 .category-btn:hover {
-    background: var(--bg-color-0);
     color: var(--font-color-0);
-    border-color: var(--font-color-0);
+    background: rgba(96, 190, 41, 0.1);
+    border-color: rgba(96, 190, 41, 0.3);
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px var(--font-color-0);
+    box-shadow: 0 2px 4px rgba(96, 190, 41, 0.2);
 }
 
 .category-btn.active {
-    background: var(--bg-color-0);
     color: var(--font-color-0);
-    border-color: var(--font-color-0);
+    background: rgba(96, 190, 41, 0.1);
+    border-color: rgba(96, 190, 41, 0.3);
     transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(96, 190, 41, 0.2);
 }
 
 
@@ -2478,10 +2538,11 @@ body.is-post .paginator {
 }
 
 .device-carousel-btn:hover {
-    color: white;
-    background: var(--bg-color-2);
-    border-color: var(--bg-color-2);
+    color: var(--font-color-0);
+    background: rgba(96, 190, 41, 0.1);
+    border-color: rgba(96, 190, 41, 0.3);
     transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(96, 190, 41, 0.2);
 }
 
 .device-carousel-pagination {
@@ -2516,16 +2577,20 @@ body.is-post .paginator {
 @media screen and (max-width: 768px) {
     /* 头部内容移动端适配 */
     .header {
+        position: relative;
+        top: 0;
+        left: 0;
         max-width: 100%;
         padding: 0 1rem;
         border-radius: 20px;
-        margin: 0.5rem 0rem;
-        width: calc(100% - 2rem);
+        margin: 0.5rem;
+        width: calc(100% - 1rem);
+        min-height: auto;
     }
     
     .header-content {
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
         gap: 0.8rem;
         max-width: 100%;
@@ -2538,6 +2603,7 @@ body.is-post .paginator {
         align-items: center;
         gap: 0.6rem;
         flex-shrink: 0;
+        width: auto;
     }
     
     .hero-header-title {
@@ -2562,8 +2628,9 @@ body.is-post .paginator {
         margin: 0;
         padding: 0;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-end;
         flex-shrink: 0;
+        width: auto;
     }
     
     .nav li a {
@@ -2742,8 +2809,12 @@ body.is-post .paginator {
 /* 移动端适配 */
 @media screen and (max-width: 768px) {
     .header {
+        position: relative;
+        top: 0;
+        left: 0;
         max-width: 100%;
         padding: 0 1rem;
+        margin: 0.5rem;
     }
     
     .nav {
@@ -2756,6 +2827,8 @@ body.is-post .paginator {
         transform: none;
         flex-wrap: wrap;
         justify-content: flex-end;
+        flex-direction: row;
+        align-items: center;
     }
     
     .post-list {
