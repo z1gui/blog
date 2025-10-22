@@ -611,9 +611,9 @@ h6:hover .heading-anchor {
                 }
                 // 在页面顶部时的处理：非文章页显示，文章页保持当前（隐藏）
                 else if (currentScrollTop <= 30) {
-                    
-                    header.classList.remove('hidden');
-                    
+                    if (!document.body.classList.contains('is-post')) {
+                        header.classList.remove('hidden');
+                    }
                 }
                 
                 lastScrollTop = currentScrollTop;
@@ -624,10 +624,13 @@ h6:hover .heading-anchor {
             
             // 页面加载时的头部初始状态
             if (header) {
-                
-                // 非文章页：初始显示
-                header.classList.remove('hidden');
-                
+                if (document.body.classList.contains('is-post')) {
+                    // 文章页：初始隐藏
+                    header.classList.add('hidden');
+                } else {
+                    // 非文章页：初始显示
+                    header.classList.remove('hidden');
+                }
             }
             
             // 目录切换按钮功能（仅在文章页面）
@@ -687,6 +690,166 @@ h6:hover .heading-anchor {
             
             // 启动目录切换功能设置
             setupTocToggle();
+
+            // 设备页面 3D 轮播初始化
+            if (document.body.classList.contains('is-use')) {
+                const container = document.querySelector('.paper-main');
+                if (container) {
+                    const deviceCards = Array.from(container.querySelectorAll('.device-card'));
+                    if (deviceCards.length > 0) {
+                        const carousel = document.createElement('div');
+                        carousel.className = 'device-carousel';
+                        const track = document.createElement('div');
+                        track.className = 'device-carousel-track';
+
+                        // 先把轮播插入到第一个卡片的父级中，位于首个卡片之前
+                        const firstCard = deviceCards[0];
+                        const parentNode = firstCard.parentNode;
+                        if (parentNode) {
+                            parentNode.insertBefore(carousel, firstCard);
+                        }
+
+                        deviceCards.forEach((card) => {
+                            const slide = document.createElement('div');
+                            slide.className = 'device-slide';
+                            slide.appendChild(card);
+                            track.appendChild(slide);
+                        });
+
+                        const nav = document.createElement('div');
+                        nav.className = 'device-carousel-nav';
+                        const prevBtn = document.createElement('button');
+                        prevBtn.className = 'device-carousel-btn device-prev';
+                        prevBtn.setAttribute('aria-label', '上一项');
+                        prevBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        const nextBtn = document.createElement('button');
+                        nextBtn.className = 'device-carousel-btn device-next';
+                        nextBtn.setAttribute('aria-label', '下一项');
+                        nextBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        nav.appendChild(prevBtn);
+                        nav.appendChild(nextBtn);
+
+                        const pagination = document.createElement('div');
+                        pagination.className = 'device-carousel-pagination';
+                        const dots = deviceCards.map(() => {
+                            const dot = document.createElement('div');
+                            dot.className = 'device-dot';
+                            pagination.appendChild(dot);
+                            return dot;
+                        });
+
+                        const controls = document.createElement('div');
+                        controls.className = 'device-carousel-controls';
+                        
+                        const leftNav = document.createElement('div');
+                        leftNav.className = 'device-carousel-nav';
+                        leftNav.appendChild(prevBtn);
+                        
+                        const rightNav = document.createElement('div');
+                        rightNav.className = 'device-carousel-nav';
+                        rightNav.appendChild(nextBtn);
+                        
+                        controls.appendChild(leftNav);
+                        controls.appendChild(pagination);
+                        controls.appendChild(rightNav);
+
+                        carousel.appendChild(track);
+                        carousel.appendChild(controls);
+
+                        let current = 0;
+                        const total = deviceCards.length;
+
+                        function layout() {
+                            const slides = Array.from(track.children);
+                            slides.forEach((slide, i) => {
+                                const offset = ((i - current + total) % total);
+                                let translateX = 0;
+                                let translateZ = 0;
+                                let rotateY = 0;
+                                let zIndex = 0;
+                                // 仅显示当前与两侧相邻，共3项
+                                if (offset === 0) {
+                                    translateX = -50;
+                                    translateZ = 120;
+                                    rotateY = 0;
+                                    zIndex = 3;
+                                    slide.classList.add('active');
+                                    slide.classList.remove('hidden');
+                                    slide.classList.remove('side');
+                                } else if (offset === 1) {
+                                    translateX = 20;
+                                    translateZ = 0;
+                                    rotateY = -20;
+                                    zIndex = 2;
+                                    slide.classList.remove('active');
+                                    slide.classList.remove('hidden');
+                                    slide.classList.add('side');
+                                } else if (offset === total - 1) {
+                                    translateX = -120;
+                                    translateZ = 0;
+                                    rotateY = 20;
+                                    zIndex = 2;
+                                    slide.classList.remove('active');
+                                    slide.classList.remove('hidden');
+                                    slide.classList.add('side');
+                                } else {
+                                    translateX = (offset < total / 2 ? 160 : -240);
+                                    translateZ = -120;
+                                    rotateY = offset < total / 2 ? -30 : 30;
+                                    zIndex = 1;
+                                    slide.classList.remove('active');
+                                    slide.classList.add('hidden');
+                                    slide.classList.remove('side');
+                                }
+                                slide.style.zIndex = zIndex.toString();
+                                slide.style.transform = `translate3d(${translateX}%, 0, ${translateZ}px) rotateY(${rotateY}deg)`;
+                            });
+                            dots.forEach((dot, i) => { dot.classList.toggle('active', i === current); });
+                        }
+
+                        function go(delta) { current = (current + delta + total) % total; layout(); }
+
+                        prevBtn.addEventListener('click', () => go(-1));
+                        nextBtn.addEventListener('click', () => go(1));
+                        dots.forEach((dot, i) => dot.addEventListener('click', () => { current = i; layout(); }));
+
+                        carousel.setAttribute('tabindex', '0');
+                        carousel.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') go(-1); if (e.key === 'ArrowRight') go(1); });
+                        let startX = 0;
+                        carousel.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+                        carousel.addEventListener('touchend', (e) => {
+                            const dx = e.changedTouches[0].clientX - startX;
+                            if (dx > 40) go(-1);
+                            if (dx < -40) go(1);
+                        }, { passive: true });
+
+                        layout();
+
+                        // 点击左右侧卡片切换
+                        track.addEventListener('click', (e) => {
+                            const slides = Array.from(track.children);
+                            const clickedSlide = e.target.closest('.device-slide');
+                            if (!clickedSlide) return;
+                            const index = slides.indexOf(clickedSlide);
+                            if (index === -1) return;
+                            const offset = ((index - current + total) % total);
+                            if (offset === 1) go(1);
+                            if (offset === total - 1) go(-1);
+                        });
+
+                        // 禁用非激活卡片的图片点击放大
+                        track.addEventListener('click', (e) => {
+                            if (e.target.tagName === 'IMG') {
+                                const slide = e.target.closest('.device-slide');
+                                if (!slide || !slide.classList.contains('active')) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
         });
         </script>
         
