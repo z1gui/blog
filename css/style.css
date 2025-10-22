@@ -503,7 +503,7 @@ body.is-use .paper-main {
 
 .post-link:hover
 {
-    background: var(--bg-color-2);
+    background: var(--bg-color-1);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -525,7 +525,7 @@ body.is-use .paper-main {
 
 .post-link:hover .post-title
 {
-    color: #ffffff;
+    color: var(--font-color-0);
     transition: color ease-in-out .5s;
 }
 .post-link:hover .post-except
@@ -1778,7 +1778,6 @@ body.is-post .paginator {
 }
 
 .next-post-recommendation:hover {
-    
     border-radius: 8px;
 }
 
