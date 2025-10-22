@@ -10,6 +10,7 @@
     --bg-color-0: #0f0f0f;
     --bg-color-0-rgb: 15, 15, 15;
     --bg-color-1: #2a2a2a;
+    --bg-color-2: #ce4b4b;
     --line-1: #444;
     --line-2: #555;
     --bg-color-main: #1a1a1a;
@@ -502,7 +503,7 @@ body.is-use .paper-main {
 
 .post-link:hover
 {
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--bg-color-2);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -524,8 +525,12 @@ body.is-use .paper-main {
 
 .post-link:hover .post-title
 {
-    color: var(--font-color-0);
+    color: #ffffff;
     transition: color ease-in-out .5s;
+}
+.post-link:hover .post-except
+{
+    color: rgba(255, 255, 255, 0.8);
 }
 .post-except
 {
@@ -815,7 +820,7 @@ body.is-use .paper-main {
 }
 
 /* 标签链接悬停效果 */
-.post-meta a {
+.post-meta a:not(.tag-link) {
     color: var(--font-color-3);
     text-decoration: none;
     transition: all 0.3s ease;
@@ -824,13 +829,13 @@ body.is-use .paper-main {
     border-radius: 4px;
 }
 
-.post-meta a:hover {
+.post-meta a:not(.tag-link):hover {
     color: var(--font-color-0, --font-color-0);
     background: rgba(255, 68, 68, 0.1);
     transform: translateY(-1px);
 }
 
-.post-meta a:hover::before {
+.post-meta a:not(.tag-link):hover::before {
     content: '';
     position: absolute;
     top: -2px;
@@ -886,8 +891,8 @@ body.is-use .paper-main {
 }
 
 .stat-separator-minimal {
-    color: var(--font-color-3);
-    opacity: 0.4;
+    color: var(--font-color-0);
+    opacity: 1;
     font-weight: 300;
     font-size: 0.8rem;
 }
@@ -1770,6 +1775,12 @@ body.is-post .paginator {
     max-width: 850px;
     margin-left: auto;
     margin-right: auto;
+    padding:2rem;
+}
+
+.next-post-recommendation:hover {
+    
+    border-radius: 8px;
 }
 
 /* 评论抽屉切换条 */
@@ -1843,15 +1854,22 @@ body.is-post .paginator {
     transition: color 0.3s ease;
 }
 
-.next-post-title:hover {
-    color: var(--font-color-0);
-}
 
 .next-post-excerpt {
     font-size: 20px;
     color: var(--font-color-3);
     line-height: 1.6;
     margin: 0rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.next-post-recommendation:hover .next-post-title {
+    color: var(--font-color-0);
+}
+
+.next-post-recommendation:hover .next-post-excerpt {
+    color: var(--font-color-1);
 }
 
 .post-nav-prev,

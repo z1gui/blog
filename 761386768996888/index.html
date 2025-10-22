@@ -278,9 +278,9 @@
         </div>
         <div class="post-meta">
             <div class="post-meta-left">
-                2025-05-13 ｜ 
+                2025年05月13日 ｜ 
                 
-                    <a href="/tags/Cursor/"># Cursor</a>
+                    <a href="/tags/Cursor/" class="tag-link"># Cursor</a>
                 
             </div>
             <div class="post-meta-right">
@@ -299,7 +299,7 @@
 <p>早在 2024 年初，我就开始接触 AI 编程，一开始就使用了 Cursor。当我熟悉了它的操作之后，惊叹于它输出代码的质量。随后，我向身边朋友，同事极力推荐 Cursor。</p>
 <p>本质上，Cursor 是一个集成 AI 能力的 VS Code 编辑器。尽管后来尝试各个大厂的不同的 AI 编程工具，例如：通义灵码，Windsurf，Trae 等，甚至自己搭建平台调用 Deepseek Api 完成编程辅助工作，但坦言来讲，体验都不如 Cursor。</p>
 <h2 id="Cursor-收费模式"><a href="#Cursor-收费模式" class="headerlink" title="Cursor 收费模式"></a>Cursor 收费模式</h2><p>当然，Cursor 并不是免费的。它的收费方式是订阅制，订阅价格在 $20 / 月。其中包含 500 次快请求，以及不限次数的慢请求。说实话，每月 140 块钱确实让人望而却步。</p>
-<p></p><div class="image-container loading"><img src="/img/Pastedimage20250514161308.webp" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.webp" loading="lazy" class="lazy-image"></div></p>
 <p>Cursor 相对新用户还是有很好的政策。新用户首月 14 天 150 次快请求，次月及以后每月 50 次快请求，用完就不能再使用了。理论上有足够多的账号，也可以白嫖。在没有教育优惠前，我就是用两个账号的试用和免费请求体验了 cursor 的绝大数功能。</p>
 <blockquote>
 <p>个人使用来说，我一般使用 cursor 调整前端样式，或者解决前端报错问题。或者直接需求文档丢给 cursor 让他给我生成前端文件。50 次请求大概能完成 2~3 个复杂功能页面的开发。</p>
@@ -309,7 +309,7 @@
 <blockquote>
 <p>2025-5-20：订阅时间从 2025 年 5 月 12 号到 2026 年 5 月 12 号，当前使用无问题，后续有问题补充</p>
 </blockquote>
-<p></p><div class="image-container loading"><img src="/img/Pastedimage20250520090726.webp" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.webp" loading="lazy" class="lazy-image"></div></p>
 <p>目前来说，500 次快请求基本满足个人高强度使用的要求。</p>
 
                 </div>
@@ -378,10 +378,10 @@
         <div class="next-post-label">接下来阅读</div>
         <div class="next-post-content">
             <a href="/761386768996832/" class="next-post-title">为什么一定要有一个个人网站？</a>
-            <div class="next-post-excerpt">
+            <a href="/761386768996832/" class="next-post-excerpt">
                 
                 前言大家好，我是子规，很高兴能够在这里和大家相遇。本篇文章记录该站建立的初衷、建站过程以及在过程中的思考。 为什么建立这个网站在此网站建立之前，我通常在CSDN上写作。 但随着时间推移，我开始发现，CSDN上的文章， Although it is very good, but it is not very good for SEO。尽管我在CSDN上没有很多有质量的输出，但是繁杂的信息流却充斥在我面前。关注，点赞，私信，评论，活动等等都是我要面对的。这些信息流无时无刻不在分散我的注意力，使我感到非常痛苦。 因此，我开始探索更有效的方式。前几年微信公众号爆火，我本人也关注不少微信公众号。其中，有...
-            </div>
+            </a>
         </div>
     </div>
     
@@ -431,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 为图片添加说明文字（优先 data-caption，其次 alt，最后 title）
     // 只在文章页面显示图片标注，设备页面不显示
-    
+    if (document.body.classList.contains('is-post')) {
     postImages.forEach(img => {
         // 跳过社交链接中的图标
         const isSocialIcon = img.closest('.social-links') !== null;
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         injector.insertAdjacentElement('afterend', captionEl);
     });
-    
+    }
 
     // 点击图片打开模态框
     postImages.forEach(img => {
@@ -560,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 文章页：初始化隐藏头部，向上滚动时显示，向下滚动时隐藏
-    
+    if (document.body.classList.contains('is-post')) {
     (function() {
         const headerEl = document.querySelector('.header');
         if (!headerEl) return;
@@ -597,7 +597,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, { passive: true });
     })();
-    
+    }
 
 
 
@@ -861,7 +861,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 更新字数显示
         const wordCountElement = document.getElementById('wordCount');
         if (wordCountElement) {
-            wordCountElement.textContent = totalWords.toLocaleString();
+            wordCountElement.textContent = `${totalWords.toLocaleString()} 字`;
             // 更新title属性显示详细信息
             wordCountElement.title = `字数统计：${totalWords.toLocaleString()} 字\n中文字符：${chineseCount}\n英文单词：${englishWordCount}\n数字：${numberCount}`;
         }

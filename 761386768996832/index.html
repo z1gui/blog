@@ -275,9 +275,9 @@
         </div>
         <div class="post-meta">
             <div class="post-meta-left">
-                2025-04-24 ｜ 
+                2025年04月24日 ｜ 
                 
-                    <a href="/tags/%E9%9A%8F%E7%AC%94/"># 随笔</a>
+                    <a href="/tags/%E9%9A%8F%E7%AC%94/" class="tag-link"># 随笔</a>
                 
             </div>
             <div class="post-meta-right">
@@ -383,10 +383,10 @@
         <div class="next-post-label">接下来阅读</div>
         <div class="next-post-content">
             <a href="/176138676899684/" class="next-post-title">JavaScript 创建执行释放过程</a>
-            <div class="next-post-excerpt">
+            <a href="/176138676899684/" class="next-post-excerpt">
                 
                 一、对象创建过程a. 内存分配 当我们创建一个对象时（无论是通过构造函数还是字面量方式），JavaScript 引擎会在内存堆（Heap）中为这个对象分配空间。堆是一个用于存储复杂数据结构（如对象和数组）的区域。 // 创建对象并分配内存 var person = new Object; person.name = &amp;39;Alice&amp;39;; person.age = 30; 或 // 字面量方式创建对象并分配内存 var person = &amp;123;   name: &amp;39;Alice&amp;39;,   age: 30 &amp;125;; b. 构造函数调用 如果使用 new 关键字调用构造函数来创...
-            </div>
+            </a>
         </div>
     </div>
     
@@ -436,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 为图片添加说明文字（优先 data-caption，其次 alt，最后 title）
     // 只在文章页面显示图片标注，设备页面不显示
-    
+    if (document.body.classList.contains('is-post')) {
     postImages.forEach(img => {
         // 跳过社交链接中的图标
         const isSocialIcon = img.closest('.social-links') !== null;
@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         injector.insertAdjacentElement('afterend', captionEl);
     });
-    
+    }
 
     // 点击图片打开模态框
     postImages.forEach(img => {
@@ -565,7 +565,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 文章页：初始化隐藏头部，向上滚动时显示，向下滚动时隐藏
-    
+    if (document.body.classList.contains('is-post')) {
     (function() {
         const headerEl = document.querySelector('.header');
         if (!headerEl) return;
@@ -602,7 +602,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, { passive: true });
     })();
-    
+    }
 
 
 
@@ -866,7 +866,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 更新字数显示
         const wordCountElement = document.getElementById('wordCount');
         if (wordCountElement) {
-            wordCountElement.textContent = totalWords.toLocaleString();
+            wordCountElement.textContent = `${totalWords.toLocaleString()} 字`;
             // 更新title属性显示详细信息
             wordCountElement.title = `字数统计：${totalWords.toLocaleString()} 字\n中文字符：${chineseCount}\n英文单词：${englishWordCount}\n数字：${numberCount}`;
         }

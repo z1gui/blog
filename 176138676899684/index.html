@@ -275,9 +275,9 @@
         </div>
         <div class="post-meta">
             <div class="post-meta-left">
-                2025-03-01 ｜ 
+                2025年03月01日 ｜ 
                 
-                    <a href="/tags/javascript/"># javascript</a>
+                    <a href="/tags/javascript/" class="tag-link"># javascript</a>
                 
             </div>
             <div class="post-meta-right">
@@ -423,10 +423,10 @@ obj1 = null; // 现在只有obj2指向原对象
         <div class="next-post-label">接下来阅读</div>
         <div class="next-post-content">
             <a href="/761386768996831/" class="next-post-title">Kafka深入浅出</a>
-            <div class="next-post-excerpt">
+            <a href="/761386768996831/" class="next-post-excerpt">
                 
                 Kafka 服务器端的代码是由 Scala 代码编写，支持面向对象编程和函数式数据，编译过后也是普通的 .class 文件。其的作用：提供统一的、高吞吐量、低延迟的平台来处理实时数据 一、基本概念「Kafka 是什么？主要应用场景什么？」Kafka 是一个分布式流式处理平台。 1 . 主题：发布订阅的对象是主题（Topic），可以为每个业务、每个应用甚至每类数据都创建专属的主题 2 . 生产者和消费者：向主题发布消息的客户端应用程序成为生产者，生产者程序通常持续不断地向一个或者多个主题发送消息 3 . Broker：集群由多个 Broker 组成，Broker 负责接收和处理客户端发送过来的请...
-            </div>
+            </a>
         </div>
     </div>
     
@@ -476,7 +476,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 为图片添加说明文字（优先 data-caption，其次 alt，最后 title）
     // 只在文章页面显示图片标注，设备页面不显示
-    
+    if (document.body.classList.contains('is-post')) {
     postImages.forEach(img => {
         // 跳过社交链接中的图标
         const isSocialIcon = img.closest('.social-links') !== null;
@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         injector.insertAdjacentElement('afterend', captionEl);
     });
-    
+    }
 
     // 点击图片打开模态框
     postImages.forEach(img => {
@@ -605,7 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 文章页：初始化隐藏头部，向上滚动时显示，向下滚动时隐藏
-    
+    if (document.body.classList.contains('is-post')) {
     (function() {
         const headerEl = document.querySelector('.header');
         if (!headerEl) return;
@@ -642,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, { passive: true });
     })();
-    
+    }
 
 
 
@@ -906,7 +906,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 更新字数显示
         const wordCountElement = document.getElementById('wordCount');
         if (wordCountElement) {
-            wordCountElement.textContent = totalWords.toLocaleString();
+            wordCountElement.textContent = `${totalWords.toLocaleString()} 字`;
             // 更新title属性显示详细信息
             wordCountElement.title = `字数统计：${totalWords.toLocaleString()} 字\n中文字符：${chineseCount}\n英文单词：${englishWordCount}\n数字：${numberCount}`;
         }

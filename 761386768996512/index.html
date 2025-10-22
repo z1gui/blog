@@ -277,9 +277,9 @@
         </div>
         <div class="post-meta">
             <div class="post-meta-left">
-                2024-07-23 ｜ 
+                2024年07月23日 ｜ 
                 
-                    <a href="/tags/javascript/"># javascript</a>
+                    <a href="/tags/javascript/" class="tag-link"># javascript</a>
                 
             </div>
             <div class="post-meta-right">
@@ -350,7 +350,7 @@ let bar = 'global'
 console.log(this.foo) // global
 console.log(this.bar) // undefined
 </code></pre>
-<p></p><div class="image-container loading"><img src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.webp" alt="控制台日志" data-src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="控制台日志" data-src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.webp" loading="lazy" class="lazy-image"></div></p>
 <p>由上图可知，let 在全局环境声明变量 bar 保存在[[Scopes]][0]: Script 这个变量对象的属性中，而 [[Scopes]][1]: Global 就是我们常说的全局对象。</p>
 <h3 id="变量提升和暂存死区"><a href="#变量提升和暂存死区" class="headerlink" title="变量提升和暂存死区"></a>变量提升和暂存死区</h3><p>了解变量提升，就需要了解到上线文和变量对象。详见<a href="/md/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B.md">详解：javascript 创建执行释放过程</a></p>
 <h4 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h4><p>所有使用 var 声明的变量都会在执行上下文的创建阶段时作为变量对象的属性被创建并初始化，这样才能保证在执行阶段能通过标识符在变量对象里找到对应变量进行赋值操作等。即 var 在声明变量构建变量的时：</p>
@@ -471,10 +471,10 @@ console.log(obj) // { value: 2 }obj = {}
         <div class="next-post-label">接下来阅读</div>
         <div class="next-post-content">
             <a href="/7613867548996883/" class="next-post-title">为什么总是乱码？来看看编码格式吧</a>
-            <div class="next-post-excerpt">
+            <a href="/7613867548996883/" class="next-post-excerpt">
                 
                 一、 ASCII 码计算机内所有的信息都是二进制位。一个字节包含 8 个二进制位，可以表示 256 个状态，每个状态表示一个符号。 ASCII 码一共规定了128个字符的编码，比如空格 SPACE 是32（二进制00100000），大写的字母 A 是65（二进制01000001）。这128个符号（包括32个不能打印出来的控制符号）。ASCII 码只占用了一个字节的后面7位，最前面的一位统一规定为0。 二、非 ASCII 编码英语用128个符号编码就够了，但是用来表示其他语言，128个符号是不够的。比如，在法语中，字母上方有注音符号，它就无法用 ASCII 码表示。于是，一些欧洲国家就决定，利用...
-            </div>
+            </a>
         </div>
     </div>
     
@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 为图片添加说明文字（优先 data-caption，其次 alt，最后 title）
     // 只在文章页面显示图片标注，设备页面不显示
-    
+    if (document.body.classList.contains('is-post')) {
     postImages.forEach(img => {
         // 跳过社交链接中的图标
         const isSocialIcon = img.closest('.social-links') !== null;
@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         injector.insertAdjacentElement('afterend', captionEl);
     });
-    
+    }
 
     // 点击图片打开模态框
     postImages.forEach(img => {
@@ -653,7 +653,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 文章页：初始化隐藏头部，向上滚动时显示，向下滚动时隐藏
-    
+    if (document.body.classList.contains('is-post')) {
     (function() {
         const headerEl = document.querySelector('.header');
         if (!headerEl) return;
@@ -690,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, { passive: true });
     })();
-    
+    }
 
 
 
@@ -954,7 +954,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 更新字数显示
         const wordCountElement = document.getElementById('wordCount');
         if (wordCountElement) {
-            wordCountElement.textContent = totalWords.toLocaleString();
+            wordCountElement.textContent = `${totalWords.toLocaleString()} 字`;
             // 更新title属性显示详细信息
             wordCountElement.title = `字数统计：${totalWords.toLocaleString()} 字\n中文字符：${chineseCount}\n英文单词：${englishWordCount}\n数字：${numberCount}`;
         }
