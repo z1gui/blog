@@ -261,7 +261,7 @@ body:not(.is-post) .paper-main {
     margin: 0;
     position: fixed;
     top: 0;
-    right: 0;
+    right: 2rem;
     transform: none;
     z-index: 1000;
     border-radius: 20px;
@@ -277,14 +277,17 @@ body:not(.is-post) .paper-main {
     justify-content: flex-end;
     width: 100%;
     max-width: 100%;
-    gap: 1rem;
     padding: 1rem;
+    background: rgba(3, 9, 0, 0.2);
+    border-color: rgba(3, 9, 0, 0.3);
+    border-bottom: 4px solid var(--font-color-0);
+    box-shadow: 0 2px 4px rgba(3, 9, 0, 0.2);
 }
 /* 头部内容样式 */
 .hero-header {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     gap: 0.5rem;
     transition: all 0.3s ease;
     width: 100%;
@@ -361,15 +364,13 @@ body:not(.is-post) .paper-main {
     letter-spacing: 0.05px;
 }
 
-
-
 .nav
 {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: flex-end;
-    align-items: flex-end;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 8px;
     margin-left: 0;
     transition: all 0.3s ease;
@@ -378,8 +379,8 @@ body:not(.is-post) .paper-main {
 }
 
 .header.hidden {
-    transform: translateY(-100%);
-    opacity: 0;
+    transform: translateY(-98%);
+
     pointer-events: none;
 }
 
@@ -1103,6 +1104,7 @@ body:not(.is-post) .paper-main {
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 1rem 0.7rem;
 }
 
 /* 评论切换按钮样式 */
@@ -1901,7 +1903,7 @@ body.is-post .paginator {
     }
     
     .toc-content {
-        padding: 0 16px 12px;
+        padding:  16px 12px;
     }
 }
 
@@ -2666,7 +2668,7 @@ body.is-post .paginator {
         top: 0;
         left: 0;
         max-width: 100%;
-        padding: 0 1rem;
+        padding: 0 0;
         border-radius: 20px;
         margin: 0.5rem;
         width: calc(100% - 1rem);
@@ -2675,12 +2677,13 @@ body.is-post .paginator {
     
     .header-content {
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         gap: 0.8rem;
         max-width: 100%;
         padding: 0.8rem 1rem;
         min-height: 60px;
+        border-bottom: 2px solid var(--font-color-0);
     }
     
     .hero-header {
@@ -2747,8 +2750,7 @@ body.is-post .paginator {
     
     .post-link {
         padding: 0.8rem;
-        margin: -0.8rem;
-        margin-bottom: 0.3rem;
+        margin: 1rem 0 0 0 ;
     }
     
     .post-title {
@@ -2785,7 +2787,7 @@ body.is-post .paginator {
     
     /* 移动端分类和分享按钮布局调整 */
     .post-categories-with-share {
-        padding: 0 1rem;
+    
     }
     
     .post-share-only {
@@ -2941,14 +2943,14 @@ body.is-post .paginator {
         top: 0;
         left: 0;
         max-width: 100%;
-        padding: 0 1rem;
+        padding: 0 0;
         margin: 0.5rem;
     }
     
     .nav {
         display: flex;
         padding: 0;
-        gap: 4px;
+        gap: 0px;
         max-width: 100%;
         width: auto;
         left: auto;
@@ -2979,6 +2981,7 @@ body.is-post .paginator {
     }
     
     .post-main-title {
+        margin-top: 1rem;
         font-size: 26px;
         flex-direction: column;
         align-items: flex-start;
@@ -3022,20 +3025,19 @@ body.is-post .paginator {
     
     .post-meta {
         max-width: 100%;
-        padding: 0 1rem;
+        padding: 0 0;
         font-size: 1rem;
     }
     
     .post-categories {
         max-width: 100%;
-        padding: 0;
+        padding: 1rem 0 ;
         font-size: 1rem;
     }
     
     /* 超小屏幕分类和分享按钮调整 */
     .post-categories-with-share {
-        padding: 0 0.5rem;
-        flex-direction: column;
+
         align-items: flex-start;
         gap: 0.8rem;
     }
