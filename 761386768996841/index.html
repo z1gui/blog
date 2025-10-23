@@ -1,0 +1,2206 @@
+<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <meta name="robots" content="index, follow">
+  <!-- title -->
+  
+    
+  <title>聊聊Java IO的那些事 - 子规入梧桐</title>
+    
+  
+  
+  <!-- open graph -->
+  <meta name="description" content="BIO NIO AIO    IO模型 同步阻塞 同步非阻塞（多路复用） 异步非阻塞   编程难度 简单 复杂 复杂   可靠性 差 好 好   吞吐量 低 高 高   阅前须知阻塞 IO 和 非阻塞 IO 这两个概念是 程序级别 的。主要描述是程序请求操作系统 IO 操作之后，如果 IO 资源没有准备好，那么程序如何处理问题：前者等待，后者继续执行（并且使用线程一直轮询，直到有 IO 资">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊Java IO的那些事">
+<meta property="og:url" content="https://www.lazydaily.cn/761386768996841/index.html">
+<meta property="og:site_name" content="子规入梧桐">
+<meta property="og:description" content="BIO NIO AIO    IO模型 同步阻塞 同步非阻塞（多路复用） 异步非阻塞   编程难度 简单 复杂 复杂   可靠性 差 好 好   吞吐量 低 高 高   阅前须知阻塞 IO 和 非阻塞 IO 这两个概念是 程序级别 的。主要描述是程序请求操作系统 IO 操作之后，如果 IO 资源没有准备好，那么程序如何处理问题：前者等待，后者继续执行（并且使用线程一直轮询，直到有 IO 资">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lazydaily.cn/img/acea8af4268c8d552741ccebcb2d34ec_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/a8f0d4502adb087892e11866bdac7d57_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/5ee1af7a6012fd34b62704d5b2867320_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/94530647a3be7da4d2de055fff8bacaf_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/10d0080498aba2649f1c04067965b579_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/870a39b7312d1d18324d3aefa613ab37_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/3a01157436842562f7f21f8b4c4549d4_MD5.png">
+<meta property="og:image" content="https://www.lazydaily.cn/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.png">
+<meta property="article:published_time" content="2024-11-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-20T09:55:37.258Z">
+<meta property="article:author" content="z1gui">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="IO">
+<meta property="article:tag" content="NIO">
+<meta property="article:tag" content="BIO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.lazydaily.cn/img/acea8af4268c8d552741ccebcb2d34ec_MD5.png">
+  <!-- canonical -->
+  
+  <link rel="canonical" href="https://www.lazydaily.cn/761386768996841/">
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/img/favicon.png">
+  
+  <!-- Google Fonts 预加载 - 优化字体加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  
+  <!-- 预加载所有字体 -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Noto+Serif+SC:wght@400;700;900&amp;display=swap">
+  
+  <!-- 字体加载优化脚本 -->
+  <script>
+    // 字体加载优化
+    (function() {
+      // 检查是否支持Font Loading API
+      if ('fonts' in document) {
+        // 异步加载字体，不阻塞页面渲染
+        setTimeout(function() {
+          Promise.all([
+            document.fonts.load('400 1em "JetBrains Mono"'),
+            document.fonts.load('400 1em "Noto Serif"'),
+            document.fonts.load('400 1em "Noto Serif SC"')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+          }).catch(function() {
+            document.documentElement.classList.add('fonts-fallback');
+          });
+        }, 0);
+      } else {
+        // 不支持Font Loading API的浏览器，直接使用系统字体
+        document.documentElement.classList.add('fonts-fallback');
+      }
+    })();
+  </script>
+  
+  <!-- CSS -->
+  
+<link rel="stylesheet" href="/css/reset.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/markdown.css">
+
+  
+<link rel="stylesheet" href="/css/fonts.css">
+
+  
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+  
+  <!-- 图片懒加载 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 预加载队列
+      const preloadQueue = [];
+      let isProcessing = false;
+      let processedImages = new Set();
+      
+      // 创建loading效果
+      function createLoadingEffect(img) {
+        // 检查是否已经有容器
+        let container = img.parentElement;
+        if (!container || !container.classList.contains('image-container')) {
+          // 创建图片容器
+          container = document.createElement('div');
+          container.className = 'image-container loading';
+          
+          // 将图片包装在容器中
+          img.parentNode.insertBefore(container, img);
+          container.appendChild(img);
+        } else {
+          // 如果已有容器，添加loading类
+          container.classList.add('loading');
+        }
+        
+        return container;
+      }
+      
+      // 移除loading效果
+      function removeLoadingEffect(container) {
+        if (container && container.classList.contains('loading')) {
+          container.classList.remove('loading');
+        }
+      }
+      
+      // 处理预加载队列
+      function processPreloadQueue() {
+        if (isProcessing || preloadQueue.length === 0) return;
+        
+        isProcessing = true;
+        const img = preloadQueue.shift();
+        
+        if (img && img.dataset.src && !processedImages.has(img)) {
+          processedImages.add(img);
+          
+          // 添加loading效果
+          const container = createLoadingEffect(img);
+          
+          img.src = img.dataset.src;
+          
+          img.addEventListener('load', function() {
+            img.classList.add('loaded');
+            removeLoadingEffect(container);
+            isProcessing = false;
+            // 继续处理队列中的下一张图片
+            setTimeout(processPreloadQueue, 10);
+          });
+          
+          img.addEventListener('error', function() {
+            removeLoadingEffect(container);
+            isProcessing = false;
+            // 继续处理队列中的下一张图片
+            setTimeout(processPreloadQueue, 10);
+          });
+        } else {
+          isProcessing = false;
+          // 继续处理队列中的下一张图片
+          setTimeout(processPreloadQueue, 10);
+        }
+      }
+      
+      // 处理所有图片
+      function handleImages() {
+        // 选择所有懒加载图片，但排除favicon
+        const lazyImages = document.querySelectorAll('.lazy-image');
+        const allImages = document.querySelectorAll('img');
+        
+
+        
+        // 如果没有懒加载图片，检查是否有需要处理的图片
+        if (lazyImages.length === 0) {
+          allImages.forEach(img => {
+            // 排除favicon.png
+            if (img.src && !img.src.includes('favicon.png') && !img.src.includes('github.png') && !img.src.includes('mail.png') && !img.src.includes('rss-fill.png') && !img.src.includes('Telegram.png') &&
+                img.dataset.src && !img.classList.contains('lazy-image')) {
+              // 如果有data-src属性，说明是懒加载图片
+              img.classList.add('lazy-image');
+              
+              // 添加loading效果
+              const container = createLoadingEffect(img);
+              
+              // 立即加载图片
+              img.src = img.dataset.src;
+              
+              // 图片加载完成后的处理
+              img.addEventListener('load', function() {
+                img.classList.add('loaded');
+                removeLoadingEffect(container);
+              });
+              
+              img.addEventListener('error', function() {
+                removeLoadingEffect(container);
+              });
+            }
+          });
+          return;
+        }
+        
+        // 使用Intersection Observer处理懒加载图片
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              
+              // 检查是否有data-src属性
+              if (img.dataset.src && !processedImages.has(img)) {
+                // 将图片添加到预加载队列
+                preloadQueue.push(img);
+                processPreloadQueue();
+              } else if (!img.dataset.src) {
+                // 如果没有data-src，直接显示图片
+                img.classList.add('loaded');
+              }
+              
+              // 停止观察这个图片
+              observer.unobserve(img);
+            }
+          });
+        }, {
+          rootMargin: '400px 0px', // 提前400px开始加载，大幅提升加载速度
+          threshold: 0.001 // 降低阈值，图片刚进入视口就开始加载
+        });
+        
+        // 开始观察所有懒加载图片
+        lazyImages.forEach(img => {
+          // 排除favicon.png
+          if (!img.src.includes('favicon.png') && !img.src.includes('github.png') && !img.src.includes('mail.png') && !img.src.includes('rss-fill.png') && !img.src.includes('Telegram.png')) {
+            imageObserver.observe(img);
+          }
+        });
+      }
+      
+      // 立即执行一次
+      handleImages();
+      
+      // 减少延迟时间，提升响应速度
+      setTimeout(handleImages, 20);
+    });
+  </script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="子规入梧桐" type="application/atom+xml">
+</head>
+
+    <body class="is-post">
+        <div class="paper">
+            <div class="paper-main">
+                <div class="header">
+    <div class="header-content">
+        <!-- 头像和主标题一起可点击 -->
+        <a href="/" class="header-home-link">
+            <div class="hero-header">
+                <div class="hero-header-visual">
+                    <div class="hero-header-graphic">
+                        <img src="/img/favicon.png" alt="Logo" width="30" height="30">
+                    </div>
+                </div>
+                <div class="hero-header-text">
+                    <h1 class="hero-header-title">子规入梧桐</h1>
+                </div>
+            </div>
+        </a>
+        <!-- 导航栏 -->
+        <ul class="nav">
+                
+                <li>
+                    
+                    <a href="/" class="">
+                       主页
+                       
+                    </a>
+                </li>
+                
+                <li>
+                    
+                    <a href="/archives" class="">
+                       归档
+                       
+                    </a>
+                </li>
+                
+                <li>
+                    
+                    <a href="/about" class="">
+                       关于
+                       
+                    </a>
+                </li>
+                
+                <li>
+                    
+                    <a href="/use" class="">
+                       设备
+                       
+                    </a>
+                </li>
+                
+                <li>
+                    
+                    <a href="https://uhufoundme.sol.build/" class="" target="&quot;_blank&quot;" rel="&quot;noopener" noreferrer&#34;="">
+                       碎碎念
+                       
+                       <span class="external-link-icon">🔗</span>
+                       
+                    </a>
+                </li>
+                
+
+        </ul>
+    </div>
+</div>
+
+                <div class="post-main">
+    <!-- 阅读进度条 -->
+    <div class="reading-progress-bar" id="readingProgressBar"></div>
+    
+    
+        <div class="post-main-title">
+            聊聊Java IO的那些事
+        </div>
+        <div class="post-meta">
+            <div class="post-meta-left">
+                2024年12月01日 ｜ 
+                
+                    <a href="/tags/java/" class="tag-link"># java</a>
+                
+                    <a href="/tags/IO/" class="tag-link"># IO</a>
+                
+                    <a href="/tags/NIO/" class="tag-link"># NIO</a>
+                
+                    <a href="/tags/BIO/" class="tag-link"># BIO</a>
+                
+            </div>
+            <div class="post-meta-right">
+                <span class="post-stats-minimal" id="postStats">
+                    <span class="stat-value-minimal" id="wordCount" title="字数统计">-</span>
+                    <span class="stat-separator-minimal">·</span>
+                    <span class="stat-value-minimal" id="readingTime" title="预计阅读时长">-</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="post-content-wrapper">
+            <div class="post-content-main">
+                <div class="post-md">
+                    <table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">BIO</th>
+<th align="center">NIO</th>
+<th align="center">AIO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">IO模型</td>
+<td align="center">同步阻塞</td>
+<td align="center">同步非阻塞（多路复用）</td>
+<td align="center">异步非阻塞</td>
+</tr>
+<tr>
+<td align="center">编程难度</td>
+<td align="center">简单</td>
+<td align="center">复杂</td>
+<td align="center">复杂</td>
+</tr>
+<tr>
+<td align="center">可靠性</td>
+<td align="center">差</td>
+<td align="center">好</td>
+<td align="center">好</td>
+</tr>
+<tr>
+<td align="center">吞吐量</td>
+<td align="center">低</td>
+<td align="center">高</td>
+<td align="center">高</td>
+</tr>
+</tbody></table>
+<h1 id="阅前须知"><a href="#阅前须知" class="headerlink" title="阅前须知"></a>阅前须知</h1><p><code>阻塞 IO</code> 和 <code>非阻塞 IO</code></p>
+<p>这两个概念是 <code>程序级别</code> 的。主要描述是程序请求操作系统 IO 操作之后，如果 IO 资源没有准备好，那么程序如何处理问题：前者等待，后者继续执行（并且使用线程一直轮询，直到有 IO 资源准备好）</p>
+<p><code>同步 IO </code> 和 <code>非同步IO</code></p>
+<p>这两个概念是<code>操作系统级别</code>的。主要描述的是操作系统在收到程序请求 IO 操作后，如果 IO 资源没有准备好，该如何相应程序的问题：前者不响应，后者返回一个标记，当 IO 资源准备好之后，在用事件机制返回给程序。</p>
+<h1 id="一、BIO（Blocking-I-O）"><a href="#一、BIO（Blocking-I-O）" class="headerlink" title="一、BIO（Blocking I/O）"></a>一、BIO（Blocking I/O）</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>Java BIO：同步并阻塞（传统阻塞性），应用程序中进程在发起 IO 调用后至内核执行 IO 操作返回结果之前，若发起系统调用的线程一直处于等待状态，则此次 IO 操作为阻塞 IO。阻塞 IO 简称 BIO，Blocking IO。</p>
+<p>以前大多数网络通信方式都是阻塞模式，即：</p>
+<ul>
+<li>客户端向服务器端发送请求后，客户端会一直等待（不会再做其他事情），直到服务器端返回结果或者网络出现问题。</li>
+<li>服务端同样的，当在处理某个客户端 A 发来的请求是，另一个客户端 B 发来的请求会等待，直到服务器端的这个处理线程完成上个处理。</li>
+</ul>
+<p> </p><div class="image-container loading"><img src="/img/acea8af4268c8d552741ccebcb2d34ec_MD5.webp" alt="BIO请求流程图" data-src="/img/acea8af4268c8d552741ccebcb2d34ec_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><ol>
+<li>服务器启动一个 ServerSocket。</li>
+<li>客户端启动 Socket 对服务器进行通信，默认情况下服务器端需要对每个客户建立一个线程与之通讯。</li>
+<li>客户端发出请求后，先咨询服务器是否有线程响应，如果没有则会等待，或者被拒绝。</li>
+<li>如果有响应，客户端线程会等待请求结束后，再继续执行。</li>
+</ol>
+<pre><code class="language-java">package com.atguigu.bio;
+
+import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class BIOServer {
+    
+    public static void main(String[] args) throws Exception {
+        //线程池机制
+        //思路
+        //1. 创建一个线程池
+        //2. 如果有客户端连接，就创建一个线程，与之通讯(单独写一个方法)
+        ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();
+        //创建ServerSocket
+        ServerSocket serverSocket = new ServerSocket(6666);
+        System.out.println("服务器启动了");
+        while (true) {
+            System.out.println("线程信息id = " + Thread.currentThread().getId() + "名字 = " + Thread.currentThread().getName());
+            //监听，等待客户端连接
+            System.out.println("等待连接....");
+            //会阻塞在accept()
+            final Socket socket = serverSocket.accept();
+            System.out.println("连接到一个客户端");
+            //就创建一个线程，与之通讯(单独写一个方法)
+            newCachedThreadPool.execute(new Runnable() {
+                public void run() {//我们重写
+                    //可以和客户端通讯
+                    handler(socket);
+                }
+            });
+        } 
+    }
+    
+    //编写一个handler方法，和客户端通讯
+    public static void handler(Socket socket) {
+        try {
+            System.out.println("线程信息id = " + Thread.currentThread().getId() + "名字 = " + Thread.currentThread().getName());
+            byte[] bytes = new byte[1024];
+            //通过socket获取输入流
+            InputStream inputStream = socket.getInputStream();
+            //循环的读取客户端发送的数据
+            while (true) {
+                System.out.println("线程信息id = " + Thread.currentThread().getId() + "名字 = " + Thread.currentThread().getName());
+                System.out.println("read....");
+                int read = inputStream.read(bytes);
+                if (read != -1) {
+                    System.out.println(new String(bytes, 0, read));//输出客户端发送的数据
+                } else {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("关闭和client的连接");
+            try {
+                socket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>传统的 IO 模型，其主要是一个 Server 对接 N 个客户端，在客户端连接之后，为每个客户端分配一个子线程。如图所示：</p>
+<p> </p><div class="image-container loading"><img src="/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.webp" alt="传统IO模型" data-src="/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>从图中可以看出，传统 IO 的特点在于：</p>
+<ul>
+<li>每个客户端连接到达时，服务端会分配一个线程给该客户端，该线程处理包括读取数据，解码，业务计算，编码，以及发送数据整个过程</li>
+<li>同一时刻，服务端的吞吐量与服务器所提供的线程数量呈线性关系的。</li>
+</ul>
+<p>如果并发量不大，运行没有问题，但是如果海量并发时候，就会出现问题：</p>
+<ol>
+<li>每次请求都要创建独立的线程，与对应的客户端进行数据的Read，业务处理，数据Write、</li>
+<li>当并发数较大时，需要创建大量线程处理连接，资源占用较大。</li>
+<li>连接建立后，如果当前线程展示没有数据可读，则线程就阻塞在Read操作上，造成线程资源浪费。</li>
+</ol>
+<h2 id="改进：多线程方式-伪异步方式"><a href="#改进：多线程方式-伪异步方式" class="headerlink" title="改进：多线程方式 - 伪异步方式"></a>改进：多线程方式 - 伪异步方式</h2><p>上述说的情况只是服务器只有一个线程的情况，那么如果引入多线程是不是可以解决这个问题：</p>
+<ul>
+<li>当服务器收到客户端 X 的请求后，（读取到所有的请求数据后）将这个请求送入到一个独立线程进行处理，然后主线程继续接收客户端 Y 的请求。</li>
+<li>客户端侧，也可以用一个子线程和服务器端进行通信。这样客户端主线程的其他工作不受影响，当服务器有响应信息时候再有这个子线程通过 <code>监听模式/观察模式</code>（等其他设计模式）通知主线程。</li>
+</ul>
+<p> </p><div class="image-container loading"><img src="/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.webp" alt="多线程方式 - 伪异步" data-src="/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>但是多线程解决这个问题有局限性：</p>
+<ul>
+<li>操作系统通知accept() 的方式还是单个，即：服务器收到数据报文之后的“业务处理过程”可以多线程，但是报文的接收还是需要一个个来</li>
+<li>在操作系统中，线程是有限的。线程越多，CPU 切换所需时间也越长，用来处理真正业务的需求也就越少。</li>
+<li>创建线程需要较大的资源消耗。JVM 创建一个线程，即使不进行任何工作，也需要分配一个堆栈空间（128k）。</li>
+<li>如果程序中使用了大量的长连接，线程是不会关闭的，资源消耗更容易失控。</li>
+</ul>
+<blockquote>
+<p>为啥 <code>serverSocket. accept()</code> 会出现阻塞？</p>
+</blockquote>
+<p>是因为 Java 通过 JNI 调用的系统层面的 <code>accept0()</code> 方法，<code>accept0()</code> 规定如果发现套间字从指定的端口来，就会等待。其实就是内部实现是操作系统级别的同步 IO。</p>
+<h1 id="二、NIO（non-Blocking-I-O）"><a href="#二、NIO（non-Blocking-I-O）" class="headerlink" title="二、NIO（non-Blocking I/O）"></a>二、NIO（non-Blocking I/O）</h1><p>了解 NIO 之前我们先来看看标准 I/O（Standard I/O）。</p>
+<p>Standard I/O 是对字节的读写，在进行 I/O 之前，首先创建一个流对象，流对象的读写操作都是按字节，一个字节一个字节的读或者写。而 NIO 把 I/O 抽象成块，类似磁盘的读写，每次 I/O 操作的单位都是一个块，块被读入内存之后就是一个 <code> byte[]</code>，NIO 一次可以读或者写多个字节。</p>
+<h2 id="流和块"><a href="#流和块" class="headerlink" title="流和块"></a>流和块</h2><p>IO 和 NIO 最重要的区别就是对数据的打包和传输的方式，IO 是以流的方式处理数据，而 NIO 以块的方式处理数据。</p>
+<p>面向流的 IO 一次性处理一个字节数据：一个输入流产生一个字节数据，一个输出流消费一个字节数据。为流式数据创建过滤器非常容易，链接几个过滤器，以便每个过滤器只负责复杂处理机制的一部分。不利的一面是，面向流的 IO 通常处理非常慢。</p>
+<p>面向块的 I/O 一次性处理一个数据块：按块处理数据比按流处理数据要快的多，但是面向块的 I/O 确实一些面向流的 I/O 所具有的优雅和简单。</p>
+<p>I/O 包和 NIO 已经很好的集成了，<code>java.io.*</code> 中已经以 NIO 重新实现了，可以利用一些 NIO 的特性。例如：在 <code>java.io.*</code> 中某些类包含以块的形式读写数据的操作，这使得及时在面向流的系统中，处理数据也会更快。</p>
+<h2 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h2><p>Java NIO：同步非阻塞，服务器实现模式为一个线程处理多个请求（连接），即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮训到连接有 I/O 请求就进行处理。</p>
+<p><strong>核心概念：</strong></p>
+<ol>
+<li><strong>三大核心：</strong> Channel（通道）、Buffer（缓冲区）、Selector（选择器）。</li>
+<li><strong>面向缓冲区，或者是面向块编程。</strong> 数据读取到一个它稍后处理的缓冲区，需要时可在缓冲区中前后移动，这就增加了处理过程中的灵活性，使用它可以提供非阻塞式的高伸缩弹性网络。</li>
+<li><strong>非阻塞模式</strong>， 使一个线程从某个通道发送请求或者读取数据，但是他仅能得到目前可用的数据，如果目前没有数据可用，就什么都不会获取，而不是保持线程阻塞。所以知道数据变得可读取之前，该线程还可以去做其他实行。</li>
+<li><strong>Channel 和 Buffer 一一对应。</strong></li>
+<li><strong>一个线程只有一个 Selector，一个线程对应对个 Channel（连接）</strong>。</li>
+<li>程序切换到哪个 Channel 是由事件决定，Event 就是个重要概念。</li>
+<li>Selector 会根据不同的事件，在各个通道上切换。</li>
+<li><strong>Buffer 是一个内存块，底层就是一个数组</strong>。</li>
+<li>数据读写都是通过 Buffer，区别于 BIO 的输入输出流，且<strong>双向</strong>，需要 <code>flip</code> 方法切换 <code>Channel</code> 是双向的 。</li>
+</ol>
+<h2 id="编程原理"><a href="#编程原理" class="headerlink" title="编程原理"></a>编程原理</h2><ol>
+<li>当客户端连接时，会通过 ServerSocketChannel 得到 SocketChannel。</li>
+<li>Selector 进行监听 select 方法，返回有事件发生的通道个数。</li>
+<li>将 SocketChannel 注册到 Selector 上（<code>register(Selector selector, int ops)</code>），一个 Selector 可以注册多个 SocketChannel。</li>
+<li>注册后返回 SelectionKey，会和该 Selector 关联（集合）。</li>
+<li>当有事件发生时，进一步得到各个 SelectionKey。</li>
+<li>通过channel () 方法，用 SelectionKey 反向获取 SocketChannel。</li>
+<li>可以通过得到的 channel，完成业务处理。</li>
+</ol>
+<h2 id="1-缓冲区（Buffer）"><a href="#1-缓冲区（Buffer）" class="headerlink" title="1. 缓冲区（Buffer）"></a>1. 缓冲区（Buffer）</h2><h3 id="Buffer-类及其子类"><a href="#Buffer-类及其子类" class="headerlink" title="Buffer 类及其子类"></a>Buffer 类及其子类</h3><p><code>ByteBuffer</code> 字节数据；<code>ShortBuffer</code> 字符串数据；<code>CharBuffer</code> 字符数据；<code>IntBuffer</code> 整数；<code>LongBuffer</code> 长整数；<code>DoubleBuffer</code> 小数；<code>FloatBuffer</code> 小数</p>
+<h3 id="Buffer-属性和方法"><a href="#Buffer-属性和方法" class="headerlink" title="Buffer 属性和方法"></a>Buffer 属性和方法</h3><p>Buffer 类提供了 4 个属性来提供数据元素信息：<code>capacity（容量）</code>：缓存区的最大容量，<code>Limit（终点）</code>：缓存区最大可操作位置，<code>Position（位置）</code> ：缓存区当前在操作的位置，<code>Mark（标记）</code>：标记位置</p>
+<pre><code class="language-java">public abstract class Buffer{
+	public final int capacity();
+	public final int position();
+	public final Buffer position(int newPosition);
+	public final int limit();
+	public final Buffer limit(int newLimit);
+	
+}
+//其中比较常用的就是ByteBuffer（二进制数据），该类主要有以下方法
+public abstract class ByteBuffer(){
+	public static ByteBuffer allocateDirect(int capacity);//直接创建缓冲区
+	public static ByteBuffer allocate(int capacity);//设置缓冲区的初始容量
+	public static ByteBuffer wrap(byte[] array);//把一个数组放入到缓冲区使用
+	//构造初始化位置offset和上界length的缓冲区
+	public static ByteBuffer wrap(byte[] array,int offset,int length);
+	//缓冲区读取相关API
+	public abstract byte get();//从当前位置position上get，get之后，positon会+1
+	public abstract byte get(int index);//从绝对位置获取
+	public abstract ByteBuffer put(byte b);//当前位置上put，put之后，position会+1
+	public abstract ByteBuffer put(int index,byte b);//从绝对位置put	
+}
+</code></pre>
+<p>状态变量的改变过程举例:</p>
+<p>① 新建一个大小为 8 个字节的缓冲区，此时 position 为 0，而 limit = capacity = 8。capacity 变量不会改变，下面的讨论会忽略它。</p>
+<p> </p><div class="image-container loading"><img src="/img/a8f0d4502adb087892e11866bdac7d57_MD5.webp" alt="状态变量的改变过程1" data-src="/img/a8f0d4502adb087892e11866bdac7d57_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>② 从输入通道中读取 5 个字节数据写入缓冲区中，此时 position 移动设置为 5，limit 保持不变。</p>
+<p> </p><div class="image-container loading"><img src="/img/5ee1af7a6012fd34b62704d5b2867320_MD5.webp" alt="状态变量的改变过程2" data-src="/img/5ee1af7a6012fd34b62704d5b2867320_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>③ 在将缓冲区的数据写到输出通道之前，需要先调用 flip() 方法，这个方法将 limit 设置为当前 position，并将 position 设置为 0。</p>
+<p> </p><div class="image-container loading"><img src="/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.webp" alt="状态变量的改变过程3" data-src="/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>④ 从缓冲区中取 4 个字节到输出缓冲中，此时 position 设为 4。</p>
+<p> </p><div class="image-container loading"><img src="/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.webp" alt="状态变量的改变过程4" data-src="/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>⑤ 最后需要调用 clear() 方法来清空缓冲区，此时 position 和 limit 都被设置为最初位置。</p>
+<p> </p><div class="image-container loading"><img src="/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.webp" alt="状态变量的改变过程5" data-src="/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<h3 id="文件-NIO-实例"><a href="#文件-NIO-实例" class="headerlink" title="文件 NIO 实例"></a>文件 NIO 实例</h3><p>以下展示了使用 NIO 快速复制文件的实例：</p>
+<pre><code class="language-java">public static void fastCopy(String src, String dist) throws IOException {
+
+    /* 获得源文件的输入字节流 */
+    FileInputStream fin = new FileInputStream(src);
+
+    /* 获取输入字节流的文件通道 */
+    FileChannel fcin = fin.getChannel();
+
+    /* 获取目标文件的输出字节流 */
+    FileOutputStream fout = new FileOutputStream(dist);
+
+    /* 获取输出字节流的通道 */
+    FileChannel fcout = fout.getChannel();
+
+    /* 为缓冲区分配 1024 个字节 */
+    ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+
+    while (true) {
+
+        /* 从输入通道中读取数据到缓冲区中 */
+        int r = fcin.read(buffer);
+
+        /* read() 返回 -1 表示 EOF */
+        if (r == -1) {
+            break;
+        }
+
+        /* 切换读写 */
+        buffer.flip();
+
+        /* 把缓冲区的内容写入输出文件中 */
+        fcout.write(buffer);
+        
+        /* 清空缓冲区 */
+        buffer.clear();
+    }
+}
+</code></pre>
+<h2 id="2-通道（Channel）"><a href="#2-通道（Channel）" class="headerlink" title="2. 通道（Channel）"></a>2. 通道（Channel）</h2><p>通道类似流，但是有如下区别：</p>
+<ul>
+<li>通道可以同时读写，而流只能读或写</li>
+<li>通道可以实现异步读写数据</li>
+<li>通道可以从缓冲区读数据，也可以写数据到缓冲区</li>
+</ul>
+<h3 id="通道分类"><a href="#通道分类" class="headerlink" title="通道分类"></a>通道分类</h3><p>Channel 在 NIO 中是一个接口 <code>public interface Channle extends Closeable{}</code>。其中，常用的 Channel 类有：</p>
+<ol>
+<li><code>FileChannel</code>：用于文件的数据读写；</li>
+<li><code>DatagramChannel</code>：用于 UDP 的数据读写；</li>
+<li><code>ServerSocketChannel</code>：可以监听新来的连接，对每一个新进来的连接都会创建一个 SocketChannel。只有通过这个通道，应用程序才能箱操作系统注册支持“多路复用 IO”的端口减轻。支持 TCP 和 UDP 协议；</li>
+<li><code>SocketChannel</code>：TCP Socket 套接字的监听通道，用于 TCP 的数据读写</li>
+<li>其他的通道包括：</li>
+</ol>
+<p> </p><div class="image-container loading"><img src="/img/94530647a3be7da4d2de055fff8bacaf_MD5.webp" alt="其他通道" data-src="/img/94530647a3be7da4d2de055fff8bacaf_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<h3 id="FileChannel-类"><a href="#FileChannel-类" class="headerlink" title="FileChannel 类"></a>FileChannel 类</h3><p>对本地文件进行 IO 操作，常用方法及实例应用：</p>
+<pre><code class="language-java">//从通道读取数据并放到缓冲区内
+public int read(ByteBuffer content);
+//从缓冲区写数据到通道中
+public int write(ByteBuffer content);
+//从目标通道中复制数据到当前通道内
+public long transferFrom(ReadableByteChannel src,long position,long count);
+//把数据从当前通道复制到目标通道
+public long transferTo(long position,long count,WritabelByteChannel target);
+</code></pre>
+<p>1 . 写入文件，使用之前 <code>ByteBuffer</code> 和 <code>FileChannel</code> 类</p>
+<pre><code class="language-java">//使用之前ByteBuffer和FileChannel类，写入文件
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+
+public class NIOFileChannel{
+	public static void main(String[] args) throws Exception{
+		String str = "hello,world";
+		//创一个输出流 -&gt; channel
+		FileOutputStream stream = new FileOutputStream("d:\\file.txt");
+		//通过 stream 获取对应的 FileChannel
+		//这个 fileChannel 真实类型是 FileChannelImpl
+		FileChannel fileChannel = stream.getChannel();
+
+		//创建一个缓冲区 ByteBuffer
+		ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+		//将 str 放入到缓冲区
+		byteBuffer.put(str.getBytes());
+		//对 byteBuffer 进行 flip
+		byteBuffer.flip();
+
+		//将 byteBuffer 写入到 fileChannel
+		fileChannel.write(byteBuffer);
+		fileOutputStream.close();
+	}
+
+}
+</code></pre>
+<p>2 . 读取文件数据并展示，使用之前 <code>ByteBuffer</code> 和 <code>FileChannel</code> 类</p>
+<pre><code class="language-java">//读取本地文件
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+
+public class NIOFileChannel{
+	public static void main(String[] args) throws Exception{
+		//创一个输出流 -&gt; channel
+		File file = new File("d:\\file.txt");
+		FileOutputStream stream = new FileOutputStream(file);
+		//通过 stream 获取对应的 FileChannel
+		//这个 fileChannel 真实类型是 FileChannelImpl
+		FileChannel fileChannel = stream.getChannel();
+
+		//创建一个缓冲区 ByteBuffer
+		ByteBuffer byteBuffer = ByteBuffer.allocate((int)file.length());
+
+		//将 byteBuffer 写入到 fileChannel
+		fileChannel.read(byteBuffer);
+		//将 byteBuffer的字节转化成String
+		System.out.println(new String(byteBuffer.array()));
+		fileOutputStream.close();
+	}
+
+}
+</code></pre>
+<p>3 . 使用一个 <code>Buffer</code> 完成文件的读取、写入</p>
+<pre><code class="language-java">import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+
+public class NIOFileChannel03 {
+
+    public static void main(String[] args) throws Exception {
+
+        FileInputStream fileInputStream = new FileInputStream("1.txt");
+        FileChannel fileChannel01 = fileInputStream.getChannel();
+        FileOutputStream fileOutputStream = new FileOutputStream("2.txt");
+        FileChannel fileChannel02 = fileOutputStream.getChannel();
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(512);
+        
+        while (true) { //循环读取
+
+            //这里有一个重要的操作，一定不要忘了
+            /*
+            public final Buffer clear() {
+                position = 0;
+                limit = capacity;
+                mark = -1;
+                return this;
+            }
+            */
+            byteBuffer.clear(); //清空 buffer
+            int read = fileChannel01.read(byteBuffer);
+            System.out.println("read = " + read);
+            if (read == -1) { //表示读完
+                break;
+            }
+
+            //将 buffer 中的数据写入到 fileChannel02--2.txt
+            byteBuffer.flip();
+            fileChannel02.write(byteBuffer);
+        }
+
+        //关闭相关的流
+        fileInputStream.close();
+        fileOutputStream.close();
+    }
+}
+</code></pre>
+<p>4 . 拷贝文件transferFrom 方法</p>
+<pre><code class="language-java">import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
+
+public class NIOFileChannel04 {
+
+    public static void main(String[] args) throws Exception {
+
+        //创建相关流
+        FileInputStream fileInputStream = new FileInputStream("d:\\a.jpg");
+        FileOutputStream fileOutputStream = new FileOutputStream("d:\\a2.jpg");
+        
+        //获取各个流对应的 FileChannel
+        FileChannel sourceCh = fileInputStream.getChannel();
+        FileChannel destCh = fileOutputStream.getChannel();
+
+        //使用 transferForm 完成拷贝
+        destCh.transferFrom(sourceCh, 0, sourceCh.size());
+
+        //关闭相关通道和流
+        sourceCh.close();
+        destCh.close();
+        fileInputStream.close();
+        fileOutputStream.close();
+    }
+}
+</code></pre>
+<h3 id="Buffer-和-Channel-注意事项"><a href="#Buffer-和-Channel-注意事项" class="headerlink" title="Buffer 和 Channel 注意事项"></a>Buffer 和 Channel 注意事项</h3><p><strong>1. ByteBuffer 支持类型化的 put 和 get，put 放什么，get 取出什么，不然出现 BufferUnderflowException 异常</strong></p>
+<pre><code class="language-java">import java.nio.ByteBuffer;
+
+public class NIOByteBufferPutGet {
+
+    public static void main(String[] args) {
+        
+        //创建一个 Buffer
+        ByteBuffer buffer = ByteBuffer.allocate(64);
+
+        //类型化方式放入数据
+        buffer.putInt(100);
+        buffer.putLong(9);
+        buffer.putChar('尚');
+        buffer.putShort((short) 4);
+
+        //取出
+        buffer.flip();
+        
+        System.out.println();
+        
+        System.out.println(buffer.getInt());
+        System.out.println(buffer.getLong());
+        System.out.println(buffer.getChar());
+        System.out.println(buffer.getShort());
+    }
+}
+</code></pre>
+<p><strong>2. 普通 Buffer 转成只读 Buffer</strong></p>
+<pre><code class="language-java">
+import java.nio.ByteBuffer;
+
+public class ReadOnlyBuffer {
+
+    public static void main(String[] args) {
+
+        //创建一个 buffer
+        ByteBuffer buffer = ByteBuffer.allocate(64);
+
+        for (int i = 0; i &lt; 64; i++) {
+            buffer.put((byte) i);
+        }
+
+        //读取
+        buffer.flip();
+
+        //得到一个只读的 Buffer
+        ByteBuffer readOnlyBuffer = buffer.asReadOnlyBuffer();
+        System.out.println(readOnlyBuffer.getClass());
+
+        //读取
+        while (readOnlyBuffer.hasRemaining()) {
+            System.out.println(readOnlyBuffer.get());
+        }
+
+        readOnlyBuffer.put((byte) 100); //ReadOnlyBufferException
+    }
+}
+</code></pre>
+<p><strong>3. NIO 中 MappedByteBuffer，可以让文件直接在堆外内存修改</strong></p>
+<pre><code class="language-java">
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+
+/**
+ * 说明 1.MappedByteBuffer 可让文件直接在内存（堆外内存）修改,操作系统不需要拷贝一次
+ */
+public class MappedByteBufferTest {
+
+    public static void main(String[] args) throws Exception {
+
+        RandomAccessFile randomAccessFile = new RandomAccessFile("1.txt", "rw");
+        //获取对应的通道
+        FileChannel channel = randomAccessFile.getChannel();
+
+        /**
+         * 参数 1:FileChannel.MapMode.READ_WRITE 使用的读写模式
+         * 参数 2：0：可以直接修改的起始位置
+         * 参数 3:5: 是映射到内存的大小（不是索引位置），即将 1.txt 的多少个字节映射到内存
+         * 可以直接修改的范围就是 0-5
+         * 实际类型 DirectByteBuffer
+         */
+        MappedByteBuffer mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 5);
+
+        mappedByteBuffer.put(0, (byte) 'H');
+        mappedByteBuffer.put(3, (byte) '9');
+        mappedByteBuffer.put(5, (byte) 'Y');//IndexOutOfBoundsException
+
+        randomAccessFile.close();
+        System.out.println("修改成功~~");
+    }
+}
+</code></pre>
+<ol start="4">
+<li><strong>NIO 还支持通过多个 Buffer（即 Buffer数组）完成读写操作，即 Scattering 和 Gathering</strong></li>
+</ol>
+<pre><code class="language-java">import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.Arrays;
+
+/**
+ * Scattering：将数据写入到 buffer 时，可以采用 buffer 数组，依次写入 [分散]
+ * Gathering：从 buffer 读取数据时，可以采用 buffer 数组，依次读
+ */
+public class ScatteringAndGatheringTest {
+
+    public static void main(String[] args) throws Exception {
+        
+        //使用 ServerSocketChannel 和 SocketChannel 网络
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(7000);
+
+        //绑定端口到 socket，并启动
+        serverSocketChannel.socket().bind(inetSocketAddress);
+
+        //创建 buffer 数组
+        ByteBuffer[] byteBuffers = new ByteBuffer[2];
+        byteBuffers[0] = ByteBuffer.allocate(5);
+        byteBuffers[1] = ByteBuffer.allocate(3);
+
+        //等客户端连接 (telnet)
+        SocketChannel socketChannel = serverSocketChannel.accept();
+
+        int messageLength = 8; //假定从客户端接收 8 个字节
+
+        //循环的读取
+        while (true) {
+            int byteRead = 0;
+
+            while (byteRead &lt; messageLength) {
+                long l = socketChannel.read(byteBuffers);
+                byteRead += l; //累计读取的字节数
+                System.out.println("byteRead = " + byteRead);
+                //使用流打印,看看当前的这个 buffer 的 position 和 limit
+                Arrays.asList(byteBuffers).stream().map(buffer -&gt; "position = " + buffer.position() + ", limit = " + buffer.limit()).forEach(System.out::println);
+            }
+
+            //将所有的 buffer 进行 flip
+            Arrays.asList(byteBuffers).forEach(buffer -&gt; buffer.flip());
+            //将数据读出显示到客户端
+            long byteWirte = 0;
+            while (byteWirte &lt; messageLength) {
+                long l = socketChannel.write(byteBuffers);//
+                byteWirte += l;
+            }
+            
+            //将所有的buffer进行clear
+            Arrays.asList(byteBuffers).forEach(buffer -&gt; {
+                buffer.clear();
+            });
+            
+            System.out.println("byteRead = " + byteRead + ", byteWrite = " + byteWirte + ", messagelength = " + messageLength);
+        }
+    }
+}
+</code></pre>
+<h2 id="3-Selector（选择器）"><a href="#3-Selector（选择器）" class="headerlink" title="3. Selector（选择器）"></a>3. Selector（选择器）</h2><h3 id="基本概念-2"><a href="#基本概念-2" class="headerlink" title="基本概念"></a>基本概念</h3><p>NIO 常常被叫做非阻塞 IO，主要是因为 NIO 在网络通信中的非阻塞特性被广泛使用。NIO 实现了 IO 多路复用中的 Reator 模型，一个线程 Thread 使用一个选择器 Selector 通过轮询的方式去监听多个 Channel 上的事件，从而让一个线程能够处理多个事件。</p>
+<p>通过配置监听的通道 Channel 为非阻塞，那么当 Channel 上的 IO 事件还未到达时，就不会进入到阻塞状态一直等待，而是鸡血轮询其他 Channel，找到 IO 事件已经到达的 Channel 执行。</p>
+<p>以为创建和切换线程的开销很大，因此使用一个线程处理多个事件显然比一个线程处理一个事件具有更好的性能。</p>
+<p> </p><div class="image-container loading"><img src="/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.webp" alt="选择器" data-src="/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<ol>
+<li>Java 中的 NIO 可以用一个线程，处理多个客户端连接，就会使用到 Selector（选择器）</li>
+<li>多个 Channel 以事件的方式注册到 Selector</li>
+<li>只有在连接通道有真正的读写事件的时候，才会进行读写，减少系统开销</li>
+<li>避免了<code>多线程之间的上下文切换导致的开销</code></li>
+</ol>
+<pre><code class="language-java">//Selector 类是一个抽象类，常用方法和说明如下：
+public abstract class Selector implements Closeable{
+	public static Selector open();//监控所有注册的通道，当其中有IO操作可以进行时，将SelectionKey加入到内部的集合中并返回，参数用来设置超时时间
+	public Set&lt;SelectionKey&gt; selectedKey();//从内部集合中得到所有的SelectionKey	
+}
+</code></pre>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
+<li><strong>创建选择器</strong></li>
+</ol>
+<pre><code class="language-java">Selector selector = Selector.open();
+</code></pre>
+<ol start="2">
+<li><strong>将通道注册到选择器上</strong></li>
+</ol>
+<pre><code class="language-java">ServerSocketChannel ssChannel = ServerSocketChannel.open();
+ssChannel.configureBlocking(false);
+ssChannel.register(selector,SelectionKey.OP_ACCEPT);
+</code></pre>
+<p>将通道注册到选择器上，还需要指定要注册的具体事件，主要有以下几类：</p>
+<p><code>SelectionKey. OP_CONNECT</code>、<code>SelectionKey. OP_ACCEPT</code>、<code>SelectionKey. OP_READ</code>、 <code>SelectionKey. OP_WRITE</code></p>
+<p>他们在 SelectionKey 的定义如下：</p>
+<pre><code class="language-java">public static final int OP_READ = 1 &lt;&lt; 0;
+public static final int OP_WRITE = 1 &lt;&lt; 2;
+public static final int OP_CONNECT = 1 &lt;&lt; 3;
+public static final int OP_ACCEPT = 1 &lt;&lt; 4;
+</code></pre>
+<p>可以看出每个事件都能当成一个位域，从而组成事件集整数。例如：</p>
+<pre><code class="language-java">int intersetSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;
+</code></pre>
+<ol start="3">
+<li><strong>监听事件</strong></li>
+</ol>
+<pre><code class="language-java">int num = selector.select();
+</code></pre>
+<p>使用 <code>select()</code> 方法来监听到达的事件，它会一直阻塞知道有至少一件事件到达。</p>
+<ol start="4">
+<li><strong>获取到达的事件</strong></li>
+</ol>
+<pre><code class="language-java">Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
+Iterator&lt;SelectionKey&gt; keyIterator = keys.iterator();
+while(keyIterator.hasNext()){
+	SelectionKey keyu = keyIterator.next();
+	if(key.isAcceptabnle()){
+	// ...
+	}else if(key.isReadable()){
+	// ...
+	}
+	keyIterator.remove();
+}
+</code></pre>
+<ol start="5">
+<li><strong>时间循环</strong></li>
+</ol>
+<p>因为一次 select() 调动不能处理完所有的事件，并且服务器端有可能需要一直监听事件，因此服务器端处理时间的代码一般会放在一个死循环内。</p>
+<pre><code class="language-java">while (true) { 
+	int num = selector.select(); 
+	Set&lt;SelectionKey&gt; keys = selector.selectedKeys(); 
+	Iterator&lt;SelectionKey&gt; keyIterator = keys.iterator(); 
+	while (keyIterator.hasNext()) { 
+		SelectionKey key = keyIterator.next(); 
+		if (key.isAcceptable()) { 
+		  // ... 
+		} else if (key.isReadable()) {
+		  // ... 
+		} 
+		keyIterator.remove(); 
+	}
+}
+</code></pre>
+<h3 id="套接字-NIO-实例"><a href="#套接字-NIO-实例" class="headerlink" title="套接字 NIO 实例"></a>套接字 NIO 实例</h3><pre><code class="language-java">public class NIOServer {
+ 	public static void main(String[] args) throws IOException {
+		Selector selector = Selector.open();
+		ServerSocketChannel ssChannel = ServerSocketChannel.open();
+		ssChannel.configureBlocking(false);
+		ssChannel.register(selector, SelectionKey.OP_ACCEPT);
+		ServerSocket serverSocket = ssChannel.socket();
+		InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8888);
+		serverSocket.bind(address);
+		while(true){
+			selector.select();
+			Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
+			Iterator&lt;SelectionKey&gt; keyIterator = keys.iterator();
+			while (keyIterator.hasNext()){
+				SelectionKey key = keyIterator.next();
+				if (key.isAcceptable()) {
+					ServerSocketChannel ssChannel1 = (ServerSocketChannel) key.channel();// 服务器会为每个新连接创建一个 SocketChannel SocketChannel sChannel = ssChannel1.accept();
+					sChannel.configureBlocking(false);// 这个新连接主要用于从客户端读取数据 
+					sChannel.register(selector, SelectionKey.OP_READ);
+				}else if (key.isReadable()) {
+					SocketChannel sChannel = (SocketChannel) key.channel();
+					System.out.println(readDataFromSocketChannel(sChannel));
+					sChannel.close();
+				}
+ 			keyIterator.remove();
+			}
+		}
+ 	}
+	private static String readDataFromSocketChannel(SocketChannel sChannel) throws IOException {
+		ByteBuffer buffer = ByteBuffer.allocate(1024);
+		StringBuilder data = new StringBuilder();
+		while(true) {
+			buffer.clear();
+			int n = sChannel.read(buffer);
+			if (n == -1) {
+				break;
+			}
+			buffer.flip();
+			int limit = buffer.limit();
+			char[] dst = new char[limit];
+			for (int i = 0;i &lt; limit;i++) {
+				dst[i] = (char) buffer.get(i);
+			}
+			data.append(dst);
+			buffer.clear();
+ 		}
+ 		return data.toString();
+ 	}
+ }
+</code></pre>
+<pre><code class="language-java">public class NIOClient {
+	public static void main(String[] args) throws IOException{
+		Socket socket = new Socket("127.0.0.1"，8888);
+		OutputStream out = socket.getOutputStream();
+		String s = "hello world";
+		out.write(s.getBytes());
+		out.close();
+	}
+}
+</code></pre>
+<h2 id="典型的多路复用-IO-实现"><a href="#典型的多路复用-IO-实现" class="headerlink" title="典型的多路复用 IO 实现"></a>典型的多路复用 IO 实现</h2><p>目前流程的多路复用 IO 实现主要宝库了四种：select、poll、epoll、kqueue。以下是其特性及区别：</p>
+<table>
+<thead>
+<tr>
+<th align="center">IO 模型</th>
+<th align="center">相对性能</th>
+<th align="center">关键思路</th>
+<th align="center">操作系统</th>
+<th align="center">Java 支持情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">select</td>
+<td align="center">较高</td>
+<td align="center">Reactor</td>
+<td align="center">Win/Linux</td>
+<td align="center">支持，Reactor 模式（反应器设计模式）。Linux kernels 2.4 内核版本之前，默认用的是 select ；目前 windows 下对吧同步 IO 的支持，都是 select 模型</td>
+</tr>
+<tr>
+<td align="center">poll</td>
+<td align="center">较高</td>
+<td align="center">Reactor</td>
+<td align="center">Linux</td>
+<td align="center">Linux 下的 Java 的 NIO 框架，Linux kernels 2.6 内核版本之前使用 poll 进行支持。也是使用的 Reactor 模式</td>
+</tr>
+<tr>
+<td align="center">epoll</td>
+<td align="center">高</td>
+<td align="center">Reactor/Proactor</td>
+<td align="center">Linux</td>
+<td align="center">Linux kernels 2.6 内核版本之后使用 epoll 进行支持</td>
+</tr>
+<tr>
+<td align="center">kqueue</td>
+<td align="center">高</td>
+<td align="center">Proactor</td>
+<td align="center">Linux</td>
+<td align="center">目前 Java 版本不支持</td>
+</tr>
+</tbody></table>
+<h3 id="1-Reactor事件驱动模型"><a href="#1-Reactor事件驱动模型" class="headerlink" title="1. Reactor事件驱动模型"></a>1. Reactor事件驱动模型</h3><p> </p><div class="image-container loading"><img src="/img/10d0080498aba2649f1c04067965b579_MD5.webp" alt="Reactor事件驱动模型" data-src="/img/10d0080498aba2649f1c04067965b579_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>从图上可知：一个完整的 Reactor 事件驱动模型是有四个部分组成：客户端 Client，Reactor，Acceptor 和时间处理 Handler。其中 Acceptor 会不间断的接收客户端的连接请求，然后通过 Reactor 分发到不同 Handler 进行处理。改进后的 Reactor 有如下优点：</p>
+<ul>
+<li>虽然同是由一个线程接收连接请求进行网络读写，但是 Reactor 将客户端连接，网络读写，业务处理三大部分拆分，从而极大提高工作效率。</li>
+<li>Reactor 是以事件驱动的，相比传统 IO 阻塞式的，不必等待，大大提升了效率。</li>
+</ul>
+<h3 id="2-Reactor-模型——业务处理和-IO-分离"><a href="#2-Reactor-模型——业务处理和-IO-分离" class="headerlink" title="2. Reactor 模型——业务处理和 IO 分离"></a>2. Reactor 模型——业务处理和 IO 分离</h3><p>在上面的处理模型中，由于网络读写是在同一个线程里面。在高并发情况下，会出现两个瓶颈：</p>
+<ul>
+<li>高频率的读写事件处理</li>
+<li>大量的业务处理</li>
+</ul>
+<p>基于上述瓶颈，可以将业务处理和 IO 读写分离出来：</p>
+<p> </p><div class="image-container loading"><img src="/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.webp" alt="Reactor模型-业务处理和IO分离" data-src="/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>如图可以看出，相对基础 Reactor 模型，该模型有如下特点：</p>
+<ul>
+<li>使用一个线程进行客户端连接和网络读写</li>
+<li>客户端连接之后，将该连接交给线程池进行加解码以及业务处理</li>
+</ul>
+<p>这种模型在接收请求进行网络读写的同时，也在进行业务处理，大大提高了系统的吞吐量。但是也有不足的地方：</p>
+<ul>
+<li>网络读写是一个比较消耗 CPU 的操作，在高并发的情况下，将有大量的客户端需要网络读写，此时一个线程处理不了这么多的请求。</li>
+</ul>
+<h3 id="3-Reactor——并发读写"><a href="#3-Reactor——并发读写" class="headerlink" title="3. Reactor——并发读写"></a>3. Reactor——并发读写</h3><p>由于高并发的网络读写是系统一个瓶颈，所以针对这种情况，改进了模型，如图所示：</p>
+<p> </p><div class="image-container loading"><img src="/img/870a39b7312d1d18324d3aefa613ab37_MD5.webp" alt="Reactor-并发读写" data-src="/img/870a39b7312d1d18324d3aefa613ab37_MD5.webp" loading="lazy" class="lazy-image"></div><br>由图可以看出，在原有 Reactor 模型上，同时将 Reactor 拆分成 mainReactor 和 subReactor 。其中 mainReactor 主要负责客户端的请求连接，subReactor 通过一个线程池进行支撑，主要负责网络读写，因为线程池的原因，可以进行多线程并发读写，大大提升了网络读写的效率。业务处理也是通过线程池进行。通过这种方式，可以进行百万级别的连接。<p></p>
+<h3 id="4-Reactor-模型示例"><a href="#4-Reactor-模型示例" class="headerlink" title="4. Reactor 模型示例"></a>4. Reactor 模型示例</h3><p>对于上述的 Reactor 模型，主要有三个核心需要实现：Acceptor，Reactor 和 Handler。具体实现代码如下：</p>
+<pre><code class="language-java">public class Reactor implements Runnable{
+	private final Selector selector;
+	private final ServerSocketChannel serverSocket;
+
+	public Reactor(int port) throws IOException{
+		serverSocket = ServerSocketChannel.open();//创建服务端的ServerSocketChannel
+		serverSocket.configureBlocking(false);//设置为非阻塞模式
+		selector = Selector.open();//创建一个selector选择器
+		SelectionKey key = serverSocket.register(selector,SelectionKey.OP_ACCEPT);
+		serverSocket.bind(new InetSocketAddress(port));//绑定服务端端口
+		key.attach(new Acceptor(serverSocket));//为服务端Channel绑定一个Acceptor
+	}
+	@Override
+	public void run(){
+		try{
+			while(！Thread.interrupted()){
+				selector.select();//服务端使用一个线程不停接收连接请求
+				Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
+				Iterator&lt;SelectionKey&gt; itetrator = keys.iterator();
+				while(iterator.hasNext()){
+					dispatch(iterator.next());
+					iterator.remove();
+					}
+				selector.selectNow();
+				}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	private void dispatch(SelectionKey key) throws IOException{
+		//这里的attachment也即前面的为服务端Channel绑定的Acceptor，调用其run()方法进行分发
+		Runnable attachment = (Runable)key.attachment();
+		attachment.run();
+	}
+
+}
+</code></pre>
+<p>这里Reactor首先开启了一个ServerSocketChannel，然后将其绑定到指定的端口，并且注册到了一个多路复用器上。接着在一个线程中，其会在多路复用器上等待客户端连接。当有客户端连接到达后，Reactor就会将其派发给一个Acceptor，由该Acceptor专门进行客户端连接的获取。下面我们继续看一下Acceptor的代码：</p>
+<pre><code class="language-java">public class Acceptor implements Runnable{
+	private final ExecuteorService executor = Exxcutors.newFixedThreadPool(20);
+
+	private final ServerSocketChannel serverSocket;
+
+	public Acceptor(ServerSocketChannel serverSocket){
+		this.serverSocket = serverSocket;
+		}
+
+	@Override
+	public void run(){
+		try{
+			SocketChannel channel = serverSocket.accept();
+			if(null != channel){
+				executor.execute(new Handler(channel));
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+}
+</code></pre>
+<p>这里可以看到，在Acceptor获取到客户端连接之后，其就将其交由线程池进行网络读写了，而这里的主线程只是不断监听客户端连接事件。下面我们看看Handler的具体逻辑：</p>
+<pre><code class="language-java">public class Handler implements Runnable{
+	private volatile static Selector selector;
+	private final SocketChannel channel;
+	private SelectionKey key;
+	private volatile ByteBuffer input = ByteBuffer.allocate(1024);
+	private volatile ByteBuffer output = ByteBuffer.allocate(1024);
+
+	public Handle(SocketChannel channel) throws IOException{
+		this.channel = channel;
+		channel.configureBlocking(false);//设置客户端连接为非阻塞模式
+		selector = Selector.open();//为客户端创建一个选择器
+		key = channel.register(selector,SelectionKey.OP_READ);//注册客户端Channel的读事件	
+	}
+
+	@Override
+	public void run(){
+		try{
+			while(selector.isOpen() &amp;&amp; channel.isOpen()){
+			 	Set&lt;SelectionKey&gt; keys = select();//等待客户端事件发生
+			 	Iterator&lt;SelectionKey&gt; iterator = keys.iterator();
+				while(iterator.hasNext()){
+					SelectionKey key = iterator.next();
+					iterator.remove();
+
+					//如果当前是读事件，则读取数据
+					if(key.isReadable()){
+						read(key);
+					}else if(key.isWritable()){
+						write(key)
+					}
+				}
+			}	
+		}catch(IOException e){
+		e.printStackTrace();
+		}
+	}
+	//读取客户端发送的数据
+
+	private void read(SelectionKey key) throws IOException{
+		channel.read(input);
+		if(input.position() == 0){
+			return ;
+		}
+		input.flip();
+		process();//对读数据进行业务处理
+		input.clear();
+		key.interstOps(SelectionKey.OP_WRITE);//读取完成后监听写入事件
+	}
+	private void write(SelectionKey key) throws IOException{
+		output.flip();
+		if(channel.isOpen()){
+			channel.write(output);//当有写入事件时，将业务处理的结果写入到客户端Channel中
+			key.channel();
+			channel.close();
+			output.clear();
+		}
+	}
+	//进行业务处理，并且获取处理结果。本质上，基于Reactor模型，如果这里成为处理瓶颈，则将处理过程放入到线程池里面即可，并且使用一个Future获取处理结果，最后写入到客户端Channel中
+	private void process(){
+		byte[] bytes = new byte[input.remaining()];
+		input.get(bytes);
+		String message = new String(bytes,CharsetUtil.UTF_8);
+		System.out.println("receive message from client: \n" +message);
+		output.put("hello client".getBytes());
+	}
+}
+</code></pre>
+<p>在 Handler 中，主要进行的就是每个客户端 Channel 创建一个 Selector，并且监听该 Channel 的网络读写事件。当有事件到达时，进行数据的读写，而业务操作交友具体的业务线程池处理。</p>
+<h1 id="三、AIO（-Asynchronous-I-O）"><a href="#三、AIO（-Asynchronous-I-O）" class="headerlink" title="三、AIO（ Asynchronous I/O）"></a>三、AIO（ Asynchronous I/O）</h1><ol>
+<li>JDK7 引入了 Asynchronous I/O，即 AIO。在进行 I/O 编程中，常用到两种模式：Reactor 和 Proactor。Java 的 NIO 就是 Reactor，当有事件触发时，服务器端得到通知，进行相应的处理</li>
+<li>AIO 即 NIO2.0，叫做异步不阻塞的 IO。AIO 引入异步通道的概念，采用了 Proactor 模式，简化了程序编写，有效的请求才启动线程，它的特点是先由操作系统完成后才通知服务端程序启动线程去处理，一般适用于连接数较多且连接时间较长的应用</li>
+</ol>
+<h3 id="异步-IO"><a href="#异步-IO" class="headerlink" title="异步 IO"></a>异步 IO</h3><p>之前主要介绍了阻塞式同步 IO，非阻塞式同步 IO，多路复用 IO 这三种 IO 模型。而异步 IO 是采用“订阅-通知”模式，即应用程序向操作系统注册 IO 监听，然后继续做自己的事情。当操作系统发生 IO 事件，并且准备好数据后，主动通知应用程序，触发相应的函数：</p>
+<p> </p><div class="image-container loading"><img src="/img/3a01157436842562f7f21f8b4c4549d4_MD5.webp" alt="异步IO" data-src="/img/3a01157436842562f7f21f8b4c4549d4_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>和同步 IO 一样，异步 IO 也是由操作系统进行支持的。Windows 系统提供了一种异步 IO 技术：IOCP（I/O Completion Port，I/O 完成端口）；<br>Linux 下由于没有这种异步 IO 技术，所以使用的是 epoll（上文介绍过的一种多路复用 IO 技术的实现）对异步 IO 进行模拟。</p>
+<h3 id="Java-AIO-框架解析"><a href="#Java-AIO-框架解析" class="headerlink" title="Java AIO 框架解析"></a>Java AIO 框架解析</h3><p> </p><div class="image-container loading"><img src="/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.webp" alt="Java AIO" data-src="/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
+<p>以上结构主要是说明 JAVA AIO 中类设计和操作系统的相关性。</p>
+<blockquote>
+<p>上述所有代码仓库地址：<a target="_blank" rel="noopener" href="https://github.com/z1gui/netty_io">https://github.com/z1gui/netty_io</a></p>
+</blockquote>
+<p>参考资料：</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/520809188?utm_id=0">BIO、NIO、AIO区别详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://pdai.tech/md/java/io/java-io-overview.html">♥Java IO知识体系详解♥</a></p>
+</blockquote>
+
+                </div>
+            </div>
+            <div class="post-content-sidebar">
+                
+                <div class="post-toc" id="postToc">
+                    <div class="toc-header">
+                        <div class="toc-title">目录</div>
+                    </div>
+                    <div class="toc-content"></div>
+                </div>
+            </div>
+        </div>
+    
+
+<!-- 只在文章页面显示分类和导航 -->
+
+    <!-- 分类信息和分享按钮 -->
+    
+        <div class="post-categories-with-share">
+            <div class="post-categories">
+                分类：
+                
+                    <a href="/categories/%E5%90%8E%E7%AB%AF/"> / 后端</a>
+                
+            </div>
+            <div class="post-action-buttons">
+                <button class="comment-toggle-btn" id="commentToggleBtn" title="显示/隐藏评论">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <button class="share-icon-btn" id="shareBtn" title="点击分享这篇文章">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                
+            </div>
+        </div>
+    
+
+   
+
+    <!-- 评论抽屉容器（抽屉动画区域） -->
+    <div id="commentsDrawer" class="comments-drawer" aria-hidden="true">
+        <!-- 评论区域 -->
+        <div class="comments-section" id="commentsSection">
+            
+<div class="giscus-container">
+    <script src="https://giscus.app/client.js" data-repo="z1gui/blog" data-repo-id="R_kgDOOezL6g" data-category="Announcements" data-category-id="DIC_kwDOOezL6s4CvusN" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="noborder_gray" data-lang="zh-CN" crossorigin="anonymous" async="">
+    </script>
+</div>
+
+
+        </div>
+    </div>
+
+    <!-- 下一篇推荐 -->
+    
+    <div class="next-post-recommendation">
+        <div class="next-post-label">接下来阅读</div>
+        <div class="next-post-content">
+            <a href="/761386768996885/" class="next-post-title">类加载器以及双亲委派模型</a>
+            <a href="/761386768996885/" class="next-post-excerpt">
+                
+                一个类的生命周期（7个阶段）加载-验证-准备-解析-初始化-使用-卸载 其中，类的加载过程是十分重要的过程。在这一过程，是由JVM提供的类加载器来完成。 类加载器JVM提供三层类加载器 启动类加载器：Bootstrap Class Loader ，是C++写的，返回为NULL（比如String类），lib&amp;x2F;下的jar包，比如rt.jar,jce.jar等 拓展类加载器：Extension Class Loader，jre&amp;x2F;lib&amp;x2F;ext下的jar或者是指定的jar 应用程序类加载器：Application  Class Loader，加载calsspath指定内容 当然...
+            </a>
+        </div>
+    </div>
+    
+
+
+</div>
+
+<!-- 图片全屏显示模态框 -->
+<div class="image-modal" id="imageModal">
+    <img id="modalImage" src="" alt="全屏图片">
+</div>
+
+<!-- 分享成功弹出通知 -->
+<div class="share-notification" id="shareNotification">
+    <div class="share-notification-content">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>链接已复制到剪贴板</span>
+    </div>
+</div>
+
+<!-- 代码全屏显示模态框 -->
+<div class="code-modal" id="codeModal">
+    <div class="code-modal-content">
+        <div class="code-modal-header">
+            <div class="code-modal-title">代码查看</div>
+            <div class="code-modal-close" id="codeModalClose">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="code-modal-code">
+            <pre><code id="modalCode"></code></pre>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const postImages = document.querySelectorAll('.post-md img');
+
+    // 为图片添加说明文字（优先 data-caption，其次 alt，最后 title）
+    // 只在文章页面显示图片标注，设备页面不显示
+    if (document.body.classList.contains('is-post')) {
+    postImages.forEach(img => {
+        // 跳过社交链接中的图标
+        const isSocialIcon = img.closest('.social-links') !== null;
+        if (isSocialIcon) return;
+
+        // 已有说明则不重复添加（检测紧邻的说明节点）
+        const container = img.closest('.image-container');
+        const link = img.closest('a');
+        const injector = link || container || img;
+        const nextEl = injector.nextElementSibling;
+        if (nextEl && nextEl.classList && nextEl.classList.contains('image-caption')) return;
+
+        const captionText = (img.getAttribute('data-caption') || img.getAttribute('alt') || img.getAttribute('title') || '').trim();
+        if (!captionText) return;
+
+        const captionEl = document.createElement('div');
+        captionEl.className = 'image-caption';
+        captionEl.textContent = captionText;
+
+        injector.insertAdjacentElement('afterend', captionEl);
+    });
+    }
+
+    // 点击图片打开模态框
+    postImages.forEach(img => {
+        // 检查图片是否在社交链接中
+        const isSocialIcon = img.closest('.social-links') !== null;
+        if (!isSocialIcon) {
+            img.addEventListener('click', function() {
+                modal.classList.add('active');
+                
+                // 获取原始图片路径（将WebP转换回原始格式）
+                let originalSrc = this.src || this.dataset.src;
+                
+                // 如果是WebP格式，转换为原始格式
+                if (originalSrc && originalSrc.includes('.webp')) {
+                    // 尝试多种原始格式
+                    const possibleFormats = ['.png', '.jpg', '.jpeg'];
+                    let foundOriginal = false;
+                    
+                    for (let format of possibleFormats) {
+                        const testSrc = originalSrc.replace('.webp', format);
+                        // 这里可以添加预检查逻辑，但为了简化，我们直接尝试加载
+                        if (!foundOriginal) {
+                            originalSrc = testSrc;
+                            foundOriginal = true;
+                        }
+                    }
+                    
+                    // 如果都没有找到，使用默认的.jpg格式
+                    if (!foundOriginal) {
+                        originalSrc = originalSrc.replace('.webp', '.jpg');
+                    }
+                }
+                
+                modalImg.src = originalSrc;
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
+                
+                // 添加加载状态
+                modalImg.onload = function() {
+                    console.log('原始图片加载完成:', originalSrc);
+                };
+                
+                modalImg.onerror = function() {
+                    console.log('原始图片加载失败，尝试其他格式');
+                    // 尝试其他可能的原始格式
+                    const webpSrc = this.src || this.dataset.src;
+                    if (webpSrc && webpSrc.includes('.webp')) {
+                        const formats = ['.png', '.jpeg', '.jpg'];
+                        let currentFormatIndex = 0;
+                        
+                        const tryNextFormat = () => {
+                            if (currentFormatIndex < formats.length) {
+                                const testSrc = webpSrc.replace('.webp', formats[currentFormatIndex]);
+                                modalImg.src = testSrc;
+                                currentFormatIndex++;
+                            } else {
+                                console.log('所有原始格式都失败，使用WebP版本');
+                                modalImg.src = webpSrc;
+                            }
+                        };
+                        
+                        // 重新绑定错误处理
+                        modalImg.onerror = tryNextFormat;
+                        tryNextFormat();
+                    } else {
+                        modalImg.src = webpSrc;
+                    }
+                }.bind(this);
+            });
+        }
+    });
+
+    // 点击模态框关闭
+    modal.addEventListener('click', function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // 恢复背景滚动
+    });
+
+    // 按 ESC 键关闭模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // 阅读进度条功能
+    const progressBar = document.getElementById('readingProgressBar');
+    if (progressBar) {
+        function updateReadingProgress() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            // 限制进度条宽度在0-100%之间
+            const progressWidth = Math.min(Math.max(scrollPercent, 0), 100);
+            progressBar.style.width = progressWidth + '%';
+        }
+
+        // 监听滚动事件
+        window.addEventListener('scroll', updateReadingProgress);
+        
+        // 页面加载时初始化进度条
+        updateReadingProgress();
+    }
+
+    
+
+
+
+    // 返回顶部功能
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // 代码块全屏功能
+    const codeModal = document.getElementById('codeModal');
+    const modalCode = document.getElementById('modalCode');
+    const codeModalClose = document.getElementById('codeModalClose');
+
+    // 为所有代码块添加全屏按钮
+    const codeBlocks = document.querySelectorAll('.post-md pre');
+    codeBlocks.forEach(pre => {
+        // 检查是否已经有按钮（避免重复添加）
+        if (!pre.querySelector('.code-fullscreen-btn')) {
+            const fullscreenBtn = document.createElement('div');
+            fullscreenBtn.className = 'code-fullscreen-btn';
+            fullscreenBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 3H5C3.89543 3 3 3.89543 3 5V8M21 8V5C21 3.89543 20.1046 3 19 3H16M16 21H19C20.1046 21 21 20.1046 21 19V16M3 16V19C3 20.1046 3.89543 21 5 21H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `;
+            fullscreenBtn.title = '全屏查看代码';
+            
+            // 点击按钮显示全屏代码
+            fullscreenBtn.addEventListener('click', function() {
+                const codeElement = pre.querySelector('code');
+                if (codeElement) {
+                    // 检查是否是已经应用了行号的代码块
+                    const hljsTable = pre.querySelector('table.hljs-ln');
+                    
+                    let codeContent;
+                    let startLineNumber = 1;
+                    
+                    if (hljsTable) {
+                        // 如果有行号表格，提取纯代码内容和起始行号
+                        const codeLines = hljsTable.querySelectorAll('.hljs-ln-code');
+                        codeContent = Array.from(codeLines).map(line => {
+                            // 提取每行的文本内容，保持原始格式
+                            return line.textContent || line.innerText || ' ';
+                        }).join('\n');
+                        
+                        // 获取起始行号
+                        const firstNumberCell = hljsTable.querySelector('.hljs-ln-numbers');
+                        if (firstNumberCell) {
+                            const lineAttr = firstNumberCell.getAttribute('data-line-number');
+                            if (lineAttr) {
+                                startLineNumber = parseInt(lineAttr) || 1;
+                            }
+                        }
+                    } else {
+                        // 普通代码块，直接获取文本内容
+                        codeContent = codeElement.textContent || codeElement.innerText;
+                    }
+                    
+                    const codeLanguage = getCodeLanguage(codeElement);
+                    
+                    // 设置模态框中的代码内容
+                    modalCode.textContent = codeContent;
+                    modalCode.className = codeElement.className; // 保持代码高亮的类名
+                    
+                    // 如果原代码有自定义起始行号，设置data属性
+                    if (startLineNumber !== 1) {
+                        modalCode.setAttribute('data-ln-start-from', startLineNumber);
+                    } else {
+                        modalCode.removeAttribute('data-ln-start-from');
+                    }
+                    
+                    // 更新标题
+                    const modalTitle = document.querySelector('.code-modal-title');
+                    if (codeLanguage) {
+                        modalTitle.textContent = `代码查看 - ${codeLanguage}`;
+                    } else {
+                        modalTitle.textContent = '代码查看';
+                    }
+                    
+                    // 显示模态框
+                    codeModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // 重新应用代码高亮和行号
+                    if (typeof hljs !== 'undefined') {
+                        hljs.highlightElement(modalCode);
+                        
+                        // 应用行号
+                        if (typeof hljs.lineNumbersBlock !== 'undefined') {
+                            hljs.lineNumbersBlock(modalCode, {
+                                startFrom: startLineNumber
+                            });
+                        }
+                    }
+                }
+            });
+            
+            pre.appendChild(fullscreenBtn);
+        }
+    });
+
+    // 获取代码语言
+    function getCodeLanguage(codeElement) {
+        const className = codeElement.className;
+        const languageMatch = className.match(/language-(\w+)|hljs-(\w+)|\b(\w+)$/);
+        if (languageMatch) {
+            return languageMatch[1] || languageMatch[2] || languageMatch[3];
+        }
+        return '';
+    }
+
+    // 关闭代码全屏模态框
+    function closeCodeModal() {
+        codeModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // 点击关闭按钮
+    if (codeModalClose) {
+        codeModalClose.addEventListener('click', closeCodeModal);
+    }
+
+    // 点击模态框背景关闭（点击内容区域不关闭）
+    codeModal.addEventListener('click', function(e) {
+        if (e.target === codeModal) {
+            closeCodeModal();
+        }
+    });
+
+    // 按 ESC 键关闭代码模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (codeModal.classList.contains('active')) {
+                closeCodeModal();
+            }
+        }
+    });
+
+    // 分享功能
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', function() {
+            // 获取文章信息
+            const title = document.querySelector('.post-main-title')?.textContent?.trim() || '未知标题';
+            const date = document.querySelector('.post-meta')?.textContent?.match(/\d{4}-\d{2}-\d{2}/)?.[0] || '';
+            const url = window.location.href;
+            
+            // 获取文章前几行内容（排除标题、元信息等）
+            const postContent = document.querySelector('.post-md');
+            let content = '';
+            if (postContent) {
+                // 获取所有段落和文本内容
+                const paragraphs = postContent.querySelectorAll('p, h1, h2, h3, h4, h5, h6');
+                const contentArray = [];
+                
+                for (let i = 0; i < Math.min(paragraphs.length, 3); i++) {
+                    const text = paragraphs[i].textContent?.trim();
+                    if (text && text.length > 0) {
+                        contentArray.push(text);
+                    }
+                }
+                
+                content = contentArray.join('\n\n');
+                
+                // 如果内容太长，截取前100个字符
+                if (content.length > 100) {
+                    content = content.substring(0, 100) + '...';
+                }
+            }
+            
+            // 构建分享内容
+            let shareText = `文章标题： ${title}`;
+            if (date) {
+                shareText += `\n发布时间： ${date}`;
+            }
+            if (content) {
+                shareText += `\n\n${content}`;
+            }
+            shareText += `\n\n🔗 ${url}`;
+            
+            // 复制到剪贴板
+            if (navigator.clipboard && window.isSecureContext) {
+                // 使用现代 Clipboard API
+                navigator.clipboard.writeText(shareText).then(function() {
+                    showShareSuccess();
+                }).catch(function(err) {
+                    console.error('复制失败:', err);
+                    fallbackCopyTextToClipboard(shareText);
+                });
+            } else {
+                // 降级方案
+                fallbackCopyTextToClipboard(shareText);
+            }
+        });
+    }
+    
+    // 显示分享成功提示
+    function showShareSuccess() {
+        const notification = document.getElementById('shareNotification');
+        if (notification) {
+            notification.classList.add('show');
+            
+            // 3秒后自动隐藏
+            setTimeout(function() {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    }
+    
+    // 降级复制方案
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showShareSuccess();
+            } else {
+                alert('复制失败，请手动复制以下内容：\n\n' + text);
+            }
+        } catch (err) {
+            console.error('复制失败:', err);
+            alert('复制失败，请手动复制以下内容：\n\n' + text);
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    // 字数统计和阅读时长计算
+    function calculatePostStats() {
+        const postContent = document.querySelector('.post-md');
+        if (!postContent) return;
+        
+        // 获取纯文本内容
+        let textContent = postContent.textContent || postContent.innerText || '';
+        
+        // 移除多余的空白字符
+        textContent = textContent.replace(/\s+/g, ' ').trim();
+        
+        // 计算中文字符数（包括中文标点）
+        const chineseChars = textContent.match(/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/g);
+        const chineseCount = chineseChars ? chineseChars.length : 0;
+        
+        // 计算英文单词数
+        const englishWords = textContent.match(/[a-zA-Z]+/g);
+        const englishWordCount = englishWords ? englishWords.length : 0;
+        
+        // 计算数字
+        const numbers = textContent.match(/\d+/g);
+        const numberCount = numbers ? numbers.length : 0;
+        
+        // 总字数 = 中文字符数 + 英文单词数 + 数字个数
+        const totalWords = chineseCount + englishWordCount + numberCount;
+        
+        // 更新字数显示
+        const wordCountElement = document.getElementById('wordCount');
+        if (wordCountElement) {
+            wordCountElement.textContent = `${totalWords.toLocaleString()} 字`;
+            // 更新title属性显示详细信息
+            wordCountElement.title = `字数统计：${totalWords.toLocaleString()} 字\n中文字符：${chineseCount}\n英文单词：${englishWordCount}\n数字：${numberCount}`;
+        }
+        
+        // 计算阅读时长（中文按300字/分钟，英文按200词/分钟计算）
+        const chineseReadingTime = Math.ceil(chineseCount / 300);
+        const englishReadingTime = Math.ceil(englishWordCount / 200);
+        const totalReadingTime = Math.max(chineseReadingTime, englishReadingTime, 1); // 至少1分钟
+        
+        // 更新阅读时长显示
+        const readingTimeElement = document.getElementById('readingTime');
+        if (readingTimeElement) {
+            let displayText = '';
+            if (totalReadingTime < 60) {
+                displayText = `${totalReadingTime} 分钟`;
+            } else {
+                const hours = Math.floor(totalReadingTime / 60);
+                const minutes = totalReadingTime % 60;
+                if (minutes === 0) {
+                    displayText = `${hours} 小时`;
+                } else {
+                    displayText = `${hours} 小时 ${minutes} 分钟`;
+                }
+            }
+            readingTimeElement.textContent = displayText;
+            // 更新title属性显示详细信息
+            readingTimeElement.title = `预计阅读时长：${displayText}\n基于中文300字/分钟，英文200词/分钟计算`;
+        }
+        
+        // 添加详细统计信息（可选，用于调试）
+        console.log('文章统计:', {
+            中文字符: chineseCount,
+            英文单词: englishWordCount,
+            数字个数: numberCount,
+            总字数: totalWords,
+            预计阅读时长: totalReadingTime + ' 分钟'
+        });
+    }
+    
+    // 页面加载完成后计算统计信息
+    calculatePostStats();
+    
+    // 评论区域显示/隐藏功能（顶部按钮仍可用）
+    const commentToggleBtn = document.getElementById('commentToggleBtn');
+    const commentsSection = document.getElementById('commentsSection');
+    const commentsDrawer = document.getElementById('commentsDrawer');
+    const commentsToggleBar = document.getElementById('commentsToggleBar');
+    
+    function openComments() {
+        if (commentsDrawer) {
+            commentsDrawer.classList.add('open');
+            commentsDrawer.setAttribute('aria-hidden', 'false');
+        }
+        if (commentsToggleBar) {
+            commentsToggleBar.setAttribute('aria-expanded', 'true');
+            commentsToggleBar.textContent = '隐藏评论';
+        }
+        if (commentToggleBtn) {
+            commentToggleBtn.setAttribute('title', '隐藏评论');
+            commentToggleBtn.style.background = 'var(--font-color-0, #ff4444)';
+            commentToggleBtn.style.borderColor = 'var(--font-color-0, #ff4444)';
+            commentToggleBtn.style.color = 'white';
+        }
+    }
+    
+    function closeComments() {
+        if (commentsDrawer) {
+            commentsDrawer.classList.remove('open');
+            commentsDrawer.setAttribute('aria-hidden', 'true');
+        }
+        if (commentsToggleBar) {
+            commentsToggleBar.setAttribute('aria-expanded', 'false');
+            commentsToggleBar.textContent = '显示评论';
+        }
+        if (commentToggleBtn) {
+            commentToggleBtn.setAttribute('title', '显示评论');
+            commentToggleBtn.style.background = '';
+            commentToggleBtn.style.borderColor = '';
+            commentToggleBtn.style.color = '';
+        }
+    }
+
+    if (commentsDrawer && commentsToggleBar) {
+        closeComments(); // 默认关闭抽屉
+        commentsToggleBar.addEventListener('click', function() {
+            if (commentsDrawer.classList.contains('open')) {
+                closeComments();
+            } else {
+                openComments();
+            }
+        });
+    }
+
+    if (commentToggleBtn && commentsDrawer) {
+        commentToggleBtn.addEventListener('click', function() {
+            if (commentsDrawer.classList.contains('open')) {
+                closeComments();
+            } else {
+                openComments();
+            }
+        });
+    }
+});
+</script>
+
+                
+            </div>
+        </div>
+
+        <!-- JavaScript -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const html = document.documentElement;
+            const header = document.querySelector('.header');
+            
+            // 头部内容滚动显示/隐藏功能
+            let lastScrollTop = 0;
+            let scrollThreshold = 3; // 滚动阈值，避免微小滚动触发
+            
+            function handleHeaderScroll() {
+                if (!header) return;
+                
+                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 计算滚动距离
+                const scrollDifference = currentScrollTop - lastScrollTop;
+                
+                // 向下滚动隐藏
+                if (scrollDifference > scrollThreshold && currentScrollTop > 30) {
+                    header.classList.add('hidden');
+                }
+                // 向上滚动显示
+                else if (scrollDifference < -scrollThreshold) {
+                    header.classList.remove('hidden');
+                }
+                // 在页面顶部时的处理：非文章页显示，文章页保持当前（隐藏）
+                else if (currentScrollTop <= 30) {
+                    if (!document.body.classList.contains('is-post')) {
+                        header.classList.remove('hidden');
+                    }
+                }
+                
+                lastScrollTop = currentScrollTop;
+            }
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+            
+            // 页面加载时的头部初始状态
+            if (header) {
+                if (document.body.classList.contains('is-post')) {
+                    // 文章页：初始隐藏
+                    header.classList.add('hidden');
+                } else {
+                    // 非文章页：初始显示
+                    header.classList.remove('hidden');
+                }
+            }
+            
+            // 目录切换按钮功能（仅在文章页面）
+            function setupTocToggle() {
+                const tocToggleBtn = document.getElementById('tocToggleBtn');
+                const postToc = document.getElementById('postToc');
+                
+                if (!tocToggleBtn || !postToc) {
+                    // 元素还没准备好，延迟重试
+                    setTimeout(setupTocToggle, 100);
+                    return;
+                }
+                
+
+                
+                // 延迟应用localStorage状态，确保目录已初始化
+                setTimeout(() => {
+                    const tocHidden = localStorage.getItem('tocHidden') === 'true';
+                    if (tocHidden) {
+                        postToc.classList.add('hidden');
+                        tocToggleBtn.classList.add('hidden');
+
+                    }
+                }, 200);
+                
+                // 点击切换目录显示/隐藏
+                tocToggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+
+                    
+                    if (postToc) {
+                        const isHidden = postToc.classList.contains('hidden');
+
+                        
+                        if (isHidden) {
+                            // 显示目录
+                            postToc.classList.remove('hidden');
+                            this.classList.remove('hidden');
+                            // 确保目录可见
+                            postToc.style.display = 'flex';
+                            localStorage.setItem('tocHidden', 'false');
+
+                        } else {
+                            // 隐藏目录
+                            postToc.classList.add('hidden');
+                            this.classList.add('hidden');
+                            localStorage.setItem('tocHidden', 'true');
+
+                        }
+                    }
+                });
+                
+
+            }
+            
+            // 启动目录切换功能设置
+            setupTocToggle();
+
+            // 设备页面 3D 轮播初始化
+            if (document.body.classList.contains('is-use')) {
+                const container = document.querySelector('.paper-main');
+                if (container) {
+                    const deviceCards = Array.from(container.querySelectorAll('.device-card'));
+                    if (deviceCards.length > 0) {
+                        const carousel = document.createElement('div');
+                        carousel.className = 'device-carousel';
+                        const track = document.createElement('div');
+                        track.className = 'device-carousel-track';
+
+                        // 先把轮播插入到第一个卡片的父级中，位于首个卡片之前
+                        const firstCard = deviceCards[0];
+                        const parentNode = firstCard.parentNode;
+                        if (parentNode) {
+                            parentNode.insertBefore(carousel, firstCard);
+                        }
+
+                        deviceCards.forEach((card) => {
+                            const slide = document.createElement('div');
+                            slide.className = 'device-slide';
+                            slide.appendChild(card);
+                            track.appendChild(slide);
+                        });
+
+                        const nav = document.createElement('div');
+                        nav.className = 'device-carousel-nav';
+                        const prevBtn = document.createElement('button');
+                        prevBtn.className = 'device-carousel-btn device-prev';
+                        prevBtn.setAttribute('aria-label', '上一项');
+                        prevBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        const nextBtn = document.createElement('button');
+                        nextBtn.className = 'device-carousel-btn device-next';
+                        nextBtn.setAttribute('aria-label', '下一项');
+                        nextBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        nav.appendChild(prevBtn);
+                        nav.appendChild(nextBtn);
+
+                        const pagination = document.createElement('div');
+                        pagination.className = 'device-carousel-pagination';
+                        const dots = deviceCards.map(() => {
+                            const dot = document.createElement('div');
+                            dot.className = 'device-dot';
+                            pagination.appendChild(dot);
+                            return dot;
+                        });
+
+                        const controls = document.createElement('div');
+                        controls.className = 'device-carousel-controls';
+                        
+                        const leftNav = document.createElement('div');
+                        leftNav.className = 'device-carousel-nav';
+                        leftNav.appendChild(prevBtn);
+                        
+                        const rightNav = document.createElement('div');
+                        rightNav.className = 'device-carousel-nav';
+                        rightNav.appendChild(nextBtn);
+                        
+                        controls.appendChild(leftNav);
+                        controls.appendChild(pagination);
+                        controls.appendChild(rightNav);
+
+                        carousel.appendChild(track);
+                        carousel.appendChild(controls);
+
+                        let current = 0;
+                        const total = deviceCards.length;
+
+                        function layout() {
+                            const slides = Array.from(track.children);
+                            slides.forEach((slide, i) => {
+                                const offset = ((i - current + total) % total);
+                                let translateX = 0;
+                                let translateZ = 0;
+                                let rotateY = 0;
+                                let zIndex = 0;
+                                // 仅显示当前与两侧相邻，共3项
+                                if (offset === 0) {
+                                    translateX = -50;
+                                    translateZ = 120;
+                                    rotateY = 0;
+                                    zIndex = 3;
+                                    slide.classList.add('active');
+                                    slide.classList.remove('hidden');
+                                    slide.classList.remove('side');
+                                } else if (offset === 1) {
+                                    translateX = 20;
+                                    translateZ = 0;
+                                    rotateY = -20;
+                                    zIndex = 2;
+                                    slide.classList.remove('active');
+                                    slide.classList.remove('hidden');
+                                    slide.classList.add('side');
+                                } else if (offset === total - 1) {
+                                    translateX = -120;
+                                    translateZ = 0;
+                                    rotateY = 20;
+                                    zIndex = 2;
+                                    slide.classList.remove('active');
+                                    slide.classList.remove('hidden');
+                                    slide.classList.add('side');
+                                } else {
+                                    translateX = (offset < total / 2 ? 160 : -240);
+                                    translateZ = -120;
+                                    rotateY = offset < total / 2 ? -30 : 30;
+                                    zIndex = 1;
+                                    slide.classList.remove('active');
+                                    slide.classList.add('hidden');
+                                    slide.classList.remove('side');
+                                }
+                                slide.style.zIndex = zIndex.toString();
+                                slide.style.transform = `translate3d(${translateX}%, 0, ${translateZ}px) rotateY(${rotateY}deg)`;
+                            });
+                            dots.forEach((dot, i) => { dot.classList.toggle('active', i === current); });
+                        }
+
+                        function go(delta) { current = (current + delta + total) % total; layout(); }
+
+                        prevBtn.addEventListener('click', () => go(-1));
+                        nextBtn.addEventListener('click', () => go(1));
+                        dots.forEach((dot, i) => dot.addEventListener('click', () => { current = i; layout(); }));
+
+                        carousel.setAttribute('tabindex', '0');
+                        carousel.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') go(-1); if (e.key === 'ArrowRight') go(1); });
+                        let startX = 0;
+                        carousel.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+                        carousel.addEventListener('touchend', (e) => {
+                            const dx = e.changedTouches[0].clientX - startX;
+                            if (dx > 40) go(-1);
+                            if (dx < -40) go(1);
+                        }, { passive: true });
+
+                        layout();
+
+                        // 点击左右侧卡片切换
+                        track.addEventListener('click', (e) => {
+                            const slides = Array.from(track.children);
+                            const clickedSlide = e.target.closest('.device-slide');
+                            if (!clickedSlide) return;
+                            const index = slides.indexOf(clickedSlide);
+                            if (index === -1) return;
+                            const offset = ((index - current + total) % total);
+                            if (offset === 1) go(1);
+                            if (offset === total - 1) go(-1);
+                        });
+
+                        // 禁用非激活卡片的图片点击放大
+                        track.addEventListener('click', (e) => {
+                            if (e.target.tagName === 'IMG') {
+                                const slide = e.target.closest('.device-slide');
+                                if (!slide || !slide.classList.contains('active')) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        </script>
+        
+        <!-- 异步加载代码高亮 -->
+        
+        <script async="" src="/js/highlight.min.js"></script>
+        <script async="" src="/js/highlightjs-line-numbers.js"></script>
+        <script>
+        // 等待代码高亮库加载完成后初始化
+        function initHighlight() {
+            if (typeof hljs !== 'undefined') {
+                hljs.highlightAll();
+                hljs.initLineNumbersOnLoad();
+            } else {
+                setTimeout(initHighlight, 100);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initHighlight);
+        </script>
+        
+        
+        <!-- 返回顶部功能 -->
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+        </script>
+        
+        
+        <!-- 异步加载目录功能 -->
+        <script async="" src="/js/toc.js"></script>
+    
+</body></html>
