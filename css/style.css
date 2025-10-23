@@ -795,9 +795,12 @@ body:not(.is-post) .paper-main {
 }
 
 .footer-social-icon:hover {
-    transform: translateY(-2px);
-    background: var(--bg-color-0);
-    box-shadow: 0 2px 8px var(--font-color-0);
+    color: var(--font-color-0);
+    background: rgba(96, 190, 41, 0.1);
+    border: 1px solid rgba(96, 190, 41, 0.3);
+    border-color: rgba(96, 190, 41, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0px 2px 4px rgba(96, 190, 41, 0.5);
 }
 
 .footer-social-icon img,
@@ -2413,6 +2416,11 @@ body.is-post .paginator {
     box-shadow: 0 4px 12px var(--shadow-color);
     background: rgba(255, 68, 68, 0.1);
     border-color: rgba(255, 68, 68, 0.2);
+    color: var(--font-color-0);
+    background: rgba(96, 190, 41, 0.1);
+    border-color: rgba(96, 190, 41, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(96, 190, 41, 0.2);
 }
 
 .social-icon img {
