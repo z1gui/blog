@@ -242,7 +242,6 @@
             <div class="paper-main">
                 <div class="header">
     <div class="header-content">
-
         <!-- 导航栏 -->
         <ul class="nav">
                 
@@ -288,9 +287,9 @@
                     </a>
                 </li>
                 
-
         </ul>
     </div>
+    
 </div>
 
                 <div class="post-main">
@@ -333,18 +332,18 @@ insert into cs  select 1,'Tom',to_blob('123412f') from dual;
 insert into cs  select 2,'King',to_blob('123412f') from dual;
 insert into cs  select 3,'Leo',to_blob('124123F21F') from dual;
 </code></pre>
-<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="库表结构" data-src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.webp" loading="lazy" class="lazy-image"></div></p>
+<p></p><div class="image-container loading"><img src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.webp" alt="库表结构" data-src="/img/f3627e8bb0dc4f0b8e589df10f6fe863.webp" loading="lazy" class="lazy-image"></div><p></p>
 <h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h4 id="1-通过Group-by-方式进行查重（操作失败）"><a href="#1-通过Group-by-方式进行查重（操作失败）" class="headerlink" title="1.通过Group by 方式进行查重（操作失败）"></a>1.通过Group by 方式进行查重（操作失败）</h4><p>遇到这个问题，我熟啊！写 <code>group by</code> 语句就行了呗，然后就写了这样的语句</p>
 <pre><code class="language-sql">select  jl,count(1) from cs group by jl having count(1)&gt;1;
 </code></pre>
-<p>当我美滋滋开始执行的时候，却出现的问题<br><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题1" data-src="/img/584082192807448bb4db57a334ebb740.webp" loading="lazy" class="lazy-image"></div><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行 <code>group by</code> 的，那我把这个字段用 <code>to_char()</code> 转换一下试试看</p>
+<p>当我美滋滋开始执行的时候，却出现的问题<br></p><div class="image-container loading"><img src="/img/584082192807448bb4db57a334ebb740.webp" alt="问题1" data-src="/img/584082192807448bb4db57a334ebb740.webp" loading="lazy" class="lazy-image"></div><br>查了查相关资料知道了，oralce是不能通过blob类型的字段进行 <code>group by</code> 的，那我把这个字段用 <code>to_char()</code> 转换一下试试看<p></p>
 <pre><code class="language-sql">select jl,count(1) from cs group by to_char(jl) having count(1)&gt;1;
 </code></pre>
-<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="问题2" data-src="/img/6576c5fe4a184619b7fe4897d6ea30af.webp" loading="lazy" class="lazy-image"></div><br>显然，<code>group by</code> 也不能后跟 <code>to_char()</code> 函数。那我只能是自己写语句吧。</p>
+<p></p><div class="image-container loading"><img src="/img/6576c5fe4a184619b7fe4897d6ea30af.webp" alt="问题2" data-src="/img/6576c5fe4a184619b7fe4897d6ea30af.webp" loading="lazy" class="lazy-image"></div><br>显然，<code>group by</code> 也不能后跟 <code>to_char()</code> 函数。那我只能是自己写语句吧。<p></p>
 <h4 id="2-自己写语句查重"><a href="#2-自己写语句查重" class="headerlink" title="2.自己写语句查重"></a>2.自己写语句查重</h4><p>如果不能用group by 进行查重的话，只能是自己写查重语句，然后就写了如下语句</p>
 <pre><code class="language-sql">select * from cs t1 where exists (select 1 from cs t2 where to_char(t2.jl) = to_char(t1.jl) and t2.id !=t1.id);
 </code></pre>
-<p>需要注意的是blob类型字段是不能直接=，需要 <code>to_char()</code> 转换，这个语句就执行成功了。结果如下，问题解决。<br><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="结果1" data-src="/img/35a289c650094738966c332480bc7da5.webp" loading="lazy" class="lazy-image"></div></p>
+<p>需要注意的是blob类型字段是不能直接=，需要 <code>to_char()</code> 转换，这个语句就执行成功了。结果如下，问题解决。<br></p><div class="image-container loading"><img src="/img/35a289c650094738966c332480bc7da5.webp" alt="结果1" data-src="/img/35a289c650094738966c332480bc7da5.webp" loading="lazy" class="lazy-image"></div><p></p>
 
                 </div>
             </div>
@@ -967,108 +966,43 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('DOMContentLoaded', function() {
             const html = document.documentElement;
             const header = document.querySelector('.header');
-            
-            // 头部内容滚动显示/隐藏功能
-            let lastScrollTop = 0;
-            let scrollThreshold = 3; // 滚动阈值，避免微小滚动触发
-            
-            function handleHeaderScroll() {
+        
+            function handleHeaderClick() {
                 if (!header) return;
-                
-                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // 计算滚动距离
-                const scrollDifference = currentScrollTop - lastScrollTop;
-                
-                // 向下滚动隐藏
-                if (scrollDifference > scrollThreshold && currentScrollTop > 30) {
-                    header.classList.add('hidden');
-                }
-                // 向上滚动显示
-                else if (scrollDifference < -scrollThreshold) {
-                    header.classList.remove('hidden');
-                }
-                // 在页面顶部时的处理：非文章页显示，文章页保持当前（隐藏）
-                else if (currentScrollTop <= 30) {
-                    if (!document.body.classList.contains('is-post')) {
-                        header.classList.remove('hidden');
-                    }
-                }
-                
-                lastScrollTop = currentScrollTop;
-            }
-            
-            // 监听滚动事件
-            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
-            
-            // 页面加载时的头部初始状态
-            if (header) {
-                if (document.body.classList.contains('is-post')) {
-                    // 文章页：初始隐藏
-                    header.classList.add('hidden');
-                } else {
-                    // 非文章页：初始显示
-                    header.classList.remove('hidden');
-                }
-            }
-            
-            // 目录切换按钮功能（仅在文章页面）
-            function setupTocToggle() {
-                const tocToggleBtn = document.getElementById('tocToggleBtn');
-                const postToc = document.getElementById('postToc');
-                
-                if (!tocToggleBtn || !postToc) {
-                    // 元素还没准备好，延迟重试
-                    setTimeout(setupTocToggle, 100);
+
+                // 在非文章页时不执行隐藏操作
+                if (!document.body.classList.contains('is-post')) {
+                    // 非文章页保持显示，不进行切换
                     return;
                 }
-                
 
-                
-                // 延迟应用localStorage状态，确保目录已初始化
-                setTimeout(() => {
-                    const tocHidden = localStorage.getItem('tocHidden') === 'true';
-                    if (tocHidden) {
-                        postToc.classList.add('hidden');
-                        tocToggleBtn.classList.add('hidden');
-
-                    }
-                }, 200);
-                
-                // 点击切换目录显示/隐藏
-                tocToggleBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-
-                    
-                    if (postToc) {
-                        const isHidden = postToc.classList.contains('hidden');
-
-                        
-                        if (isHidden) {
-                            // 显示目录
-                            postToc.classList.remove('hidden');
-                            this.classList.remove('hidden');
-                            // 确保目录可见
-                            postToc.style.display = 'flex';
-                            localStorage.setItem('tocHidden', 'false');
-
-                        } else {
-                            // 隐藏目录
-                            postToc.classList.add('hidden');
-                            this.classList.add('hidden');
-                            localStorage.setItem('tocHidden', 'true');
-
-                        }
-                    }
-                });
-                
+                // 点击头部时，切换头部显示/隐藏
+                if (header.classList.contains('hidden')) {
+                    // 当前已隐藏，显示
+                    header.classList.remove('hidden');
+                } else {
+                    // 当前已显示，隐藏
+                    header.classList.add('hidden');
+                }
+            }
+            
+            // 监听事件
+            if(header){
+                header.addEventListener('click', handleHeaderClick);
+            }
+            
+            
+            // 页面加载时的头部初始状态
+            if (document.body.classList.contains('is-post')) {
+                    // 文章页：初始隐藏
+                    header.classList.add('hidden');
+            }else{
+                // 非文章页：初始显示
+                header.classList.remove('hidden');
 
             }
             
-            // 启动目录切换功能设置
-            setupTocToggle();
+            
 
             // 设备页面 3D 轮播初始化
             if (document.body.classList.contains('is-use')) {
@@ -1250,24 +1184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </script>
         
         
-        <!-- 返回顶部功能 -->
-        
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const backToTopBtn = document.getElementById('backToTop');
-            if (backToTopBtn) {
-                backToTopBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            }
-        });
-        </script>
-        
-        
+
         <!-- 异步加载目录功能 -->
         <script async="" src="/js/toc.js"></script>
     

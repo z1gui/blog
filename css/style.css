@@ -261,13 +261,14 @@ body:not(.is-post) .paper-main {
     margin: 0;
     position: fixed;
     top: 0;
-    right: 2rem;
+    left: 10rem;
     transform: none;
     z-index: 1000;
     border-radius: 20px;
     transition: all 0.3s ease;
     height: auto;
     min-height: 200px;
+    z-index: 1;
 }
 
 .header-content {
@@ -282,6 +283,19 @@ body:not(.is-post) .paper-main {
     border-color: rgba(3, 9, 0, 0.3);
     border-bottom: 4px solid var(--font-color-0);
     box-shadow: 0 2px 4px rgba(3, 9, 0, 0.2);
+}
+
+.header-arrow {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    color: var(--font-color-3);
+}
+
+.header-arrow svg {
+    transition: transform 0.3s ease;
 }
 /* 头部内容样式 */
 .hero-header {
@@ -369,8 +383,8 @@ body:not(.is-post) .paper-main {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
     margin-left: 0;
     transition: all 0.3s ease;
@@ -379,9 +393,9 @@ body:not(.is-post) .paper-main {
 }
 
 .header.hidden {
-    transform: translateY(-98%);
-
-    pointer-events: none;
+    transform: translateY(-90%);
+    pointer-events: all;
+    z-index: 1;
 }
 
 

@@ -239,7 +239,6 @@
             <div class="paper-main">
                 <div class="header">
     <div class="header-content">
-
         <!-- 导航栏 -->
         <ul class="nav">
                 
@@ -285,9 +284,9 @@
                     </a>
                 </li>
                 
-
         </ul>
     </div>
+    
 </div>
 
                 <div class="post-main">
@@ -321,7 +320,7 @@
 <p>早在 2024 年初，我就开始接触 AI 编程，一开始就使用了 Cursor。当我熟悉了它的操作之后，惊叹于它输出代码的质量。随后，我向身边朋友，同事极力推荐 Cursor。</p>
 <p>本质上，Cursor 是一个集成 AI 能力的 VS Code 编辑器。尽管后来尝试各个大厂的不同的 AI 编程工具，例如：通义灵码，Windsurf，Trae 等，甚至自己搭建平台调用 Deepseek Api 完成编程辅助工作，但坦言来讲，体验都不如 Cursor。</p>
 <h2 id="Cursor-收费模式"><a href="#Cursor-收费模式" class="headerlink" title="Cursor 收费模式"></a>Cursor 收费模式</h2><p>当然，Cursor 并不是免费的。它的收费方式是订阅制，订阅价格在 $20 / 月。其中包含 500 次快请求，以及不限次数的慢请求。说实话，每月 140 块钱确实让人望而却步。</p>
-<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.webp" loading="lazy" class="lazy-image"></div></p>
+<p></p><div class="image-container loading"><img src="/img/Pastedimage20250514161308.webp" alt="Cursor收费模式" data-src="/img/Pastedimage20250514161308.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>Cursor 相对新用户还是有很好的政策。新用户首月 14 天 150 次快请求，次月及以后每月 50 次快请求，用完就不能再使用了。理论上有足够多的账号，也可以白嫖。在没有教育优惠前，我就是用两个账号的试用和免费请求体验了 cursor 的绝大数功能。</p>
 <blockquote>
 <p>个人使用来说，我一般使用 cursor 调整前端样式，或者解决前端报错问题。或者直接需求文档丢给 cursor 让他给我生成前端文件。50 次请求大概能完成 2~3 个复杂功能页面的开发。</p>
@@ -331,7 +330,7 @@
 <blockquote>
 <p>2025-5-20：订阅时间从 2025 年 5 月 12 号到 2026 年 5 月 12 号，当前使用无问题，后续有问题补充</p>
 </blockquote>
-<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.webp" loading="lazy" class="lazy-image"></div></p>
+<p></p><div class="image-container loading"><img src="/img/Pastedimage20250520090726.webp" alt="Pro会员状态" data-src="/img/Pastedimage20250520090726.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>目前来说，500 次快请求基本满足个人高强度使用的要求。</p>
 
                 </div>
@@ -966,108 +965,43 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('DOMContentLoaded', function() {
             const html = document.documentElement;
             const header = document.querySelector('.header');
-            
-            // 头部内容滚动显示/隐藏功能
-            let lastScrollTop = 0;
-            let scrollThreshold = 3; // 滚动阈值，避免微小滚动触发
-            
-            function handleHeaderScroll() {
+        
+            function handleHeaderClick() {
                 if (!header) return;
-                
-                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // 计算滚动距离
-                const scrollDifference = currentScrollTop - lastScrollTop;
-                
-                // 向下滚动隐藏
-                if (scrollDifference > scrollThreshold && currentScrollTop > 30) {
-                    header.classList.add('hidden');
-                }
-                // 向上滚动显示
-                else if (scrollDifference < -scrollThreshold) {
-                    header.classList.remove('hidden');
-                }
-                // 在页面顶部时的处理：非文章页显示，文章页保持当前（隐藏）
-                else if (currentScrollTop <= 30) {
-                    if (!document.body.classList.contains('is-post')) {
-                        header.classList.remove('hidden');
-                    }
-                }
-                
-                lastScrollTop = currentScrollTop;
-            }
-            
-            // 监听滚动事件
-            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
-            
-            // 页面加载时的头部初始状态
-            if (header) {
-                if (document.body.classList.contains('is-post')) {
-                    // 文章页：初始隐藏
-                    header.classList.add('hidden');
-                } else {
-                    // 非文章页：初始显示
-                    header.classList.remove('hidden');
-                }
-            }
-            
-            // 目录切换按钮功能（仅在文章页面）
-            function setupTocToggle() {
-                const tocToggleBtn = document.getElementById('tocToggleBtn');
-                const postToc = document.getElementById('postToc');
-                
-                if (!tocToggleBtn || !postToc) {
-                    // 元素还没准备好，延迟重试
-                    setTimeout(setupTocToggle, 100);
+
+                // 在非文章页时不执行隐藏操作
+                if (!document.body.classList.contains('is-post')) {
+                    // 非文章页保持显示，不进行切换
                     return;
                 }
-                
 
-                
-                // 延迟应用localStorage状态，确保目录已初始化
-                setTimeout(() => {
-                    const tocHidden = localStorage.getItem('tocHidden') === 'true';
-                    if (tocHidden) {
-                        postToc.classList.add('hidden');
-                        tocToggleBtn.classList.add('hidden');
-
-                    }
-                }, 200);
-                
-                // 点击切换目录显示/隐藏
-                tocToggleBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-
-                    
-                    if (postToc) {
-                        const isHidden = postToc.classList.contains('hidden');
-
-                        
-                        if (isHidden) {
-                            // 显示目录
-                            postToc.classList.remove('hidden');
-                            this.classList.remove('hidden');
-                            // 确保目录可见
-                            postToc.style.display = 'flex';
-                            localStorage.setItem('tocHidden', 'false');
-
-                        } else {
-                            // 隐藏目录
-                            postToc.classList.add('hidden');
-                            this.classList.add('hidden');
-                            localStorage.setItem('tocHidden', 'true');
-
-                        }
-                    }
-                });
-                
+                // 点击头部时，切换头部显示/隐藏
+                if (header.classList.contains('hidden')) {
+                    // 当前已隐藏，显示
+                    header.classList.remove('hidden');
+                } else {
+                    // 当前已显示，隐藏
+                    header.classList.add('hidden');
+                }
+            }
+            
+            // 监听事件
+            if(header){
+                header.addEventListener('click', handleHeaderClick);
+            }
+            
+            
+            // 页面加载时的头部初始状态
+            if (document.body.classList.contains('is-post')) {
+                    // 文章页：初始隐藏
+                    header.classList.add('hidden');
+            }else{
+                // 非文章页：初始显示
+                header.classList.remove('hidden');
 
             }
             
-            // 启动目录切换功能设置
-            setupTocToggle();
+            
 
             // 设备页面 3D 轮播初始化
             if (document.body.classList.contains('is-use')) {
@@ -1249,24 +1183,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </script>
         
         
-        <!-- 返回顶部功能 -->
-        
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const backToTopBtn = document.getElementById('backToTop');
-            if (backToTopBtn) {
-                backToTopBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            }
-        });
-        </script>
-        
-        
+
         <!-- 异步加载目录功能 -->
         <script async="" src="/js/toc.js"></script>
     

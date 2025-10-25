@@ -238,7 +238,6 @@
             <div class="paper-main">
                 <div class="header">
     <div class="header-content">
-
         <!-- 导航栏 -->
         <ul class="nav">
                 
@@ -284,9 +283,9 @@
                     </a>
                 </li>
                 
-
         </ul>
     </div>
+    
 </div>
 
                 <div class="post-main">
@@ -372,7 +371,7 @@ let bar = 'global'
 console.log(this.foo) // global
 console.log(this.bar) // undefined
 </code></pre>
-<p><div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="控制台日志" data-src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p></p><div class="image-container loading"><img src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.webp" alt="控制台日志" data-src="/img/d81d47f1a51cc2ecfe16e8966e7949b8_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>由上图可知，let 在全局环境声明变量 bar 保存在[[Scopes]][0]: Script 这个变量对象的属性中，而 [[Scopes]][1]: Global 就是我们常说的全局对象。</p>
 <h3 id="变量提升和暂存死区"><a href="#变量提升和暂存死区" class="headerlink" title="变量提升和暂存死区"></a>变量提升和暂存死区</h3><p>了解变量提升，就需要了解到上线文和变量对象。详见<a href="/md/js/%E8%AF%A6%E8%A7%A3%EF%BC%9AJavaScript%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E9%87%8A%E6%94%BE%E8%BF%87%E7%A8%8B.md">详解：javascript 创建执行释放过程</a></p>
 <h4 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h4><p>所有使用 var 声明的变量都会在执行上下文的创建阶段时作为变量对象的属性被创建并初始化，这样才能保证在执行阶段能通过标识符在变量对象里找到对应变量进行赋值操作等。即 var 在声明变量构建变量的时：</p>
@@ -1059,108 +1058,43 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('DOMContentLoaded', function() {
             const html = document.documentElement;
             const header = document.querySelector('.header');
-            
-            // 头部内容滚动显示/隐藏功能
-            let lastScrollTop = 0;
-            let scrollThreshold = 3; // 滚动阈值，避免微小滚动触发
-            
-            function handleHeaderScroll() {
+        
+            function handleHeaderClick() {
                 if (!header) return;
-                
-                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // 计算滚动距离
-                const scrollDifference = currentScrollTop - lastScrollTop;
-                
-                // 向下滚动隐藏
-                if (scrollDifference > scrollThreshold && currentScrollTop > 30) {
-                    header.classList.add('hidden');
-                }
-                // 向上滚动显示
-                else if (scrollDifference < -scrollThreshold) {
-                    header.classList.remove('hidden');
-                }
-                // 在页面顶部时的处理：非文章页显示，文章页保持当前（隐藏）
-                else if (currentScrollTop <= 30) {
-                    if (!document.body.classList.contains('is-post')) {
-                        header.classList.remove('hidden');
-                    }
-                }
-                
-                lastScrollTop = currentScrollTop;
-            }
-            
-            // 监听滚动事件
-            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
-            
-            // 页面加载时的头部初始状态
-            if (header) {
-                if (document.body.classList.contains('is-post')) {
-                    // 文章页：初始隐藏
-                    header.classList.add('hidden');
-                } else {
-                    // 非文章页：初始显示
-                    header.classList.remove('hidden');
-                }
-            }
-            
-            // 目录切换按钮功能（仅在文章页面）
-            function setupTocToggle() {
-                const tocToggleBtn = document.getElementById('tocToggleBtn');
-                const postToc = document.getElementById('postToc');
-                
-                if (!tocToggleBtn || !postToc) {
-                    // 元素还没准备好，延迟重试
-                    setTimeout(setupTocToggle, 100);
+
+                // 在非文章页时不执行隐藏操作
+                if (!document.body.classList.contains('is-post')) {
+                    // 非文章页保持显示，不进行切换
                     return;
                 }
-                
 
-                
-                // 延迟应用localStorage状态，确保目录已初始化
-                setTimeout(() => {
-                    const tocHidden = localStorage.getItem('tocHidden') === 'true';
-                    if (tocHidden) {
-                        postToc.classList.add('hidden');
-                        tocToggleBtn.classList.add('hidden');
-
-                    }
-                }, 200);
-                
-                // 点击切换目录显示/隐藏
-                tocToggleBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-
-                    
-                    if (postToc) {
-                        const isHidden = postToc.classList.contains('hidden');
-
-                        
-                        if (isHidden) {
-                            // 显示目录
-                            postToc.classList.remove('hidden');
-                            this.classList.remove('hidden');
-                            // 确保目录可见
-                            postToc.style.display = 'flex';
-                            localStorage.setItem('tocHidden', 'false');
-
-                        } else {
-                            // 隐藏目录
-                            postToc.classList.add('hidden');
-                            this.classList.add('hidden');
-                            localStorage.setItem('tocHidden', 'true');
-
-                        }
-                    }
-                });
-                
+                // 点击头部时，切换头部显示/隐藏
+                if (header.classList.contains('hidden')) {
+                    // 当前已隐藏，显示
+                    header.classList.remove('hidden');
+                } else {
+                    // 当前已显示，隐藏
+                    header.classList.add('hidden');
+                }
+            }
+            
+            // 监听事件
+            if(header){
+                header.addEventListener('click', handleHeaderClick);
+            }
+            
+            
+            // 页面加载时的头部初始状态
+            if (document.body.classList.contains('is-post')) {
+                    // 文章页：初始隐藏
+                    header.classList.add('hidden');
+            }else{
+                // 非文章页：初始显示
+                header.classList.remove('hidden');
 
             }
             
-            // 启动目录切换功能设置
-            setupTocToggle();
+            
 
             // 设备页面 3D 轮播初始化
             if (document.body.classList.contains('is-use')) {
@@ -1342,24 +1276,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </script>
         
         
-        <!-- 返回顶部功能 -->
-        
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const backToTopBtn = document.getElementById('backToTop');
-            if (backToTopBtn) {
-                backToTopBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            }
-        });
-        </script>
-        
-        
+
         <!-- 异步加载目录功能 -->
         <script async="" src="/js/toc.js"></script>
     
