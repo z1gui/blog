@@ -227,6 +227,9 @@
 </head>
 
     <body class="">
+        <!-- 侧边提示条 -->
+        
+        
         <div class="paper">
             <div class="paper-main">
                 <div class="header">
@@ -624,22 +627,71 @@ h6:hover .heading-anchor {
         document.addEventListener('DOMContentLoaded', function() {
             const html = document.documentElement;
             const header = document.querySelector('.header');
-        
+            const headerHint = document.getElementById('headerHint');
+            
+            // 大屏文章页的header自动隐藏功能
+            if (document.body.classList.contains('is-post') && window.innerWidth >= 1025) {
+                let headerTimeout;
+                
+                // 鼠标悬停在header上时显示
+                if (header) {
+                    header.addEventListener('mouseenter', function() {
+                        clearTimeout(headerTimeout);
+                        header.classList.add('show');
+                        if (headerHint) {
+                            headerHint.classList.add('header-visible');
+                        }
+                    });
+                    
+                    header.addEventListener('mouseleave', function() {
+                        headerTimeout = setTimeout(function() {
+                            header.classList.remove('show');
+                            if (headerHint) {
+                                headerHint.classList.remove('header-visible');
+                            }
+                        }, 300);
+                    });
+                }
+                
+                // 鼠标悬停在提示条上时显示header
+                if (headerHint) {
+                    headerHint.addEventListener('mouseenter', function() {
+                        clearTimeout(headerTimeout);
+                        if (header) {
+                            header.classList.add('show');
+                            headerHint.classList.add('header-visible');
+                        }
+                    });
+                    
+                    headerHint.addEventListener('mouseleave', function() {
+                        headerTimeout = setTimeout(function() {
+                            if (header) {
+                                header.classList.remove('show');
+                                headerHint.classList.remove('header-visible');
+                            }
+                        }, 300);
+                    });
+                }
+            }
+            
+            // 旧的点击切换逻辑（非大屏文章页保留）
             function handleHeaderClick() {
                 if (!header) return;
 
                 // 在非文章页时不执行隐藏操作
                 if (!document.body.classList.contains('is-post')) {
-                    // 非文章页保持显示，不进行切换
+                    return;
+                }
+                
+                // 大屏模式下不使用点击切换
+                if (window.innerWidth >= 1025) {
                     return;
                 }
 
-                // 点击头部时，切换头部显示/隐藏
+                // 小屏模式：点击头部时，切换头部显示/隐藏
                 if (header.classList.contains('hidden')) {
-                    // 当前已隐藏，显示
                     header.classList.remove('hidden');
                 } else {
-                    // 当前已显示，隐藏
                     header.classList.add('hidden');
                 }
             }
@@ -647,17 +699,6 @@ h6:hover .heading-anchor {
             // 监听事件
             if(header){
                 header.addEventListener('click', handleHeaderClick);
-            }
-            
-            
-            // 页面加载时的头部初始状态
-            if (document.body.classList.contains('is-post')) {
-                    // 文章页：初始隐藏
-                    header.classList.add('hidden');
-            }else{
-                // 非文章页：初始显示
-                header.classList.remove('hidden');
-
             }
             
             

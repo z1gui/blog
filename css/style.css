@@ -249,6 +249,83 @@ body:not(.is-post) .paper-main {
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
+/* 大屏文章页面 - header自动隐藏 */
+@media screen and (min-width: 1025px) {
+    body.is-post .header {
+        transform: translateX(calc(-100% - 25px));
+    }
+    
+    body.is-post .header:hover {
+        transform: translateX(0) scale(1.05);
+    }
+    
+    body.is-post .header.show {
+        transform: translateX(0);
+    }
+}
+
+/* 侧边提示条 */
+.header-hint {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 8px;
+    z-index: 10000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+@media screen and (min-width: 1025px) {
+    body.is-post .header-hint {
+        display: flex;
+    }
+    
+    body.is-post .header-hint::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 4px;
+        background: linear-gradient(180deg, transparent 0%, var(--font-color-0) 20%, var(--font-color-0) 80%, transparent 100%);
+        opacity: 0.3;
+        transition: all 0.3s ease;
+        border-radius: 0 2px 2px 0;
+    }
+    
+    body.is-post .header-hint:hover::before {
+        opacity: 0.8;
+        width: 6px;
+    }
+    
+    /* 菜单图标样式 */
+    body.is-post .header-hint svg {
+        color: var(--font-color-4);
+        opacity: 0.5;
+        margin-left: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+    
+    body.is-post .header-hint:hover svg {
+        opacity: 1;
+        margin-left: 12px;
+        transform: scale(1.1);
+    }
+    
+    /* 当header显示时，隐藏菜单图标 */
+    body.is-post .header-hint.header-visible svg {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+}
+
 .header-nav-buttons {
     display: flex;
     flex-direction: column;
