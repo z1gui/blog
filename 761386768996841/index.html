@@ -366,7 +366,7 @@
 <li>客户端向服务器端发送请求后，客户端会一直等待（不会再做其他事情），直到服务器端返回结果或者网络出现问题。</li>
 <li>服务端同样的，当在处理某个客户端 A 发来的请求是，另一个客户端 B 发来的请求会等待，直到服务器端的这个处理线程完成上个处理。</li>
 </ul>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="BIO请求流程图" data-src="/img/acea8af4268c8d552741ccebcb2d34ec_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/acea8af4268c8d552741ccebcb2d34ec_MD5.webp" alt="BIO请求流程图" data-src="/img/acea8af4268c8d552741ccebcb2d34ec_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><ol>
 <li>服务器启动一个 ServerSocket。</li>
 <li>客户端启动 Socket 对服务器进行通信，默认情况下服务器端需要对每个客户建立一个线程与之通讯。</li>
@@ -441,7 +441,7 @@ public class BIOServer {
 }
 </code></pre>
 <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>传统的 IO 模型，其主要是一个 Server 对接 N 个客户端，在客户端连接之后，为每个客户端分配一个子线程。如图所示：</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="传统IO模型" data-src="/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.webp" alt="传统IO模型" data-src="/img/0fb77c535fcbf8f4264b6eff292fd210_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>从图中可以看出，传统 IO 的特点在于：</p>
 <ul>
 <li>每个客户端连接到达时，服务端会分配一个线程给该客户端，该线程处理包括读取数据，解码，业务计算，编码，以及发送数据整个过程</li>
@@ -458,7 +458,7 @@ public class BIOServer {
 <li>当服务器收到客户端 X 的请求后，（读取到所有的请求数据后）将这个请求送入到一个独立线程进行处理，然后主线程继续接收客户端 Y 的请求。</li>
 <li>客户端侧，也可以用一个子线程和服务器端进行通信。这样客户端主线程的其他工作不受影响，当服务器有响应信息时候再有这个子线程通过 <code>监听模式/观察模式</code>（等其他设计模式）通知主线程。</li>
 </ul>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="多线程方式 - 伪异步" data-src="/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.webp" alt="多线程方式 - 伪异步" data-src="/img/ed84ace61748c9dbdaf3f9718f21ff21_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>但是多线程解决这个问题有局限性：</p>
 <ul>
 <li>操作系统通知accept() 的方式还是单个，即：服务器收到数据报文之后的“业务处理过程”可以多线程，但是报文的接收还是需要一个个来</li>
@@ -524,15 +524,15 @@ public abstract class ByteBuffer(){
 </code></pre>
 <p>状态变量的改变过程举例:</p>
 <p>① 新建一个大小为 8 个字节的缓冲区，此时 position 为 0，而 limit = capacity = 8。capacity 变量不会改变，下面的讨论会忽略它。</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="状态变量的改变过程1" data-src="/img/a8f0d4502adb087892e11866bdac7d57_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/a8f0d4502adb087892e11866bdac7d57_MD5.webp" alt="状态变量的改变过程1" data-src="/img/a8f0d4502adb087892e11866bdac7d57_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>② 从输入通道中读取 5 个字节数据写入缓冲区中，此时 position 移动设置为 5，limit 保持不变。</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="状态变量的改变过程2" data-src="/img/5ee1af7a6012fd34b62704d5b2867320_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/5ee1af7a6012fd34b62704d5b2867320_MD5.webp" alt="状态变量的改变过程2" data-src="/img/5ee1af7a6012fd34b62704d5b2867320_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>③ 在将缓冲区的数据写到输出通道之前，需要先调用 flip() 方法，这个方法将 limit 设置为当前 position，并将 position 设置为 0。</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="状态变量的改变过程3" data-src="/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.webp" alt="状态变量的改变过程3" data-src="/img/5cd2995739f1b0e1f4b355a2471c38aa_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>④ 从缓冲区中取 4 个字节到输出缓冲中，此时 position 设为 4。</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="状态变量的改变过程4" data-src="/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.webp" alt="状态变量的改变过程4" data-src="/img/0d87f8ba4e770fbdcd6c6fc61fb84862_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>⑤ 最后需要调用 clear() 方法来清空缓冲区，此时 position 和 limit 都被设置为最初位置。</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="状态变量的改变过程5" data-src="/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.webp" alt="状态变量的改变过程5" data-src="/img/f6ef08bdd8b4ff67a419bfe9b7dbc0f2_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <h3 id="文件-NIO-实例"><a href="#文件-NIO-实例" class="headerlink" title="文件 NIO 实例"></a>文件 NIO 实例</h3><p>以下展示了使用 NIO 快速复制文件的实例：</p>
 <pre><code class="language-java">public static void fastCopy(String src, String dist) throws IOException {
 
@@ -586,7 +586,7 @@ public abstract class ByteBuffer(){
 <li><code>SocketChannel</code>：TCP Socket 套接字的监听通道，用于 TCP 的数据读写</li>
 <li>其他的通道包括：</li>
 </ol>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="其他通道" data-src="/img/94530647a3be7da4d2de055fff8bacaf_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/94530647a3be7da4d2de055fff8bacaf_MD5.webp" alt="其他通道" data-src="/img/94530647a3be7da4d2de055fff8bacaf_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <h3 id="FileChannel-类"><a href="#FileChannel-类" class="headerlink" title="FileChannel 类"></a>FileChannel 类</h3><p>对本地文件进行 IO 操作，常用方法及实例应用：</p>
 <pre><code class="language-java">//从通道读取数据并放到缓冲区内
 public int read(ByteBuffer content);
@@ -889,7 +889,7 @@ public class ScatteringAndGatheringTest {
 <h2 id="3-Selector（选择器）"><a href="#3-Selector（选择器）" class="headerlink" title="3. Selector（选择器）"></a>3. Selector（选择器）</h2><h3 id="基本概念-2"><a href="#基本概念-2" class="headerlink" title="基本概念"></a>基本概念</h3><p>NIO 常常被叫做非阻塞 IO，主要是因为 NIO 在网络通信中的非阻塞特性被广泛使用。NIO 实现了 IO 多路复用中的 Reator 模型，一个线程 Thread 使用一个选择器 Selector 通过轮询的方式去监听多个 Channel 上的事件，从而让一个线程能够处理多个事件。</p>
 <p>通过配置监听的通道 Channel 为非阻塞，那么当 Channel 上的 IO 事件还未到达时，就不会进入到阻塞状态一直等待，而是鸡血轮询其他 Channel，找到 IO 事件已经到达的 Channel 执行。</p>
 <p>以为创建和切换线程的开销很大，因此使用一个线程处理多个事件显然比一个线程处理一个事件具有更好的性能。</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="选择器" data-src="/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.webp" alt="选择器" data-src="/img/0b37a3b751ec9aa08efa75ace30e23c4_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <ol>
 <li>Java 中的 NIO 可以用一个线程，处理多个客户端连接，就会使用到 Selector（选择器）</li>
 <li>多个 Channel 以事件的方式注册到 Selector</li>
@@ -1065,7 +1065,7 @@ while(keyIterator.hasNext()){
 <td align="center">目前 Java 版本不支持</td>
 </tr>
 </tbody></table>
-<h3 id="1-Reactor事件驱动模型"><a href="#1-Reactor事件驱动模型" class="headerlink" title="1. Reactor事件驱动模型"></a>1. Reactor事件驱动模型</h3><p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Reactor事件驱动模型" data-src="/img/10d0080498aba2649f1c04067965b579_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<h3 id="1-Reactor事件驱动模型"><a href="#1-Reactor事件驱动模型" class="headerlink" title="1. Reactor事件驱动模型"></a>1. Reactor事件驱动模型</h3><p> </p><div class="image-container loading"><img src="/img/10d0080498aba2649f1c04067965b579_MD5.webp" alt="Reactor事件驱动模型" data-src="/img/10d0080498aba2649f1c04067965b579_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>从图上可知：一个完整的 Reactor 事件驱动模型是有四个部分组成：客户端 Client，Reactor，Acceptor 和时间处理 Handler。其中 Acceptor 会不间断的接收客户端的连接请求，然后通过 Reactor 分发到不同 Handler 进行处理。改进后的 Reactor 有如下优点：</p>
 <ul>
 <li>虽然同是由一个线程接收连接请求进行网络读写，但是 Reactor 将客户端连接，网络读写，业务处理三大部分拆分，从而极大提高工作效率。</li>
@@ -1077,7 +1077,7 @@ while(keyIterator.hasNext()){
 <li>大量的业务处理</li>
 </ul>
 <p>基于上述瓶颈，可以将业务处理和 IO 读写分离出来：</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Reactor模型-业务处理和IO分离" data-src="/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.webp" alt="Reactor模型-业务处理和IO分离" data-src="/img/37b1874d4aabb48cd6b511cba09fa70b_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>如图可以看出，相对基础 Reactor 模型，该模型有如下特点：</p>
 <ul>
 <li>使用一个线程进行客户端连接和网络读写</li>
@@ -1088,7 +1088,7 @@ while(keyIterator.hasNext()){
 <li>网络读写是一个比较消耗 CPU 的操作，在高并发的情况下，将有大量的客户端需要网络读写，此时一个线程处理不了这么多的请求。</li>
 </ul>
 <h3 id="3-Reactor——并发读写"><a href="#3-Reactor——并发读写" class="headerlink" title="3. Reactor——并发读写"></a>3. Reactor——并发读写</h3><p>由于高并发的网络读写是系统一个瓶颈，所以针对这种情况，改进了模型，如图所示：</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Reactor-并发读写" data-src="/img/870a39b7312d1d18324d3aefa613ab37_MD5.webp" loading="lazy" class="lazy-image"></div><br>由图可以看出，在原有 Reactor 模型上，同时将 Reactor 拆分成 mainReactor 和 subReactor 。其中 mainReactor 主要负责客户端的请求连接，subReactor 通过一个线程池进行支撑，主要负责网络读写，因为线程池的原因，可以进行多线程并发读写，大大提升了网络读写的效率。业务处理也是通过线程池进行。通过这种方式，可以进行百万级别的连接。</p>
+<p> </p><div class="image-container loading"><img src="/img/870a39b7312d1d18324d3aefa613ab37_MD5.webp" alt="Reactor-并发读写" data-src="/img/870a39b7312d1d18324d3aefa613ab37_MD5.webp" loading="lazy" class="lazy-image"></div><br>由图可以看出，在原有 Reactor 模型上，同时将 Reactor 拆分成 mainReactor 和 subReactor 。其中 mainReactor 主要负责客户端的请求连接，subReactor 通过一个线程池进行支撑，主要负责网络读写，因为线程池的原因，可以进行多线程并发读写，大大提升了网络读写的效率。业务处理也是通过线程池进行。通过这种方式，可以进行百万级别的连接。<p></p>
 <h3 id="4-Reactor-模型示例"><a href="#4-Reactor-模型示例" class="headerlink" title="4. Reactor 模型示例"></a>4. Reactor 模型示例</h3><p>对于上述的 Reactor 模型，主要有三个核心需要实现：Acceptor，Reactor 和 Handler。具体实现代码如下：</p>
 <pre><code class="language-java">public class Reactor implements Runnable{
 	private final Selector selector;
@@ -1225,9 +1225,9 @@ while(keyIterator.hasNext()){
 <li>AIO 即 NIO2.0，叫做异步不阻塞的 IO。AIO 引入异步通道的概念，采用了 Proactor 模式，简化了程序编写，有效的请求才启动线程，它的特点是先由操作系统完成后才通知服务端程序启动线程去处理，一般适用于连接数较多且连接时间较长的应用</li>
 </ol>
 <h3 id="异步-IO"><a href="#异步-IO" class="headerlink" title="异步 IO"></a>异步 IO</h3><p>之前主要介绍了阻塞式同步 IO，非阻塞式同步 IO，多路复用 IO 这三种 IO 模型。而异步 IO 是采用“订阅-通知”模式，即应用程序向操作系统注册 IO 监听，然后继续做自己的事情。当操作系统发生 IO 事件，并且准备好数据后，主动通知应用程序，触发相应的函数：</p>
-<p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="异步IO" data-src="/img/3a01157436842562f7f21f8b4c4549d4_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<p> </p><div class="image-container loading"><img src="/img/3a01157436842562f7f21f8b4c4549d4_MD5.webp" alt="异步IO" data-src="/img/3a01157436842562f7f21f8b4c4549d4_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>和同步 IO 一样，异步 IO 也是由操作系统进行支持的。Windows 系统提供了一种异步 IO 技术：IOCP（I/O Completion Port，I/O 完成端口）；<br>Linux 下由于没有这种异步 IO 技术，所以使用的是 epoll（上文介绍过的一种多路复用 IO 技术的实现）对异步 IO 进行模拟。</p>
-<h3 id="Java-AIO-框架解析"><a href="#Java-AIO-框架解析" class="headerlink" title="Java AIO 框架解析"></a>Java AIO 框架解析</h3><p> <div class="image-container loading"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Java AIO" data-src="/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.webp" loading="lazy" class="lazy-image"></div></p>
+<h3 id="Java-AIO-框架解析"><a href="#Java-AIO-框架解析" class="headerlink" title="Java AIO 框架解析"></a>Java AIO 框架解析</h3><p> </p><div class="image-container loading"><img src="/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.webp" alt="Java AIO" data-src="/img/2ff37cd0e1f5f734f8d6209396a08897_MD5.webp" loading="lazy" class="lazy-image"></div><p></p>
 <p>以上结构主要是说明 JAVA AIO 中类设计和操作系统的相关性。</p>
 <blockquote>
 <p>上述所有代码仓库地址：<a target="_blank" rel="noopener" href="https://github.com/z1gui/netty_io">https://github.com/z1gui/netty_io</a></p>
